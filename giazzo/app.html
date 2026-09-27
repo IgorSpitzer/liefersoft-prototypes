@@ -14,8 +14,8 @@
 body{margin:0;background:#E9E5E1;font-family:"Barlow","Segoe UI",system-ui,sans-serif;color:#141414}
 button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible{outline:3px solid #F2B233;outline-offset:2px}
-.gzs{background-image:url(/_blob/184ff6764d50b9c7b99f26392b8c1bf7);background-repeat:no-repeat;display:block}
-.gzx{background-image:url(/_blob/37c616987d95a2ac28de2b17cb45a6c5);background-repeat:no-repeat;display:block}
+.gzs{background-image:url(./assets/184ff6764d50b9c7b99f26392b8c1bf7.webp);background-repeat:no-repeat;display:block}
+.gzx{background-image:url(./assets/37c616987d95a2ac28de2b17cb45a6c5.svg);background-repeat:no-repeat;display:block}
 .pbs{scrollbar-width:none}.pbs::-webkit-scrollbar{display:none}
 @keyframes pbL1{from{transform:translateX(150px) rotate(60deg) scale(.6);opacity:.2}to{transform:none;opacity:1}}
 @keyframes pbL2{from{transform:translateX(150px) rotate(60deg) scale(.6);opacity:.2}to{transform:none;opacity:1}}
@@ -38,7 +38,7 @@ a{color:#C62A1E}a:hover{color:#9E1F15}
 <sc-if value="{{isHome}}" hint-placeholder-val="{{true}}">
 <header style="position: absolute; left: 0; right: 0; top: 0; z-index: 4; background: #FBF8F5; padding: 14px 18px 0; display: flex; flex-direction: column; gap: 12px;">
 <div style="display: flex; align-items: center; justify-content: space-between;">
-<img src="/_blob/1a9c3c5664cb0d65bb9b57b4f873efa8" alt="GIAZZO" style="width: 42px; height: 42px; border-radius: 6px;">
+<img src="./assets/1a9c3c5664cb0d65bb9b57b4f873efa8.png" alt="GIAZZO" style="width: 42px; height: 42px; border-radius: 6px;">
 <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 2px; color: #6B6B6B;">{{headerLabel}}</span>
 <button onClick="{{goCart}}" aria-label="{{cartAria}}" style="position: relative; width: 44px; height: 44px; border-radius: 22px; border: 0; background: #FFFFFF; box-shadow: 0 4px 14px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center;">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12.5H6L5 8Z"></path><path d="M9 10V6.5a3 3 0 0 1 6 0V10"></path></svg>
@@ -353,7 +353,7 @@ class Component extends DCLogic {
       brot: I('salate', 'Pizzabrot', 5.0, 28, 'circle'),
       dipk: I('dips', 'Knoblauch-Mundi', 2.5, 22, 'photo'),
       dipt: I('dips', 'Trüffel-Ekstase', 2.5, 23, 'photo'),
-      dipp: I('dips', 'Piccante Dip', 2.5, null, 'svg', { src: '/_blob/8cf3fa0b8ca52e03f6652a851f3f1dbc', badge: 'SCHARF' }),
+      dipp: I('dips', 'Piccante Dip', 2.5, null, 'svg', { src: './assets/8cf3fa0b8ca52e03f6652a851f3f1dbc.svg', badge: 'SCHARF' }),
       calzone: I('dessert', 'Nutella Calzone', 8.0, 29, 'photo'),
       eisA: I('dessert', 'Giazzo Joghurt-Amarena', 3.9, 30, 'photo'),
       eisT: I('dessert', 'Giazzo Tiramisu', 3.9, 31, 'photo'),
@@ -365,11 +365,11 @@ class Component extends DCLogic {
       blunaz: I('getraenke', 'Bluna Zitrone', 3.0, 37, 'bottle'),
       eisteeP: I('getraenke', 'Granini Pfirsich Eistee', 3.5, 38, 'bottle'),
       eisteeZ: I('getraenke', 'Granini Zitrone Eistee', 3.5, 39, 'bottle'),
-      kirsch: I('getraenke', 'Granini Kirsch Schorle', 3.5, null, 'svg', { src: '/_blob/857facb3c864132737f706d45950e766' }),
+      kirsch: I('getraenke', 'Granini Kirsch Schorle', 3.5, null, 'svg', { src: './assets/857facb3c864132737f706d45950e766.svg' }),
       maracuja: I('getraenke', 'Granini Maracuja Schorle', 3.5, 40, 'bottle'),
       apfel: I('getraenke', 'Granini Apfel Schorle', 3.5, 41, 'bottle'),
-      johannis: I('getraenke', 'Granini Johannisbeere Schorle', 3.5, null, 'svg', { src: '/_blob/857facb3c864132737f706d45950e766' }),
-      peroni: I('getraenke', 'Peroni 0,0 (alkoholfrei)', 3.9, null, 'svg', { src: '/_blob/6fc24dba281ccf9ddeecf6d5ca446928' }),
+      johannis: I('getraenke', 'Granini Johannisbeere Schorle', 3.5, null, 'svg', { src: './assets/857facb3c864132737f706d45950e766.svg' }),
+      peroni: I('getraenke', 'Peroni 0,0 (alkoholfrei)', 3.9, null, 'svg', { src: './assets/6fc24dba281ccf9ddeecf6d5ca446928.svg' }),
       wasser: I('getraenke', 'Spessart-Wald Classic', 2.5, 42, 'bottle'),
       naturell: I('getraenke', 'Spessart-Wald Naturell', 2.5, 43, 'bottle')
     };
