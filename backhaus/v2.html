@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Backhaus Morgen – SOT V2</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Instrument+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#E9E2D8;font-family:"Instrument Sans","Segoe UI",system-ui,sans-serif;color:#221412}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{cursor:default}
+button:focus-visible{outline:3px solid #C98B3C;outline-offset:2px}
+.v2s{scrollbar-width:none}
+.v2s::-webkit-scrollbar{width:0;height:0}
+@keyframes v2spin{to{transform:rotate(360deg)}}
+.v2spin{animation:v2spin 1s linear infinite;transform-origin:50% 50%}
+@keyframes v2up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.v2up{animation:v2up .22s ease-out}
+@keyframes v2fade{from{opacity:0}to{opacity:1}}
+.v2fade{animation:v2fade .18s ease-out}
+a{color:#8B1A23}a:hover{color:#6E141C}
+</style>
+</helmet>
+<div onPointerDown="{{touch}}" style="width: 600px; height: 1066px; position: relative; overflow: hidden; background: #F8F4EE; display: flex; flex-direction: column; font-family: 'Instrument Sans', 'Segoe UI', system-ui, sans-serif; color: #221412;">
+
+<!-- ============ START ============ -->
+<sc-if value="{{isStart}}" hint-placeholder-val="{{true}}">
+<main style="flex-grow: 1; display: flex; flex-direction: column; min-height: 0;">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 24px 28px 0;">
+<div style="display: flex; flex-direction: column; gap: 2px;">
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 24px; letter-spacing: -0.3px; color: #6E141C;">Backhaus Morgen</span>
+<span style="font-size: 11px; letter-spacing: 3px; font-weight: 600; color: #6B5D55;">TRADITION SEIT 1898</span>
+</div>
+<div style="display: flex; gap: 6px; padding: 4px; border-radius: 999px; background: #EFE7DC;">
+<button aria-pressed="true" style="height: 44px; min-width: 56px; padding: 0 14px; border-radius: 999px; border: 0; background: #221412; color: #FFFFFF; font-weight: 600; font-size: 16px;">DE</button>
+<button onClick="{{langEn}}" aria-pressed="false" style="height: 44px; min-width: 56px; padding: 0 14px; border-radius: 999px; border: 0; background: none; font-weight: 600; font-size: 16px;">EN</button>
+</div>
+</div>
+<div style="position: relative; height: 470px; flex-shrink: 0;">
+<div style="position: absolute; left: 28px; top: 36px; display: flex; flex-direction: column; gap: 14px; width: 330px;">
+<h1 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 76px; line-height: 0.95; letter-spacing: -2px; color: #221412;">Guten<br>Morgen.</h1>
+<p style="margin: 0; font-size: 20px; line-height: 1.4; color: #4E403A;">Hier bestellen, an der Theke abholen – wir backen derweil weiter.</p>
+</div>
+<div style="position: absolute; right: -40px; top: 40px; width: 360px; height: 360px; border-radius: 180px; background: #EFE3D1;"></div>
+<img src="/_blob/09c5bac8a9cd2c558fe679d5e01ee7f8" alt="" style="position: absolute; right: -10px; top: 70px; width: 330px; height: 265px; object-fit: contain; mix-blend-mode: multiply; transform: rotate(-8deg);">
+<img src="/_blob/2f2537892f1aead835fac8f132443158" alt="" style="position: absolute; right: 150px; top: 300px; width: 200px; height: 155px; object-fit: contain; mix-blend-mode: multiply;">
+<img src="/_blob/bd07ea8bd8a1e76f23c587c45107047f" alt="" style="position: absolute; right: 8px; top: 318px; width: 128px; height: 150px; object-fit: contain; mix-blend-mode: multiply; transform: rotate(10deg);">
+<div style="position: absolute; left: 28px; top: 340px; display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E3D9CC;">
+<span style="width: 10px; height: 10px; border-radius: 5px; background: #3F7A3A;"></span>
+<span style="font-size: 16px; font-weight: 600;">Frisch aus dem Ofen: Brezeln</span>
+</div>
+</div>
+<div style="flex-grow: 1; background: #FFFFFF; border-radius: 32px 32px 0 0; padding: 30px 28px 24px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 -1px 0 #E3D9CC;">
+<sc-if value="{{isLow}}" hint-placeholder-val="{{false}}"><div style="height: 40px;"></div></sc-if>
+<h2 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 30px; letter-spacing: -0.5px;">Wie möchten Sie genießen?</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
+<button onClick="{{chooseHere}}" style="height: 220px; border-radius: 24px; border: 0; background: #8B1A23; color: #FFFFFF; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; padding: 24px; text-align: left;">
+<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h11v4a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5V9Z"></path><path d="M16 10.5h1.5a2.2 2.2 0 0 1 0 4.4H16M3.5 21h15M8 3.5c0 1 1 1.5 1 2.5M11.5 3.5c0 1 1 1.5 1 2.5"></path></svg>
+<span style="display: flex; flex-direction: column; gap: 4px;"><span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 30px; line-height: 1.05;">Hier genießen</span><span style="font-size: 17px; opacity: 0.9;">Am Platz, auf Wunsch an den Tisch</span></span>
+</button>
+<button onClick="{{chooseTogo}}" style="height: 220px; border-radius: 24px; border: 2px solid #221412; background: #FFFFFF; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; padding: 24px; text-align: left;">
+<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#221412" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12.5H6L5 8Z"></path><path d="M9 10V6.5a3 3 0 0 1 6 0V10"></path></svg>
+<span style="display: flex; flex-direction: column; gap: 4px;"><span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 30px; line-height: 1.05;">Zum Mitnehmen</span><span style="font-size: 17px; color: #4E403A;">Jetzt oder später abholen</span></span>
+</button>
+</div>
+<div style="flex-grow: 1;"></div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+<button onClick="{{toggleLow}}" aria-pressed="{{lowPressed}}" style="{{lowStyle}}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="4.5" r="1.8"></circle><path d="M12 7.5v6M8 10h8M12 13.5l-3 7M12 13.5l3 7"></path></svg>
+{{lowLabel}}</button>
+<span style="font-size: 16px; color: #6B5D55;">Allergene auf jeder Produktseite</span>
+</div>
+</div>
+</main>
+</sc-if>
+
+<!-- ============ TOP BAR (inner screens) ============ -->
+<sc-if value="{{showBar}}" hint-placeholder-val="{{false}}">
+<header style="height: 80px; flex-shrink: 0; box-sizing: border-box; padding: 0 20px 0 24px; display: flex; align-items: center; gap: 10px; background: #F8F4EE; border-bottom: 1px solid #E3D9CC;">
+<sc-if value="{{showBack}}" hint-placeholder-val="{{false}}">
+<button onClick="{{back}}" aria-label="Zurück" style="width: 52px; height: 52px; margin-left: -10px; border-radius: 26px; border: 0; background: none; display: flex; align-items: center; justify-content: center;">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#221412" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+</button>
+</sc-if>
+<span style="flex-grow: 1; font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 22px; color: #6E141C;">Backhaus Morgen</span>
+<button onClick="{{toggleService}}" aria-label="Service wechseln" style="height: 48px; padding: 0 16px; border-radius: 999px; border: 1px solid #D8CCBC; background: #FFFFFF; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600;">
+<sc-if value="{{isHere}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#221412" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 9h11v4a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5V9Z"></path><path d="M16 10.5h1.5a2.2 2.2 0 0 1 0 4.4H16"></path></svg></sc-if>
+<sc-if value="{{isTogo}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#221412" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12.5H6L5 8Z"></path><path d="M9 10V6.5a3 3 0 0 1 6 0V10"></path></svg></sc-if>
+{{serviceLabel}}
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B5D55" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M7 10l5 5 5-5"></path></svg>
+</button>
+<button onClick="{{askRestart}}" style="height: 48px; padding: 0 14px; border-radius: 999px; border: 0; background: #EFE7DC; display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 600;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#221412" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"></path></svg>Neu</button>
+</header>
+</sc-if>
+
+<!-- ============ MENU ============ -->
+<sc-if value="{{isMenu}}" hint-placeholder-val="{{false}}">
+<main style="flex-grow: 1; min-height: 0; display: flex; flex-direction: column;">
+<div class="v2s" style="flex-grow: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column;">
+<sc-if value="{{isLow}}" hint-placeholder-val="{{false}}">
+<div style="height: 250px; flex-shrink: 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 12px; font-size: 16px; color: #6B5D55;">Bedienung nach unten verschoben</div>
+</sc-if>
+<div style="padding: 22px 24px 6px; display: flex; flex-direction: column; gap: 4px;">
+<h1 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 44px; letter-spacing: -1px; line-height: 1.05;">{{catTitle}}</h1>
+<p style="margin: 0; font-size: 19px; color: #4E403A;">{{catSub}}</p>
+</div>
+<nav aria-label="Kategorien" class="v2s" style="display: flex; gap: 10px; overflow-x: auto; padding: 14px 24px 16px; flex-shrink: 0;">
+<sc-for list="{{cats}}" as="c" hint-placeholder-count="8">
+<button onClick="{{c.pick}}" aria-pressed="{{c.pressed}}" style="{{c.style}}">
+<img src="{{c.img}}" alt="" style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;">{{c.label}}</button>
+</sc-for>
+</nav>
+
+<sc-if value="{{isOffers}}" hint-placeholder-val="{{true}}">
+<div style="padding: 0 24px; display: flex; flex-direction: column; gap: 14px;">
+<button onClick="{{offerRolls}}" style="height: 230px; border-radius: 24px; border: 0; padding: 0; overflow: hidden; background: #8B1A23; color: #FFFFFF; position: relative; display: flex; text-align: left;">
+<img src="/_blob/d66d7e69064d658a87bf7132dd5e4299" alt="" style="position: absolute; right: 0; top: 0; width: 44%; height: 100%; object-fit: cover;">
+<span style="position: relative; width: 60%; padding: 26px; display: flex; flex-direction: column; gap: 10px;">
+<span style="align-self: flex-start; padding: 5px 12px; border-radius: 999px; background: #C98B3C; color: #221412; font-size: 14px; font-weight: 700; letter-spacing: 1px;">AKTION</span>
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 38px; line-height: 1;">3 Brötchen,<br>2 bezahlen</span>
+<span style="font-size: 17px; line-height: 1.35; opacity: 0.92;">Gilt für Körner- und Weizenbrötchen, frei kombinierbar.</span>
+</span>
+</button>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
+<button onClick="{{offerKids}}" style="height: 270px; border-radius: 24px; border: 0; padding: 20px; background: #F2E4CC; display: flex; flex-direction: column; align-items: flex-start; text-align: left; position: relative; overflow: hidden;">
+<span style="padding: 5px 12px; border-radius: 999px; background: #FFFFFF; font-size: 14px; font-weight: 700; letter-spacing: 1px;">KIDS</span>
+<img src="/_blob/30ddd83911c5bac5cc41eec27748fcfe" alt="" style="position: absolute; right: -6px; top: 36px; width: 150px; height: 140px; object-fit: contain; mix-blend-mode: multiply;">
+<span style="flex-grow: 1;"></span>
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 26px; line-height: 1.05;">Kinder&#173;frühstück</span>
+<span style="font-size: 17px; color: #4E403A; margin-top: 4px;">{{kidsPrice}}</span>
+</button>
+<button onClick="{{offerTogo}}" style="height: 270px; border-radius: 24px; border: 0; padding: 20px; background: #221412; color: #FFFFFF; display: flex; flex-direction: column; align-items: flex-start; text-align: left; position: relative; overflow: hidden;">
+<span style="padding: 5px 12px; border-radius: 999px; background: #C98B3C; color: #221412; font-size: 14px; font-weight: 700; letter-spacing: 1px;">TO GO</span>
+<img src="/_blob/3275780bb0074318ffcb29c58831b2e5" alt="" style="position: absolute; right: 16px; top: 44px; width: 120px; height: 120px; border-radius: 60px; object-fit: cover;">
+<span style="flex-grow: 1;"></span>
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 26px; line-height: 1.05;">Frühstück to go</span>
+<span style="font-size: 17px; opacity: 0.9; margin-top: 4px;">{{togoPrice}}</span>
+</button>
+</div>
+<button onClick="{{offerTuete}}" style="height: 140px; border-radius: 24px; border: 1px solid #E3D9CC; padding: 0; background: #FFFFFF; display: flex; align-items: stretch; overflow: hidden; text-align: left;">
+<span style="flex-grow: 1; padding: 22px 24px; display: flex; flex-direction: column; justify-content: center; gap: 6px;">
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 26px;">Brötchentüte für alle</span>
+<span style="font-size: 17px; color: #4E403A;">6 oder 10 Stück, frei gemischt · {{tuetePrice}}</span>
+</span>
+<img src="/_blob/4775ee6f2159192056308b961ee2b77c" alt="" style="width: 180px; object-fit: cover;">
+</button>
+<button onClick="{{offerShop}}" style="height: 128px; border-radius: 24px; border: 0; padding: 0 24px; background: #F2E4CC; display: flex; align-items: center; gap: 18px; text-align: left;">
+<img src="{{shopIcon}}" alt="" style="width: 88px; height: 88px; object-fit: contain;">
+<span style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px;">
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 25px;">Backen für Zuhause</span>
+<span style="font-size: 17px; color: #4E403A;">Christstollen, Sauerteig, Knäckebrot &amp; Zubehör</span>
+</span>
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#221412" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
+</button>
+<h2 style="margin: 12px 0 0; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 26px;">Heute beliebt</h2>
+</div>
+</sc-if>
+
+<sc-if value="{{hasWide}}" hint-placeholder-val="{{false}}">
+<div style="padding: 0 24px; display: flex; flex-direction: column; gap: 14px;">
+<sc-for list="{{wideItems}}" as="w" hint-placeholder-count="3">
+<button onClick="{{w.open}}" style="height: 190px; border-radius: 24px; border: 1px solid #E3D9CC; background: #FFFFFF; padding: 0; overflow: hidden; display: flex; text-align: left;">
+<img src="{{w.img}}" alt="" style="width: 200px; height: 100%; object-fit: cover; flex-shrink: 0;">
+<span style="flex-grow: 1; padding: 20px 22px; display: flex; flex-direction: column; gap: 6px;">
+<sc-if value="{{w.hasBadge}}" hint-placeholder-val="{{true}}"><span style="align-self: flex-start; padding: 4px 11px; border-radius: 999px; background: #F2E4CC; font-size: 14px; font-weight: 700; letter-spacing: 1px;">{{w.badge}}</span></sc-if>
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 26px; line-height: 1.1;">{{w.name}}</span>
+<span style="font-size: 16px; line-height: 1.35; color: #4E403A;">{{w.desc}}</span>
+<span style="flex-grow: 1;"></span>
+<span style="display: flex; align-items: center; justify-content: space-between;"><span style="font-weight: 700; font-size: 20px;">{{w.priceTxt}}</span>
+<span style="width: 48px; height: 48px; border-radius: 24px; background: #8B1A23; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></span></span>
+</span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{hasGrid}}" hint-placeholder-val="{{true}}">
+<div style="padding: 14px 24px 24px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
+<sc-for list="{{gridItems}}" as="p" hint-placeholder-count="4">
+<button onClick="{{p.open}}" disabled="{{p.soldOut}}" aria-label="{{p.aria}}" style="{{p.cardStyle}}">
+<span style="position: relative; height: 176px; border-radius: 18px; background: #F3ECE3; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+<img src="{{p.img}}" alt="" style="{{p.imgStyle}}">
+<sc-if value="{{p.hasBadge}}" hint-placeholder-val="{{false}}"><span style="{{p.badgeStyle}}">{{p.badge}}</span></sc-if>
+</span>
+<span style="padding: 12px 6px 0; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 21px; line-height: 1.15; text-align: left;">{{p.name}}</span>
+<span style="flex-grow: 1;"></span>
+<span style="padding: 0 0 0 6px; display: flex; align-items: center; justify-content: space-between;"><span style="font-weight: 700; font-size: 19px;">{{p.priceTxt}}</span>
+<sc-if value="{{p.available}}" hint-placeholder-val="{{true}}"><span style="width: 48px; height: 48px; border-radius: 24px; background: #8B1A23; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></span></sc-if>
+</span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+<div style="height: 12px; flex-shrink: 0;"></div>
+</div>
+<!-- cart bar -->
+<div style="flex-shrink: 0; padding: 12px 20px 20px; background: #F8F4EE; border-top: 1px solid #E3D9CC;">
+<sc-if value="{{hasItems}}" hint-placeholder-val="{{false}}">
+<button onClick="{{goCart}}" style="width: 100%; height: 84px; border-radius: 22px; border: 0; background: #221412; color: #FFFFFF; display: flex; align-items: center; gap: 16px; padding: 0 14px 0 20px; box-sizing: border-box; text-align: left;">
+<span style="display: flex; align-items: center; flex-shrink: 0;">
+<sc-for list="{{barThumbs}}" as="t" hint-placeholder-count="3">
+<span style="{{t.wrap}}"><img src="{{t.img}}" alt="" style="{{t.imgStyle}}"></span>
+</sc-for>
+<sc-if value="{{hasMoreThumbs}}" hint-placeholder-val="{{false}}"><span style="width: 52px; height: 52px; margin-left: -14px; border-radius: 26px; background: #FFFFFF; border: 3px solid #221412; box-sizing: border-box; color: #221412; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; position: relative;">{{moreThumbs}}</span></sc-if>
+</span>
+<span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;">
+<span style="font-size: 19px; font-weight: 600;">Warenkorb</span>
+<span style="font-size: 15px; color: #E9DFD4;">{{cartCountTxt}}<sc-if value="{{hasSavings}}" hint-placeholder-val="{{false}}"><span style="color: #F0C989;"> · spart {{savingsTxt}}</span></sc-if></span>
+</span>
+<span style="height: 56px; padding: 0 20px; border-radius: 16px; background: #8B1A23; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 21px;">{{totalTxt}}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg></span>
+</button>
+</sc-if>
+<sc-if value="{{isEmptyCart}}" hint-placeholder-val="{{true}}">
+<div style="height: 84px; border-radius: 22px; border: 2px dashed #D8CCBC; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 18px; color: #6B5D55;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6B5D55" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12.5H6L5 8Z"></path><path d="M9 10V6.5a3 3 0 0 1 6 0V10"></path></svg>
+Produkt antippen, um es hinzuzufügen</div>
+</sc-if>
+</div>
+</main>
+</sc-if>
+
+<!-- ============ WARENKORB ============ -->
+<sc-if value="{{isCart}}" hint-placeholder-val="{{false}}">
+<main style="flex-grow: 1; min-height: 0; display: flex; flex-direction: column;">
+<div class="v2s" style="flex-grow: 1; min-height: 0; overflow-y: auto; padding: 22px 24px 16px; display: flex; flex-direction: column; gap: 14px;">
+<div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 12px;">
+<h1 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 44px; letter-spacing: -1px;">Ihre Bestellung</h1>
+<sc-if value="{{hasItems}}" hint-placeholder-val="{{true}}">
+<button onClick="{{askClear}}" style="height: 48px; padding: 0 14px; border-radius: 999px; border: 0; background: none; color: #8B1A23; font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 6px;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B1A23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5h16M9.5 6.5V4h5v2.5M6 6.5l1 13.5h10l1-13.5"></path></svg>Leeren</button>
+</sc-if>
+</div>
+<sc-if value="{{isEmptyCart}}" hint-placeholder-val="{{false}}">
+<div style="margin-top: 60px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center;">
+<img src="/_blob/bd07ea8bd8a1e76f23c587c45107047f" alt="" style="width: 160px; height: 180px; object-fit: contain; mix-blend-mode: multiply; opacity: 0.85;">
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 28px;">Noch nichts im Korb</span>
+<button onClick="{{goMenu}}" style="height: 60px; padding: 0 28px; border-radius: 999px; border: 2px solid #221412; background: #FFFFFF; font-weight: 600; font-size: 19px;">Zum Sortiment</button>
+</div>
+</sc-if>
+<sc-for list="{{lines}}" as="l" hint-placeholder-count="3">
+<div style="border-radius: 22px; background: #FFFFFF; border: 1px solid #E3D9CC; padding: 14px 16px 14px 14px; display: flex; gap: 14px; align-items: flex-start;">
+<span style="width: 92px; height: 92px; border-radius: 16px; background: #F3ECE3; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="{{l.img}}" alt="" style="{{l.imgStyle}}"></span>
+<div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px;">
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 21px; line-height: 1.15;">{{l.name}}</span>
+<sc-if value="{{l.hasOpts}}" hint-placeholder-val="{{true}}"><span style="font-size: 16px; line-height: 1.35; color: #4E403A;">{{l.optsTxt}}</span></sc-if>
+<sc-if value="{{l.hasPromo}}" hint-placeholder-val="{{false}}"><span style="align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: #F2E4CC; font-size: 14px; font-weight: 700;">{{l.promoTxt}}</span></sc-if>
+<div style="display: flex; align-items: center; gap: 10px; margin-top: 6px;">
+<div style="display: flex; align-items: center; height: 48px; border-radius: 999px; background: #F3ECE3;">
+<button onClick="{{l.dec}}" aria-label="{{l.decAria}}" style="width: 48px; height: 48px; border: 0; background: none; font-size: 24px; line-height: 1;">−</button>
+<span style="min-width: 28px; text-align: center; font-weight: 700; font-size: 19px;">{{l.qty}}</span>
+<button onClick="{{l.inc}}" aria-label="{{l.incAria}}" style="width: 48px; height: 48px; border: 0; background: none; font-size: 24px; line-height: 1;">+</button>
+</div>
+<sc-if value="{{l.canEdit}}" hint-placeholder-val="{{true}}"><button onClick="{{l.edit}}" style="height: 48px; padding: 0 12px; border: 0; background: none; font-size: 16px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px;">Ändern</button></sc-if>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0;">
+<span style="font-weight: 700; font-size: 20px;">{{l.priceTxt}}</span>
+<sc-if value="{{l.hasUnit}}" hint-placeholder-val="{{false}}"><span style="font-size: 15px; color: #6B5D55;">{{l.unitTxt}}</span></sc-if>
+</div>
+</div>
+</sc-for>
+<sc-for list="{{nudges}}" as="n" hint-placeholder-count="1">
+<div style="border-radius: 22px; background: #F2E4CC; padding: 16px 16px 16px 20px; display: flex; align-items: center; gap: 14px;">
+<img src="{{n.img}}" alt="" style="width: 56px; height: 56px; object-fit: contain; mix-blend-mode: multiply;">
+<span style="flex-grow: 1; font-size: 18px; line-height: 1.3; font-weight: 500;">{{n.text}}</span>
+<button onClick="{{n.act}}" style="height: 52px; padding: 0 18px; border-radius: 999px; border: 0; background: #221412; color: #FFFFFF; font-weight: 600; font-size: 17px; white-space: nowrap;">{{n.label}}</button>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{hasItems}}" hint-placeholder-val="{{true}}">
+<div style="flex-shrink: 0; padding: 14px 24px 22px; background: #FFFFFF; border-top: 1px solid #E3D9CC; border-radius: 28px 28px 0 0; display: flex; flex-direction: column; gap: 8px;">
+<div style="display: flex; justify-content: space-between; font-size: 18px;"><span>Zwischensumme</span><span>{{subTxt}}</span></div>
+<sc-if value="{{hasSavings}}" hint-placeholder-val="{{false}}"><div style="display: flex; justify-content: space-between; font-size: 18px; color: #3F7A3A; font-weight: 600;"><span>Aktion 3 für 2</span><span>− {{savingsTxt}}</span></div></sc-if>
+<div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 2px;"><span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 24px;">Gesamt</span><span style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 32px;">{{totalTxt}}</span></div>
+<button onClick="{{goCheckout}}" style="margin-top: 6px; width: 100%; height: 76px; border-radius: 20px; border: 0; background: #8B1A23; color: #FFFFFF; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; box-sizing: border-box; font-weight: 700; font-size: 23px;">
+<span>Weiter zur Zahlung</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg></button>
+</div>
+</sc-if>
+</main>
+</sc-if>
+
+<!-- ============ CHECKOUT ============ -->
+<sc-if value="{{isCheckout}}" hint-placeholder-val="{{false}}">
+<main style="flex-grow: 1; min-height: 0; display: flex; flex-direction: column;">
+<div class="v2s" style="flex-grow: 1; min-height: 0; overflow-y: auto; padding: 22px 24px 16px; display: flex; flex-direction: column; gap: 22px;">
+<h1 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 44px; letter-spacing: -1px;">Fast geschafft</h1>
+<section style="display: flex; flex-direction: column; gap: 12px;">
+<h2 style="margin: 0; font-size: 20px; font-weight: 700;">{{deliverTitle}}</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+<sc-for list="{{deliverOpts}}" as="o" hint-placeholder-count="2">
+<button onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}">
+<sc-if value="{{o.checked}}" hint-placeholder-val="{{false}}"><span style="position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; border-radius: 15px; background: #8B1A23; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg></span></sc-if>
+<span style="font-weight: 700; font-size: 20px;">{{o.label}}</span>
+<span style="font-size: 16px; color: #4E403A;">{{o.sub}}</span>
+</button>
+</sc-for>
+</div>
+<sc-if value="{{isTableSel}}" hint-placeholder-val="{{false}}">
+<div style="border-radius: 22px; background: #FFFFFF; border: 1px solid #E3D9CC; padding: 16px; display: flex; gap: 16px; align-items: center;">
+<div style="width: 150px; display: flex; flex-direction: column; gap: 6px; align-items: center;">
+<span style="font-size: 16px; color: #4E403A;">Tischnummer</span>
+<span aria-live="polite" style="{{tableDisplayStyle}}">{{tableTxt}}</span>
+<span style="font-size: 14px; color: #6B5D55; text-align: center;">Steht auf dem Schild am Tisch</span>
+</div>
+<div style="flex-grow: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;">
+<sc-for list="{{keys}}" as="k" hint-placeholder-count="12">
+<button onClick="{{k.press}}" aria-label="{{k.aria}}" style="height: 54px; border-radius: 14px; border: 0; background: #F3ECE3; font-weight: 600; font-size: 22px;">{{k.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{showWhen}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<span style="font-size: 17px; font-weight: 600;">Wann holen Sie ab?</span>
+<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+<sc-for list="{{whenOpts}}" as="o" hint-placeholder-count="3">
+<button onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}"><sc-if value="{{o.checked}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg></sc-if>{{o.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</section>
+<sc-if value="{{showTip}}" hint-placeholder-val="{{false}}">
+<section style="display: flex; flex-direction: column; gap: 10px;">
+<h2 style="margin: 0; font-size: 20px; font-weight: 700;">Trinkgeld fürs Service-Team <span style="font-weight: 400; color: #6B5D55;">· freiwillig</span></h2>
+<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+<sc-for list="{{tipOpts}}" as="o" hint-placeholder-count="3">
+<button onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}"><sc-if value="{{o.checked}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg></sc-if>{{o.label}}</button>
+</sc-for>
+</div>
+</section>
+</sc-if>
+<section style="display: flex; flex-direction: column; gap: 12px;">
+<h2 style="margin: 0; font-size: 20px; font-weight: 700;">Bezahlen mit</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+<sc-for list="{{payOpts}}" as="o" hint-placeholder-count="2">
+<button onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}">
+<sc-if value="{{o.checked}}" hint-placeholder-val="{{false}}"><span style="position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; border-radius: 15px; background: #8B1A23; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg></span></sc-if>
+<sc-if value="{{o.isCard}}" hint-placeholder-val="{{true}}"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#221412" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="2" y="5" width="15" height="11" rx="1.8"></rect><path d="M2 9h15"></path><rect x="15" y="9" width="7" height="12" rx="1.6"></rect></svg></sc-if>
+<sc-if value="{{o.isCash}}" hint-placeholder-val="{{false}}"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#221412" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="1.8"></rect><circle cx="12" cy="12" r="2.8"></circle><path d="M6 9.5v5M18 9.5v5"></path></svg></sc-if>
+<span style="font-weight: 700; font-size: 20px;">{{o.label}}</span>
+<span style="font-size: 16px; color: #4E403A;">{{o.sub}}</span>
+</button>
+</sc-for>
+</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px;">
+<h2 style="margin: 0; font-size: 20px; font-weight: 700;">Beleg</h2>
+<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+<sc-for list="{{rcptOpts}}" as="o" hint-placeholder-count="3">
+<button onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}"><sc-if value="{{o.checked}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg></sc-if>{{o.label}}</button>
+</sc-for>
+</div>
+</section>
+</div>
+<div style="flex-shrink: 0; padding: 14px 24px 22px; background: #FFFFFF; border-top: 1px solid #E3D9CC; border-radius: 28px 28px 0 0; display: flex; flex-direction: column; gap: 6px;">
+<div style="display: flex; justify-content: space-between; font-size: 17px; color: #4E403A;"><span>{{sumLine}}</span><span>{{sumLineAmt}}</span></div>
+<div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 24px;">Zu zahlen</span><span style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 32px;">{{grandTxt}}</span></div>
+<button onClick="{{pay}}" disabled="{{payBlocked}}" style="{{payStyle}}"><span>{{payCta}}</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg></button>
+<sc-if value="{{payBlocked}}" hint-placeholder-val="{{false}}"><span style="font-size: 15px; color: #6E141C; text-align: center;">Bitte Tischnummer eingeben.</span></sc-if>
+</div>
+</main>
+</sc-if>
+
+<!-- ============ PAYING ============ -->
+<sc-if value="{{isPaying}}" hint-placeholder-val="{{false}}">
+<main style="flex-grow: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; padding: 40px; text-align: center;">
+<svg class="v2spin" width="120" height="120" viewBox="0 0 50 50" fill="none" aria-hidden="true"><circle cx="25" cy="25" r="21" stroke="#E3D9CC" stroke-width="4"></circle><path d="M25 4a21 21 0 0 1 21 21" stroke="#8B1A23" stroke-width="4" stroke-linecap="round"></path></svg>
+<h1 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 40px; line-height: 1.1;">{{payingTitle}}</h1>
+<p style="margin: 0; font-size: 20px; line-height: 1.45; color: #4E403A; max-width: 440px;">{{payingText}}</p>
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 46px;">{{grandTxt}}</span>
+<div style="flex-grow: 0; height: 40px;"></div>
+<svg width="60" height="40" viewBox="0 0 60 40" fill="none" aria-hidden="true"><path d="M30 38V6M18 26l12 12 12-12" stroke="#8B1A23" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<button onClick="{{cancelPay}}" style="height: 56px; padding: 0 28px; border-radius: 999px; border: 1px solid #D8CCBC; background: #FFFFFF; font-size: 18px; font-weight: 600;">Abbrechen</button>
+</main>
+</sc-if>
+
+<!-- ============ DONE ============ -->
+<sc-if value="{{isDone}}" hint-placeholder-val="{{false}}">
+<main style="flex-grow: 1; min-height: 0; display: flex; flex-direction: column; padding: 40px 28px 26px; gap: 18px;">
+<div style="display: flex; align-items: center; gap: 16px;">
+<span style="width: 64px; height: 64px; border-radius: 32px; background: #3F7A3A; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg></span>
+<h1 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 44px; letter-spacing: -1px; line-height: 1;">Danke!<br><span style="font-size: 26px; font-weight: 500; color: #4E403A;">Ihre Bestellung ist da.</span></h1>
+</div>
+<div style="border-radius: 28px; background: #221412; color: #FFFFFF; padding: 26px 28px; display: flex; flex-direction: column; gap: 6px;">
+<span style="font-size: 17px; letter-spacing: 2px; font-weight: 600; opacity: 0.85;">IHRE NUMMER</span>
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 104px; line-height: 0.95; letter-spacing: -2px;">{{orderNo}}</span>
+<span style="font-size: 19px; line-height: 1.4; margin-top: 8px;">{{doneMain}}</span>
+</div>
+<div style="display: flex; gap: 14px;">
+<div style="flex-grow: 1; border-radius: 22px; background: #FFFFFF; border: 1px solid #E3D9CC; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px;">
+<span style="font-size: 16px; color: #4E403A;">{{doneWhenLabel}}</span>
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 28px; color: #8B1A23;">{{doneWhen}}</span>
+<sc-if value="{{doneCash}}" hint-placeholder-val="{{false}}"><span style="margin-top: 6px; font-size: 17px; font-weight: 600;">Bitte zahlen Sie {{doneTotal}} an der Kasse.</span></sc-if>
+</div>
+<sc-if value="{{doneQr}}" hint-placeholder-val="{{false}}">
+<div style="width: 170px; border-radius: 22px; background: #FFFFFF; border: 1px solid #E3D9CC; padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0;">
+<span style="width: 110px; height: 110px; border-radius: 10px; border: 2px dashed #9A8574; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #6B5D55; text-align: center;">QR-Code<br>Platzhalter</span>
+<span style="font-size: 15px; text-align: center; line-height: 1.3;">Beleg &amp; Status aufs Handy</span>
+</div>
+</sc-if>
+</div>
+<sc-if value="{{donePrint}}" hint-placeholder-val="{{false}}"><span style="font-size: 17px; color: #4E403A;">Ihr Beleg wird gedruckt – bitte unten entnehmen.</span></sc-if>
+<div style="flex-grow: 1;"></div>
+<div style="display: flex; align-items: center; gap: 16px;">
+<span style="position: relative; width: 64px; height: 64px; flex-shrink: 0;">
+<svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="none" stroke="#E3D9CC" stroke-width="5"></circle><circle cx="32" cy="32" r="28" fill="none" stroke="#8B1A23" stroke-width="5" stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="{{ringOffset}}" transform="rotate(-90 32 32)"></circle></svg>
+<span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px;">{{doneLeft}}</span>
+</span>
+<span style="flex-grow: 1; font-size: 17px; color: #4E403A; line-height: 1.35;">Der Bildschirm startet gleich neu für den nächsten Gast.</span>
+<button onClick="{{reset}}" style="height: 64px; padding: 0 24px; border-radius: 18px; border: 0; background: #8B1A23; color: #FFFFFF; font-weight: 700; font-size: 19px;">Neue Bestellung</button>
+</div>
+</main>
+</sc-if>
+
+<!-- ============ PRODUCT SHEET ============ -->
+<sc-if value="{{sheetOpen}}" hint-placeholder-val="{{false}}">
+<div class="v2fade" style="position: absolute; inset: 0; z-index: 10; background: rgba(34,20,18,0.5);">
+<button onClick="{{closeSheet}}" aria-label="Schließen" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: none; cursor: default;"></button>
+<div class="v2up" role="dialog" aria-label="{{sh.name}}" style="position: absolute; left: 0; right: 0; bottom: 0; max-height: 960px; background: #FFFFFF; border-radius: 32px 32px 0 0; display: flex; flex-direction: column;">
+<div class="v2s" style="overflow-y: auto; min-height: 0; flex-shrink: 1; padding: 14px 24px 12px; display: flex; flex-direction: column; gap: 18px;">
+<span style="align-self: center; width: 56px; height: 5px; border-radius: 3px; background: #D8CCBC;"></span>
+<div style="position: relative; height: 230px; border-radius: 24px; background: #F3ECE3; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+<img src="{{sh.img}}" alt="{{sh.name}}" style="{{sh.imgStyle}}">
+<button onClick="{{closeSheet}}" aria-label="Schließen" style="position: absolute; top: 12px; right: 12px; width: 52px; height: 52px; border-radius: 26px; border: 0; background: #FFFFFF; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#221412" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+<div style="display: flex; flex-direction: column; gap: 6px;">
+<h2 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 36px; letter-spacing: -0.5px; line-height: 1.05;">{{sh.name}}</h2>
+<span style="font-size: 18px; line-height: 1.4; color: #4E403A;">{{sh.desc}}</span>
+</div>
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 28px; white-space: nowrap;">{{sh.priceTxt}}</span>
+</div>
+<sc-if value="{{sh.promo}}" hint-placeholder-val="{{false}}">
+<div style="border-radius: 18px; background: #F2E4CC; padding: 14px 18px; font-size: 17px; line-height: 1.35;"><strong>Aktion 3 für 2:</strong> Jedes dritte Brötchen im Korb ist gratis – Körner und Weizen gemischt.</div>
+</sc-if>
+<button onClick="{{toggleAllerg}}" aria-expanded="{{sh.allergExpanded}}" style="align-self: flex-start; height: 48px; padding: 0 16px; border-radius: 999px; border: 1px solid #D8CCBC; background: #FFFFFF; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#221412" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"></circle><path d="M12 11v6M12 7.5v.5"></path></svg>Zutaten &amp; Allergene</button>
+<sc-if value="{{sh.allergOpen}}" hint-placeholder-val="{{false}}">
+<div style="margin-top: -8px; border-radius: 16px; border: 1px dashed #9A8574; padding: 14px 16px; font-size: 16px; line-height: 1.4; color: #4E403A;">[Allergene &amp; Zutaten aus der Warenwirtschaft einsetzen] · Kennzeichnung nach LMIV, z. B. Gluten, Milch, Sesam.</div>
+</sc-if>
+<sc-if value="{{sh.isBulk}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<span style="font-size: 20px; font-weight: 700;">Wie viele?</span>
+<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+<sc-for list="{{quick}}" as="q" hint-placeholder-count="4">
+<button onClick="{{q.pick}}" aria-pressed="{{q.pressed}}" style="{{q.style}}">{{q.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+<sc-for list="{{shGroups}}" as="g" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<span style="display: flex; align-items: baseline; gap: 10px;"><span style="font-size: 20px; font-weight: 700;">{{g.label}}</span><span style="font-size: 15px; color: #6B5D55;">{{g.hint}}</span></span>
+<sc-if value="{{g.isChips}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+<sc-for list="{{g.opts}}" as="o" hint-placeholder-count="3">
+<button onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}"><sc-if value="{{o.checked}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg></sc-if>{{o.label}}<sc-if value="{{o.hasSub}}" hint-placeholder-val="{{false}}"><span style="font-weight: 500; opacity: 0.85;">{{o.sub}}</span></sc-if></button>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{g.isCards}}" hint-placeholder-val="{{false}}">
+<div style="{{g.gridStyle}}">
+<sc-for list="{{g.opts}}" as="o" hint-placeholder-count="3">
+<button onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.cardStyle}}">
+<sc-if value="{{o.checked}}" hint-placeholder-val="{{false}}"><span style="position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 14px; background: #8B1A23; display: flex; align-items: center; justify-content: center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg></span></sc-if>
+<img src="{{o.img}}" alt="" style="{{o.imgStyle}}">
+<span style="font-size: 17px; font-weight: 600; line-height: 1.2;">{{o.label}}</span>
+<sc-if value="{{o.hasSub}}" hint-placeholder-val="{{true}}"><span style="font-size: 15px; color: #4E403A;">{{o.sub}}</span></sc-if>
+</button>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+<div style="flex-shrink: 0; padding: 14px 24px 22px; border-top: 1px solid #E3D9CC; display: flex; gap: 12px; align-items: center;">
+<div style="display: flex; align-items: center; height: 68px; border-radius: 999px; background: #F3ECE3; flex-shrink: 0;">
+<button onClick="{{qtyDec}}" aria-label="Menge verringern" style="width: 60px; height: 68px; border: 0; background: none; font-size: 28px; line-height: 1;">−</button>
+<span aria-live="polite" style="min-width: 36px; text-align: center; font-weight: 700; font-size: 22px;">{{sh.qty}}</span>
+<button onClick="{{qtyInc}}" aria-label="Menge erhöhen" style="width: 60px; height: 68px; border: 0; background: none; font-size: 28px; line-height: 1;">+</button>
+</div>
+<button onClick="{{confirmSheet}}" style="flex-grow: 1; height: 68px; border-radius: 20px; border: 0; background: #8B1A23; color: #FFFFFF; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; font-weight: 700; font-size: 21px;"><span>{{shCta}}</span><span>{{shTotal}}</span></button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ============ DIALOG ============ -->
+<sc-if value="{{dialogOpen}}" hint-placeholder-val="{{false}}">
+<div class="v2fade" style="position: absolute; inset: 0; z-index: 20; background: rgba(34,20,18,0.55); display: flex; align-items: flex-end; justify-content: center; padding: 24px;">
+<div role="alertdialog" aria-label="{{dlgTitle}}" class="v2up" style="width: 100%; border-radius: 28px; background: #FFFFFF; padding: 28px; display: flex; flex-direction: column; gap: 12px;">
+<h2 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 30px;">{{dlgTitle}}</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.4; color: #4E403A;">{{dlgText}}</p>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 10px;">
+<button onClick="{{dlgCancel}}" style="height: 64px; border-radius: 18px; border: 2px solid #221412; background: #FFFFFF; font-weight: 700; font-size: 19px;">Abbrechen</button>
+<button onClick="{{dlgOk}}" style="height: 64px; border-radius: 18px; border: 0; background: #8B1A23; color: #FFFFFF; font-weight: 700; font-size: 19px;">{{dlgOkLabel}}</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ============ IDLE ============ -->
+<sc-if value="{{idleOpen}}" hint-placeholder-val="{{false}}">
+<div class="v2fade" style="position: absolute; inset: 0; z-index: 30; background: rgba(34,20,18,0.7); display: flex; align-items: center; justify-content: center; padding: 32px;">
+<div role="alertdialog" aria-label="Sind Sie noch da?" style="width: 100%; border-radius: 32px; background: #FFFFFF; padding: 36px 30px 30px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center;">
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 80px; line-height: 1; color: #8B1A23;">{{idleLeft}}</span>
+<h2 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 34px;">Sind Sie noch da?</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.4; color: #4E403A;">Sonst beginnen wir gleich neu – Ihre Auswahl wird dann gelöscht.</p>
+<button onClick="{{stay}}" style="margin-top: 10px; width: 100%; height: 72px; border-radius: 20px; border: 0; background: #8B1A23; color: #FFFFFF; font-weight: 700; font-size: 22px;">Ja, weiter bestellen</button>
+<button onClick="{{reset}}" style="width: 100%; height: 56px; border-radius: 18px; border: 0; background: none; font-weight: 600; font-size: 18px; text-decoration: underline; text-underline-offset: 3px;">Neu beginnen</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{false}}">
+<div role="status" class="v2fade" style="position: absolute; left: 50%; top: 96px; transform: translateX(-50%); z-index: 40; padding: 14px 22px; border-radius: 999px; background: #221412; color: #FFFFFF; font-size: 17px; font-weight: 600; display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg>{{toast}}</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":600,"height":1066}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = this.initial();
+    this.last = Date.now();
+  }
+  initial() {
+    return {
+      screen: 'start', service: 'togo', cat: 'angebote', low: (this.state && this.state.low) || false,
+      cart: [], uid: 1, sheet: null, dialog: null,
+      deliver: 'counter', table: '', when: 'now', tip: 0, payMethod: 'card', rcpt: 'none',
+      orderNo: (this.state && this.state.orderNo) || 1047, last: null,
+      idleOpen: false, idleLeft: 20, doneLeft: 20, toast: ''
+    };
+  }
+  componentDidMount() { this.iv = setInterval(() => this.tick(), 1000); }
+  componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.pt); clearTimeout(this.tt); }
+  tick() {
+    const s = this.state;
+    if (s.screen === 'done') { if (s.doneLeft <= 1) this.doReset(); else this.setState({ doneLeft: s.doneLeft - 1 }); return; }
+    if (s.screen === 'start' || s.screen === 'paying') return;
+    if (s.idleOpen) { if (s.idleLeft <= 1) this.doReset(); else this.setState({ idleLeft: s.idleLeft - 1 }); return; }
+    if (Date.now() - this.last > 60000) this.setState({ idleOpen: true, idleLeft: 20 });
+  }
+  doReset() { clearTimeout(this.pt); this.last = Date.now(); this.setState(this.initial()); }
+  flash(t) { clearTimeout(this.tt); this.setState({ toast: t }); this.tt = setTimeout(() => this.setState({ toast: '' }), 1500); }
+
+  data() {
+    const B = (id) => '/_blob/' + id;
+    const I = {
+      apfel: B('b47a870c48be872d04c8bcc30d2ff3d3'), brezel: B('09c5bac8a9cd2c558fe679d5e01ee7f8'), cBrezeln: B('75f53befe3d9b2610a6a6defb8f7f5f9'),
+      cBroetchen: B('4775ee6f2159192056308b961ee2b77c'), cFrueh: B('ae8a726a8c67b444d7c0c76733fbad44'), cGetr: B('4193d5e0fc6ade8437259aa5d65dd868'),
+      cKaffee: B('3275780bb0074318ffcb29c58831b2e5'), cKuchen: B('4481eecca5b71d9da0db8cf4c135c13b'), cSnacks: B('e236d4c2c026c1f9617fb5fc5905e8cb'),
+      cappuccino: B('2f2537892f1aead835fac8f132443158'), croissant: B('bd07ea8bd8a1e76f23c587c45107047f'), espresso: B('9a0db8d7280cd57ccfa347f5dd0342ba'),
+      kaffee: B('d07d5733782d225cfc9012a38fbe355a'), kakao: B('30ddd83911c5bac5cc41eec27748fcfe'), koerner: B('b56b3598384699f4b4d81abc2aef17a4'),
+      latte: B('817145355e3bfe43b7c0f0fe2b677ffa'), promo: B('d66d7e69064d658a87bf7132dd5e4299'), roll: B('c7fdb3c99be30e151887bb9041279352'),
+      tee: B('3cfca28dadd106781106d4084463a47f'), butter: B('97fcb442bc78c411b4ed1f741013a812'), kraeuter: B('d3270ba89c4317b3782b0baf9d9fc6d0'), schnitt: B('434f2e9ca0a42c5172dd6d06d5d7ea8f')
+    };
+    const R = '#6E141C', G = '#C98B3C', L = '#F2E4CC';
+    const svg = (b) => 'data:image/svg+xml,' + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120' fill='none' stroke='" + R + "' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'>" + b + '</svg>');
+    const IC = {
+      knaecke: svg("<g transform='rotate(-10 60 60)'><rect x='20' y='44' width='80' height='46' rx='6' fill='" + L + "'/></g><g transform='rotate(6 60 60)'><rect x='22' y='30' width='78' height='46' rx='6' fill='#E2BD7E'/><g fill='" + R + "' stroke='none'><circle cx='38' cy='44' r='2.6'/><circle cx='54' cy='44' r='2.6'/><circle cx='70' cy='44' r='2.6'/><circle cx='86' cy='44' r='2.6'/><circle cx='46' cy='58' r='2.6'/><circle cx='62' cy='58' r='2.6'/><circle cx='78' cy='58' r='2.6'/></g></g>"),
+      sauerteig: svg("<path d='M36 30h48v8c6 4 8 10 8 18v34a10 10 0 0 1-10 10H38a10 10 0 0 1-10-10V56c0-8 2-14 8-18z' fill='#FFFFFF'/><path d='M28 66c10-6 22 4 32-2s22-4 32 2v24a10 10 0 0 1-10 10H38a10 10 0 0 1-10-10z' fill='" + L + "'/><rect x='34' y='20' width='52' height='12' rx='4' fill='" + G + "'/><circle cx='50' cy='82' r='4'/><circle cx='68' cy='76' r='3'/><circle cx='74' cy='89' r='4.5'/>"),
+      paniermehl: svg("<path d='M32 36h56l6 64H26z' fill='" + L + "'/><path d='M32 36l6-14h44l6 14'/><path d='M46 58h28M50 70h20'/><g fill='#E2BD7E' stroke='none'><circle cx='20' cy='106' r='3'/><circle cx='30' cy='110' r='2.4'/><circle cx='96' cy='108' r='3'/><circle cx='104' cy='102' r='2.2'/></g>"),
+      stollen: svg("<path d='M14 76c0-20 20-34 46-34s46 14 46 34c0 8-6 12-14 12H28c-8 0-14-4-14-12z' fill='#E2BD7E'/><path d='M24 62c8-10 22-16 36-16s28 6 36 16c-10 4-24 4-36 0-12 4-26 4-36 0z' fill='#FFFFFF'/><path d='M30 72c10 6 50 6 60 0'/>"),
+      ausstech: svg("<path d='M40 18l7 15 16 2-12 11 3 16-14-8-14 8 3-16-12-11 16-2z' fill='" + L + "'/><path d='M80 102s-24-14-24-30a12 12 0 0 1 24-4 12 12 0 0 1 24 4c0 16-24 30-24 30z' fill='#FFFFFF'/>"),
+      schneebesen: svg("<path d='M60 64c-14 0-22-18-22-32a22 22 0 0 1 44 0c0 14-8 32-22 32z' fill='" + L + "'/><path d='M60 64c-6 0-10-18-10-32s4-22 10-22 10 8 10 22-4 32-10 32zM60 10v54'/><rect x='54' y='64' width='12' height='44' rx='6' fill='" + G + "'/>"),
+      nudelholz: svg("<g transform='rotate(-20 60 60)'><rect x='26' y='48' width='68' height='24' rx='12' fill='#E2BD7E'/><rect x='6' y='54' width='22' height='12' rx='6' fill='" + G + "'/><rect x='92' y='54' width='22' height='12' rx='6' fill='" + G + "'/></g>"),
+      ohne: svg("<ellipse cx='60' cy='68' rx='42' ry='22' fill='#FFFFFF'/><ellipse cx='60' cy='64' rx='26' ry='11' fill='" + L + "'/><path d='M30 96L92 34' stroke-width='5'/>"),
+      einweg: svg("<path d='M38 36h44l-6 68H44z' fill='#FFFFFF'/><rect x='34' y='26' width='52' height='12' rx='4' fill='" + G + "'/><path d='M41 60h38' stroke-width='3'/><path d='M42 72h36' stroke-width='3'/>"),
+      mehrweg: svg("<path d='M38 36h44l-6 68H44z' fill='" + L + "'/><rect x='34' y='26' width='52' height='12' rx='4' fill='" + G + "'/><path d='M50 66a12 12 0 0 1 21-6M70 60h2v-6M70 76a12 12 0 0 1-21 6M50 82h-2v6'/>"),
+      cupS: svg("<path d='M42 52h34l-5 48H47z' fill='#FFFFFF'/><rect x='39' y='44' width='40' height='10' rx='4' fill='" + G + "'/>"),
+      cupL: svg("<path d='M34 32h52l-7 72H41z' fill='#FFFFFF'/><rect x='30' y='22' width='60' height='12' rx='4' fill='" + G + "'/>"),
+      schaber: svg("<path d='M24 44h72v20c0 22-16 38-36 38S24 86 24 64z' fill='" + L + "'/><path d='M40 60h40' opacity='0.5'/>")
+    };
+    const spread = { id: 'spread', label: 'Aufstrich', type: 'one', opts: [
+      { id: 'none', label: 'Ohne', d: 0, def: true, img: IC.ohne, icon: true }, { id: 'butter', label: 'Butter', d: 0.3, img: I.butter }, { id: 'kfk', label: 'Kräuterfrischkäse', d: 0.6, img: I.kraeuter }] };
+    const extra = { id: 'extra', label: 'Extra', type: 'many', opts: [{ id: 'schnitt', label: 'Schnittlauch', d: 0.3, img: I.schnitt }] };
+    const hot = { id: 'hot', label: 'Dazu ein Heißgetränk?', type: 'many', asLine: true, opts: [
+      { id: 'cappuccino', label: 'Cappuccino', img: I.cappuccino }, { id: 'kaffee', label: 'Kaffee', img: I.kaffee }, { id: 'tee', label: 'Tee', img: I.tee }] };
+    const size = { id: 'size', label: 'Größe', type: 'one', opts: [{ id: 'n', label: 'Normal', d: 0, def: true, img: IC.cupS, icon: true }, { id: 'l', label: 'Groß', d: 0.6, img: IC.cupL, icon: true }] };
+    const oat = { id: 'oat', label: 'Milch', type: 'many', opts: [{ id: 'hafer', label: 'Hafermilch', d: 0.4 }] };
+    const cream = { id: 'cream', label: 'Extra', type: 'many', opts: [{ id: 'sahne', label: 'Sahne', d: 0.5 }] };
+    const cup = { id: 'cup', label: 'Becher', type: 'one', show: true, opts: [{ id: 'ew', label: 'Einweg', note: 'Pappbecher', d: 0, def: true, img: IC.einweg, icon: true }, { id: 'mw', label: 'Mehrweg', note: 'Pfand an der Theke', d: 0, img: IC.mehrweg, icon: true }] };
+    const P = {
+      koerner: { name: 'Körnerbrötchen', price: 0.9, img: I.koerner, cut: true, desc: 'Kernig, saftig, frisch aus dem Ofen.', promo: true, bulk: true, groups: [spread, extra, hot], badge: '3 für 2' },
+      weizen: { name: 'Weizenbrötchen', price: 0.55, img: I.roll, desc: 'Der knusprige Klassiker.', promo: true, bulk: true, groups: [spread, extra, hot], badge: '3 für 2' },
+      tuete: { name: 'Brötchentüte', price: 4.9, img: I.cBroetchen, desc: 'Frei gemischt – die Sorten nennen Sie an der Theke.', groups: [
+        { id: 'tsize', label: 'Inhalt', type: 'one', show: true, opts: [{ id: 't6', label: '6 Stück', d: 0, def: true }, { id: 't10', label: '10 Stück', d: 3.0 }] }] },
+      brezel: { name: 'Laugenbrezel', price: 1.2, img: I.brezel, cut: true, desc: 'Außen knusprig, innen weich.', bulk: true, groups: [spread, extra, hot], badge: 'Frisch' },
+      butterbrezel: { name: 'Butterbrezel', price: 1.8, img: I.cBrezeln, desc: 'Mit Butter bestrichen.', soldOut: true, groups: [hot] },
+      croissant: { name: 'Buttercroissant', price: 1.4, img: I.croissant, cut: true, desc: 'Mit Butter gebacken, zart blättrig.', groups: [hot] },
+      apfel: { name: 'Stück Apfelkuchen', price: 3.2, img: I.apfel, cut: true, desc: 'Nach Hausrezept.', groups: [cream, hot] },
+      sandwich: { name: 'Sandwich Käse & Tomate', price: 4.2, img: I.cSnacks, desc: 'Frisch belegt im Körnerbrötchen.', groups: [hot] },
+      cappuccino: { name: 'Cappuccino', price: 3.2, img: I.cappuccino, cut: true, drink: true, desc: 'Frisch zubereitet.', groups: [size, oat] },
+      kaffee: { name: 'Kaffee', price: 2.8, img: I.kaffee, cut: true, drink: true, desc: 'Frisch gebrüht.', groups: [size, oat] },
+      tee: { name: 'Tee', price: 2.5, img: I.tee, cut: true, drink: true, desc: 'Schwarz, grün oder Kräuter – sagen Sie es an der Theke.', groups: [size] },
+      latte: { name: 'Latte Macchiato', price: 3.6, img: I.latte, cut: true, drink: true, desc: 'Viel Milchschaum.', groups: [size, oat] },
+      kakao: { name: 'Kakao', price: 3.2, img: I.kakao, cut: true, drink: true, desc: 'Mit Sahnehaube.', groups: [size, oat] },
+      espresso: { name: 'Espresso', price: 2.2, img: I.espresso, cut: true, drink: true, desc: 'Kurz und kräftig.', groups: [] },
+      oj: { name: 'Orangensaft', price: 2.9, img: I.cGetr, drink: true, desc: 'Gekühlt.', groups: [] },
+      knaecke: { name: 'Knäckebrot', price: 3.9, img: IC.knaecke, icon: true, desc: 'Handwerklich gebacken und schön knusprig – fürs Frühstück, als Snack oder zum Abendbrot.', groups: [
+        { id: 'ks', label: 'Sorte', type: 'one', show: true, opts: [{ id: 'fit', label: 'Fit', d: 0, def: true }, { id: 'chili', label: 'Chili', d: 0 }, { id: 'honig', label: 'Honig', d: 0 }] }] },
+      sauerteig: { name: 'Sauerteig', price: 4.9, img: IC.sauerteig, icon: true, badge: 'Bestseller', desc: 'Frisch angesetzt und aktiv – für eigenes Brot und Brötchen mit natürlicher Gärung.', groups: [] },
+      paniermehl: { name: 'Paniermehl', price: 2.9, img: IC.paniermehl, icon: true, desc: 'Aus unseren eigenen Brötchen gerieben – für eine goldene, knusprige Panade.', groups: [] },
+      stollen: { name: 'Christstollen', price: 11.9, img: IC.stollen, icon: true, badge: 'Saison', desc: 'Täglich frisch aus der Backstube – klassisch oder mit Rosinen.', groups: [
+        { id: 'ss', label: 'Sorte', type: 'one', show: true, opts: [{ id: 'klassisch', label: 'Klassisch', d: 0, def: true }, { id: 'rosinen', label: 'Mit Rosinen', d: 0 }] }] },
+      ausstech: { name: 'Ausstechformen', price: 9.9, img: IC.ausstech, icon: true, desc: 'Set für Plätzchen, Stollenverzierung und kreatives Backen zu Hause.', groups: [] },
+      schneebesen: { name: 'Schneebesen', price: 6.9, img: IC.schneebesen, icon: true, desc: 'Stabil und handlich – für luftige Teige und Cremes.', groups: [] },
+      nudelholz: { name: 'Nudelholz', price: 12.9, img: IC.nudelholz, icon: true, desc: 'Aus massivem Holz – zum Ausrollen aller Teige.', groups: [] },
+      schaber: { name: 'Küchenschaber', price: 4.9, img: IC.schaber, icon: true, badge: 'Neu', desc: 'Flexibel – zum Portionieren, Glattziehen und Ausschaben der Schüssel.', groups: [] },
+      klassik: { name: 'Morgen-Klassiker', price: 7.9, img: I.cFrueh, menu: true, drink: true, desc: '2 Brötchen, Butter, Konfitüre und ein Heißgetränk.', badge: 'Menü', groups: [
+        { id: 'mb', label: 'Brötchen', type: 'one', show: true, opts: [{ id: 'w', label: '2 × Weizen', d: 0, def: true, img: I.roll, photo: true }, { id: 'k', label: '2 × Körner', d: 0.4, img: I.koerner }, { id: 'm', label: '1 × jede Sorte', d: 0.2, img: I.cBroetchen, photo: true }] },
+        { id: 'md', label: 'Heißgetränk', type: 'one', show: true, opts: [{ id: 'kaffee', label: 'Kaffee', d: 0, def: true, img: I.kaffee }, { id: 'tee', label: 'Tee', d: 0, img: I.tee }, { id: 'capp', label: 'Cappuccino', d: 0.4, img: I.cappuccino }, { id: 'latte', label: 'Latte Macchiato', d: 0.8, img: I.latte }] }] },
+      kids: { name: 'Kinderfrühstück', price: 4.9, img: I.kakao, cut: true, menu: true, drink: true, desc: '1 Brötchen mit Butter, ein Stück Obst und ein Getränk.', badge: 'Kids', groups: [
+        { id: 'kb', label: 'Gebäck', type: 'one', show: true, opts: [{ id: 'w', label: 'Weizenbrötchen', d: 0, def: true, img: I.roll, photo: true }, { id: 'c', label: 'Croissant', d: 0.5, img: I.croissant }] },
+        { id: 'kd', label: 'Getränk', type: 'one', show: true, opts: [{ id: 'kakao', label: 'Kakao', d: 0, def: true, img: I.kakao }, { id: 'oj', label: 'Orangensaft', d: 0, img: I.cGetr, photo: true }] }] },
+      togo: { name: 'Frühstück to go', price: 4.5, img: I.cKaffee, menu: true, drink: true, desc: 'Gebäck und Heißgetränk im Becher – sofort fertig.', badge: 'To go', groups: [
+        { id: 'tg', label: 'Gebäck', type: 'one', show: true, opts: [{ id: 'b', label: 'Laugenbrezel', d: 0, def: true, img: I.brezel }, { id: 'c', label: 'Buttercroissant', d: 0.2, img: I.croissant }] },
+        { id: 'td', label: 'Heißgetränk', type: 'one', show: true, opts: [{ id: 'kaffee', label: 'Kaffee', d: 0, def: true, img: I.kaffee }, { id: 'tee', label: 'Tee', d: 0, img: I.tee }, { id: 'capp', label: 'Cappuccino', d: 0.4, img: I.cappuccino }] },
+        cup] }
+    };
+    const C = [
+      { id: 'angebote', label: 'Angebote', img: I.promo, title: 'Guten Morgen!', sub: 'Unsere Angebote für heute.', items: ['brezel', 'cappuccino', 'croissant', 'koerner'] },
+      { id: 'fruehstueck', label: 'Frühstück', img: I.cFrueh, title: 'Frühstück', sub: 'Menüs für Groß und Klein – auch to go.', wide: ['klassik', 'kids', 'togo'] },
+      { id: 'broetchen', label: 'Brötchen', img: I.cBroetchen, title: 'Brötchen', sub: 'Aktion: 3 für 2 – frei gemischt.', items: ['koerner', 'weizen', 'tuete'] },
+      { id: 'brezeln', label: 'Brezeln', img: I.cBrezeln, title: 'Brezeln', sub: 'Laugengebäck nach Hausart.', items: ['brezel', 'butterbrezel'] },
+      { id: 'suess', label: 'Süßes', img: I.cKuchen, title: 'Süßes', sub: 'Kuchen und Feingebäck.', items: ['croissant', 'apfel'] },
+      { id: 'snacks', label: 'Snacks', img: I.cSnacks, title: 'Snacks', sub: 'Herzhaft belegt.', items: ['sandwich'] },
+      { id: 'kaffee', label: 'Kaffee', img: I.cKaffee, title: 'Kaffee & Tee', sub: 'Frisch zubereitet.', items: ['cappuccino', 'kaffee', 'latte', 'kakao', 'espresso', 'tee'] },
+      { id: 'kalt', label: 'Kalt', img: I.cGetr, title: 'Kalte Getränke', sub: 'Gekühlt.', items: ['oj'] },
+      { id: 'haus', label: 'Aus der Backstube', img: IC.stollen, title: 'Aus der Backstube', sub: 'Zum Mitnehmen, Selberbacken und Verschenken.', items: ['stollen', 'knaecke', 'sauerteig', 'paniermehl'] },
+      { id: 'zubehoer', label: 'Backzubehör', img: IC.schneebesen, title: 'Backzubehör', sub: 'Unser Werkzeug für Ihre Küche.', items: ['nudelholz', 'ausstech', 'schneebesen', 'schaber'] }
+    ];
+    return { P, C, I, IC };
+  }
+
+  fmt(n) { return (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' €'; }
+  r2(n) { return Math.round(n * 100) / 100; }
+  defSel(p) { const o = {}; (p.groups || []).forEach((g) => { o[g.id] = g.type === 'one' ? (g.opts.find((x) => x.def) || g.opts[0]).id : []; }); return o; }
+  unit(p, sel) {
+    let u = p.price;
+    (p.groups || []).forEach((g) => {
+      if (g.asLine) return;
+      const v = sel[g.id];
+      if (g.type === 'one') { const o = g.opts.find((x) => x.id === v); if (o) u += o.d; }
+      else (v || []).forEach((id) => { const o = g.opts.find((x) => x.id === id); if (o) u += o.d; });
+    });
+    return this.r2(u);
+  }
+  optsTxt(p, sel) {
+    const out = [];
+    (p.groups || []).forEach((g) => {
+      if (g.asLine) return;
+      const v = sel[g.id];
+      if (g.type === 'one') { const o = g.opts.find((x) => x.id === v); if (o && (g.show || !o.def)) out.push(o.label); }
+      else (v || []).forEach((id) => { const o = g.opts.find((x) => x.id === id); if (o) out.push(o.label); });
+    });
+    return out.join(' · ');
+  }
+  stripLine(p, sel) { const o = {}; (p.groups || []).forEach((g) => { if (!g.asLine) o[g.id] = sel[g.id]; }); return o; }
+  addLine(cart, uid, pid, qty, sel) {
+    const key = JSON.stringify(sel);
+    const i = cart.findIndex((l) => l.pid === pid && JSON.stringify(l.sel) === key);
+    if (i >= 0) return { cart: cart.map((l, j) => j === i ? Object.assign({}, l, { qty: l.qty + qty }) : l), uid };
+    return { cart: cart.concat([{ id: uid, pid, qty, sel }]), uid: uid + 1 };
+  }
+  promoInfo(cart, P) {
+    const units = [];
+    cart.forEach((l) => { const p = P[l.pid]; if (p.promo) for (let i = 0; i < l.qty; i++) units.push(p.price); });
+    units.sort((a, b) => a - b);
+    const free = Math.floor(units.length / 3);
+    return { n: units.length, free, disc: this.r2(units.slice(0, free).reduce((a, b) => a + b, 0)) };
+  }
+  openSheet(pid, opts) {
+    const { P } = this.data(); const p = P[pid];
+    const o = opts || {};
+    this.setState({ sheet: { pid, qty: o.qty || 1, sel: o.sel || this.defSel(p), editId: o.editId || null, allerg: false } });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const { P, C, I, IC } = this.data();
+    const onC = (c) => c ? '#8B1A23' : '#D8CCBC';
+    const chip = (c) => 'min-height: 56px; padding: 0 20px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 600; border: 2px solid ' + onC(c) + '; background: ' + (c ? '#8B1A23' : '#FFFFFF') + '; color: ' + (c ? '#FFFFFF' : '#221412') + ';';
+    const tile = (c) => 'position: relative; min-height: 120px; padding: 20px 18px; border-radius: 22px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 6px; text-align: left; background: #FFFFFF; border: 2px solid ' + onC(c) + ';';
+
+    const lineTotal = (l) => this.r2(this.unit(P[l.pid], l.sel) * l.qty);
+    const sub = this.r2(s.cart.reduce((a, l) => a + lineTotal(l), 0));
+    const pr = this.promoInfo(s.cart, P);
+    const total = this.r2(sub - pr.disc);
+    const cartCount = s.cart.reduce((a, l) => a + l.qty, 0);
+    const thumbPids = s.cart.slice().reverse().map((l) => l.pid).filter((pid, i, a) => a.indexOf(pid) === i);
+    const isHere = s.service === 'here';
+    const tableSel = isHere && s.deliver === 'table';
+    const tipAmt = tableSel ? this.r2(total * s.tip / 100) : 0;
+    const grand = this.r2(total + tipAmt);
+
+    const cardOf = (pid) => {
+      const p = P[pid]; const so = !!p.soldOut;
+      return {
+        name: p.name, img: p.img, priceTxt: this.fmt(p.price), soldOut: so, available: !so, aria: so ? p.name + ', ausverkauft' : p.name + ' auswählen',
+        open: () => this.openSheet(pid), hasBadge: so || !!p.badge, badge: so ? 'Ausverkauft' : p.badge,
+        badgeStyle: 'position: absolute; top: 10px; left: 10px; padding: 5px 11px; border-radius: 999px; font-size: 14px; font-weight: 700; ' + (so ? 'background: #221412; color: #FFFFFF;' : (p.promo ? 'background: #8B1A23; color: #FFFFFF;' : 'background: #FFFFFF; color: #221412;')),
+        imgStyle: (p.icon ? 'width: 62%; height: 130px; object-fit: contain;' : p.cut ? 'width: 86%; height: 150px; object-fit: contain; mix-blend-mode: multiply;' : 'width: 100%; height: 100%; object-fit: cover;') + (so ? ' opacity: 0.45; filter: grayscale(0.7);' : ''),
+        cardStyle: 'height: 300px; border-radius: 24px; border: 1px solid #E3D9CC; background: #FFFFFF; padding: 8px 10px 12px 8px; display: flex; flex-direction: column; text-align: left;' + (so ? ' opacity: 0.8;' : '')
+      };
+    };
+    const cat = C.find((c) => c.id === s.cat) || C[0];
+    const cats = C.map((c) => {
+      const a = c.id === s.cat;
+      return { label: c.label, img: c.img, pressed: a ? 'true' : 'false', pick: () => this.setState({ cat: c.id }),
+        style: 'flex-shrink: 0; height: 56px; padding: 0 18px 0 8px; border-radius: 999px; display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 600; white-space: nowrap; border: 2px solid ' + (a ? '#221412' : '#E3D9CC') + '; background: ' + (a ? '#221412' : '#FFFFFF') + '; color: ' + (a ? '#FFFFFF' : '#221412') + ';' };
+    });
+    const wideItems = (cat.wide || []).map((pid) => { const p = P[pid]; return { name: p.name, img: p.img, desc: p.desc, priceTxt: this.fmt(p.price), hasBadge: !!p.badge, badge: p.badge, open: () => this.openSheet(pid) }; });
+    const gridItems = (cat.items || []).map(cardOf);
+
+    // sheet
+    let sh = {}, shGroups = [], quick = [], shTotal = '', shCta = 'Hinzufügen';
+    if (s.sheet) {
+      const p = P[s.sheet.pid], sel = s.sheet.sel;
+      const setSel = (gid, v) => this.setState({ sheet: Object.assign({}, s.sheet, { sel: Object.assign({}, sel, { [gid]: v }) }) });
+      shGroups = (p.groups || []).map((g) => {
+        const cards = g.opts.every((o) => !!o.img);
+        const cols = g.opts.length === 3 || g.opts.length > 4 ? 3 : (g.opts.length === 1 ? 3 : 2);
+        const imgH = cols === 2 ? 104 : 80;
+        const opts = g.opts.map((o) => {
+          const c = g.type === 'one' ? sel[g.id] === o.id : (sel[g.id] || []).indexOf(o.id) >= 0;
+          const price = g.asLine ? P[o.id].price : o.d;
+          return {
+            label: o.label, img: o.img || '', checked: c, pressed: c ? 'true' : 'false',
+            hasSub: price > 0 || !!o.note || (!!g.show && !g.asLine), sub: o.note ? o.note : (g.asLine ? this.fmt(price) : (price > 0 ? '+ ' + this.fmt(price) : 'inklusive')),
+            imgStyle: o.photo ? 'width: 100%; height: ' + imgH + 'px; object-fit: cover; border-radius: 12px;' : (o.icon ? 'width: 70%; height: ' + imgH + 'px; object-fit: contain;' : 'width: 100%; height: ' + imgH + 'px; object-fit: contain; mix-blend-mode: multiply;'),
+            style: chip(c),
+            cardStyle: 'position: relative; padding: 8px 8px 12px; border-radius: 18px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; background: ' + (c ? '#FFFFFF' : '#FBF8F4') + '; border: 2px solid ' + onC(c) + ';',
+            pick: () => {
+              if (g.type === 'one') setSel(g.id, o.id);
+              else { const cur = sel[g.id] || []; setSel(g.id, c ? cur.filter((x) => x !== o.id) : cur.concat([o.id])); }
+            }
+          };
+        });
+        return { label: g.label, hint: g.type === 'one' ? 'Bitte wählen' : 'Optional', isChips: !cards, isCards: cards, gridStyle: 'display: grid; grid-template-columns: repeat(' + cols + ', minmax(0, 1fr)); gap: 10px;', opts };
+      });
+      const extraLines = (p.groups || []).filter((g) => g.asLine).reduce((a, g) => a + (sel[g.id] || []).reduce((b, id) => b + P[id].price, 0), 0);
+      shTotal = this.fmt(this.unit(p, sel) * s.sheet.qty + extraLines);
+      shCta = s.sheet.editId ? 'Übernehmen' : 'Hinzufügen';
+      sh = { name: p.name, img: p.img, desc: p.desc, priceTxt: this.fmt(p.price), qty: s.sheet.qty, promo: !!p.promo, isBulk: !!p.bulk,
+        allergOpen: s.sheet.allerg, allergExpanded: s.sheet.allerg ? 'true' : 'false',
+        imgStyle: p.icon ? 'width: 46%; height: 170px; object-fit: contain;' : p.cut ? 'width: 80%; height: 200px; object-fit: contain; mix-blend-mode: multiply;' : 'width: 100%; height: 100%; object-fit: cover;' };
+      quick = [1, 3, 6, 10].map((n) => { const c = s.sheet.qty === n; return { label: n + ' Stück', pressed: c ? 'true' : 'false', style: chip(c), pick: () => this.setState({ sheet: Object.assign({}, s.sheet, { qty: n }) }) }; });
+    }
+
+    // cart lines
+    const lines = s.cart.map((l) => {
+      const p = P[l.pid];
+      const u = this.unit(p, l.sel);
+      const setQty = (q) => this.setState({ cart: q <= 0 ? s.cart.filter((x) => x.id !== l.id) : s.cart.map((x) => x.id === l.id ? Object.assign({}, x, { qty: q }) : x) });
+      const ot = this.optsTxt(p, l.sel);
+      return {
+        name: p.name, img: p.img, qty: l.qty, optsTxt: ot, hasOpts: !!ot,
+        imgStyle: p.icon ? 'width: 64px; height: 64px; object-fit: contain;' : p.cut ? 'width: 84px; height: 80px; object-fit: contain; mix-blend-mode: multiply;' : 'width: 100%; height: 100%; object-fit: cover;',
+        priceTxt: this.fmt(u * l.qty), hasUnit: l.qty > 1, unitTxt: this.fmt(u) + ' / Stk.',
+        hasPromo: !!p.promo, promoTxt: '3 für 2',
+        canEdit: (p.groups || []).some((g) => !g.asLine),
+        edit: () => this.openSheet(l.pid, { qty: l.qty, sel: Object.assign(this.defSel(p), l.sel), editId: l.id }),
+        dec: () => setQty(l.qty - 1), inc: () => setQty(l.qty + 1),
+        decAria: p.name + ': eins weniger', incAria: p.name + ': eins mehr'
+      };
+    });
+    const nudges = [];
+    if (pr.n % 3 === 2) {
+      const lastPromo = s.cart.slice().reverse().find((l) => P[l.pid].promo);
+      nudges.push({ img: I.koerner, text: 'Noch 1 Brötchen – dann ist eines gratis.', label: '+ 1 Brötchen',
+        act: () => { this.setState({ cart: s.cart.map((x) => x.id === lastPromo.id ? Object.assign({}, x, { qty: x.qty + 1 }) : x) }); this.flash('Gratis-Brötchen gesichert'); } });
+    }
+    if (s.cart.length && !s.cart.some((l) => P[l.pid].drink)) {
+      nudges.push({ img: I.kaffee, text: 'Ein frischer Kaffee dazu? ' + this.fmt(P.kaffee.price), label: 'Hinzufügen',
+        act: () => { const r = this.addLine(s.cart, s.uid, 'kaffee', 1, this.defSel(P.kaffee)); this.setState(r); this.flash('Kaffee hinzugefügt'); } });
+    }
+
+    // checkout options
+    const deliverOpts = isHere
+      ? [{ id: 'counter', label: 'An der Theke abholen', sub: 'Wir rufen Ihre Nummer auf' }, { id: 'table', label: 'An den Tisch bringen', sub: 'Wir servieren' }]
+      : [{ id: 'counter', label: 'An der Theke abholen', sub: 'Alles fertig verpackt' }];
+    const dOpts = deliverOpts.map((o) => { const c = s.deliver === o.id || deliverOpts.length === 1; return Object.assign({}, o, { checked: c, pressed: c ? 'true' : 'false', style: tile(c), pick: () => this.setState({ deliver: o.id }) }); });
+    const whenOpts = [{ id: 'now', label: 'Sofort' }, { id: '30', label: 'In 30 Min.' }, { id: '60', label: 'In 1 Std.' }].map((o) => { const c = s.when === o.id; return { label: o.label, checked: c, pressed: c ? 'true' : 'false', style: chip(c), pick: () => this.setState({ when: o.id }) }; });
+    const tipOpts = [{ v: 0, label: 'Kein Trinkgeld' }, { v: 5, label: '5 % · ' + this.fmt(this.r2(total * 0.05)) }, { v: 10, label: '10 % · ' + this.fmt(this.r2(total * 0.1)) }].map((o) => { const c = s.tip === o.v; return { label: o.label, checked: c, pressed: c ? 'true' : 'false', style: chip(c), pick: () => this.setState({ tip: o.v }) }; });
+    const payOpts = [{ id: 'card', label: 'Karte / Smartphone', sub: 'Kontaktlos am Lesegerät', isCard: true }, { id: 'cash', label: 'Bar', sub: 'An der Kasse bezahlen', isCash: true }].map((o) => { const c = s.payMethod === o.id; return Object.assign({}, o, { isCard: !!o.isCard, isCash: !!o.isCash, checked: c, pressed: c ? 'true' : 'false', style: tile(c).replace('justify-content: flex-end;', 'justify-content: flex-start;'), pick: () => this.setState({ payMethod: o.id }) }); });
+    const rcptOpts = [{ id: 'none', label: 'Kein Beleg' }, { id: 'print', label: 'Drucken' }, { id: 'qr', label: 'Per QR-Code' }].map((o) => { const c = s.rcpt === o.id; return { label: o.label, checked: c, pressed: c ? 'true' : 'false', style: chip(c), pick: () => this.setState({ rcpt: o.id }) }; });
+    const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '⌫', '0', 'C'].map((k) => ({
+      label: k, aria: k === '⌫' ? 'Letzte Ziffer löschen' : (k === 'C' ? 'Eingabe leeren' : 'Ziffer ' + k),
+      press: () => this.setState({ table: k === '⌫' ? s.table.slice(0, -1) : (k === 'C' ? '' : (s.table + k).slice(0, 3)) })
+    }));
+    const payBlocked = tableSel && !s.table;
+
+    // done
+    const L = s.last || { no: s.orderNo, service: 'togo', deliver: 'counter', table: '', when: 'now', pay: 'card', rcpt: 'none', grand: 0 };
+    const lTable = L.service === 'here' && L.deliver === 'table';
+    const whenLbl = { now: '5 – 8 Minuten', '30': 'in ca. 30 Min.', '60': 'in ca. 1 Std.' };
+
+    const dlg = s.dialog === 'clear'
+      ? { t: 'Warenkorb leeren?', x: 'Alle ' + cartCount + ' Artikel werden entfernt.', ok: 'Leeren', fn: () => this.setState({ cart: [], dialog: null }) }
+      : { t: 'Neu beginnen?', x: 'Ihre aktuelle Auswahl wird gelöscht.', ok: 'Neu beginnen', fn: () => this.doReset() };
+
+    const backMap = { menu: () => this.doReset(), cart: () => this.setState({ screen: 'menu' }), checkout: () => this.setState({ screen: 'cart' }) };
+
+    return {
+      touch: () => { this.last = Date.now(); },
+      isStart: s.screen === 'start', isMenu: s.screen === 'menu', isCart: s.screen === 'cart', isCheckout: s.screen === 'checkout',
+      isPaying: s.screen === 'paying', isDone: s.screen === 'done',
+      showBar: ['menu', 'cart', 'checkout'].indexOf(s.screen) >= 0, showBack: s.screen === 'cart' || s.screen === 'checkout',
+      back: backMap[s.screen] || (() => {}),
+      toast: s.toast, isLow: s.low,
+      lowPressed: s.low ? 'true' : 'false', lowLabel: s.low ? 'Tiefe Bedienung an' : 'Tiefe Bedienung',
+      lowStyle: 'height: 52px; padding: 0 18px; border-radius: 999px; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; border: 2px solid ' + (s.low ? '#221412' : '#D8CCBC') + '; background: ' + (s.low ? '#221412' : '#FFFFFF') + '; color: ' + (s.low ? '#FFFFFF' : '#221412') + ';',
+      toggleLow: () => this.setState({ low: !s.low }),
+      langEn: () => this.flash('English folgt in der nächsten Iteration'),
+      chooseHere: () => { this.last = Date.now(); this.setState({ screen: 'menu', service: 'here', deliver: 'counter' }); },
+      chooseTogo: () => { this.last = Date.now(); this.setState({ screen: 'menu', service: 'togo', deliver: 'counter' }); },
+      isHere, isTogo: !isHere, serviceLabel: isHere ? 'Hier genießen' : 'Mitnehmen',
+      toggleService: () => { this.setState({ service: isHere ? 'togo' : 'here', deliver: 'counter' }); this.flash(isHere ? 'Umgestellt: Mitnehmen' : 'Umgestellt: Hier genießen'); },
+      askRestart: () => s.cart.length ? this.setState({ dialog: 'restart' }) : this.doReset(),
+
+      catTitle: cat.title, catSub: cat.sub, cats, isOffers: cat.id === 'angebote',
+      offerRolls: () => this.openSheet('koerner', { qty: 3 }),
+      offerKids: () => this.openSheet('kids'), offerTogo: () => this.openSheet('togo'),
+      offerTuete: () => this.openSheet('tuete'),
+      offerShop: () => this.setState({ cat: 'haus' }), shopIcon: IC.stollen,
+      kidsPrice: this.fmt(P.kids.price), togoPrice: this.fmt(P.togo.price), tuetePrice: 'ab ' + this.fmt(P.tuete.price),
+      wideItems, hasWide: wideItems.length > 0, gridItems, hasGrid: gridItems.length > 0,
+
+      hasItems: s.cart.length > 0, isEmptyCart: s.cart.length === 0, cartCount,
+      cartCountTxt: cartCount + (cartCount === 1 ? ' Artikel' : ' Artikel'),
+      barThumbs: thumbPids.slice(0, 3).map((pid, i) => { const p = P[pid]; return {
+        img: p.img,
+        wrap: 'width: 52px; height: 52px; border-radius: 26px; background: #F3ECE3; border: 3px solid #221412; box-sizing: border-box; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; z-index: ' + (3 - i) + ';' + (i ? ' margin-left: -14px;' : ''),
+        imgStyle: p.icon ? 'width: 76%; height: 76%; object-fit: contain;' : (p.cut ? 'width: 90%; height: 90%; object-fit: contain; mix-blend-mode: multiply;' : 'width: 100%; height: 100%; object-fit: cover;') }; }),
+      hasMoreThumbs: thumbPids.length > 3, moreThumbs: '+' + (thumbPids.length - 3),
+      totalTxt: this.fmt(total), subTxt: this.fmt(sub), hasSavings: pr.disc > 0, savingsTxt: this.fmt(pr.disc),
+      goCart: () => this.setState({ screen: 'cart' }), goMenu: () => this.setState({ screen: 'menu' }),
+      goCheckout: () => this.setState({ screen: 'checkout', deliver: isHere ? s.deliver : 'counter' }),
+
+      sheetOpen: !!s.sheet, sh, shGroups, quick, shTotal, shCta,
+      closeSheet: () => this.setState({ sheet: null }),
+      toggleAllerg: () => this.setState({ sheet: Object.assign({}, s.sheet, { allerg: !s.sheet.allerg }) }),
+      qtyDec: () => this.setState({ sheet: Object.assign({}, s.sheet, { qty: Math.max(1, s.sheet.qty - 1) }) }),
+      qtyInc: () => this.setState({ sheet: Object.assign({}, s.sheet, { qty: Math.min(30, s.sheet.qty + 1) }) }),
+      confirmSheet: () => {
+        const st = this.state, p = P[st.sheet.pid], sel = st.sheet.sel;
+        const lineSel = this.stripLine(p, sel);
+        let r = { cart: st.cart, uid: st.uid };
+        if (st.sheet.editId) r.cart = r.cart.map((l) => l.id === st.sheet.editId ? Object.assign({}, l, { qty: st.sheet.qty, sel: lineSel }) : l);
+        else r = this.addLine(r.cart, r.uid, st.sheet.pid, st.sheet.qty, lineSel);
+        (p.groups || []).filter((g) => g.asLine).forEach((g) => (sel[g.id] || []).forEach((id) => { r = this.addLine(r.cart, r.uid, id, 1, this.defSel(P[id])); }));
+        const wasEdit = !!st.sheet.editId;
+        this.setState(Object.assign(r, { sheet: null }));
+        this.flash(wasEdit ? 'Geändert' : 'Hinzugefügt');
+      },
+
+      lines, nudges, askClear: () => this.setState({ dialog: 'clear' }),
+
+      deliverTitle: isHere ? 'Wie kommt es zu Ihnen?' : 'Zum Mitnehmen', deliverOpts: dOpts,
+      isTableSel: tableSel, tableTxt: s.table || '–', showWhen: !isHere, whenOpts,
+      tableDisplayStyle: 'width: 130px; height: 76px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-family: \'Fraunces\', Georgia, serif; font-weight: 700; font-size: 44px; border: 2px solid ' + (s.table ? '#221412' : '#8B1A23') + '; background: #F8F4EE;',
+      keys, showTip: tableSel, tipOpts, payOpts, rcptOpts,
+      sumLine: tableSel && tipAmt > 0 ? 'Bestellung ' + this.fmt(total) + ' + Trinkgeld' : (pr.disc > 0 ? 'inkl. Aktion 3 für 2' : cartCount + ' Artikel'),
+      sumLineAmt: tableSel && tipAmt > 0 ? this.fmt(tipAmt) : (pr.disc > 0 ? '− ' + this.fmt(pr.disc) : ''),
+      grandTxt: this.fmt(grand), payBlocked,
+      payCta: s.payMethod === 'cash' ? 'Bestellung abschicken' : 'Jetzt bezahlen',
+      payStyle: 'margin-top: 6px; width: 100%; height: 76px; border-radius: 20px; border: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; box-sizing: border-box; font-weight: 700; font-size: 23px; ' + (payBlocked ? 'background: #E4DDD5; color: #3B0F14;' : 'background: #8B1A23; color: #FFFFFF;'),
+      pay: () => {
+        if (payBlocked) return;
+        this.setState({ screen: 'paying' });
+        clearTimeout(this.pt);
+        this.pt = setTimeout(() => {
+          const st = this.state;
+          this.setState({ screen: 'done', doneLeft: 20, cart: [], orderNo: st.orderNo + 1,
+            last: { no: st.orderNo, service: st.service, deliver: st.deliver, table: st.table, when: st.when, pay: st.payMethod, rcpt: st.rcpt, grand } });
+        }, 2400);
+      },
+      cancelPay: () => { clearTimeout(this.pt); this.setState({ screen: 'checkout' }); },
+      payingTitle: s.payMethod === 'cash' ? 'Wird gesendet …' : 'Karte oder Smartphone vorhalten',
+      payingText: s.payMethod === 'cash' ? 'Einen Moment – danach zahlen Sie bequem an der Kasse.' : 'Das Lesegerät befindet sich unterhalb des Bildschirms.',
+
+      orderNo: '#' + L.no,
+      doneMain: lTable ? 'Wir bringen alles an Tisch ' + L.table + '. Lehnen Sie sich zurück.' : 'Wir rufen Ihre Nummer auf, sobald alles an der Theke bereitsteht.',
+      doneWhenLabel: lTable ? 'Am Tisch in etwa' : (L.when === 'now' ? 'Fertig in etwa' : 'Abholbereit'),
+      doneWhen: L.service === 'togo' ? whenLbl[L.when] : '5 – 8 Minuten',
+      doneCash: L.pay === 'cash', doneTotal: this.fmt(L.grand), doneQr: L.rcpt === 'qr', donePrint: L.rcpt === 'print',
+      doneLeft: s.doneLeft, ringOffset: String(175.9 * (1 - s.doneLeft / 20)),
+      reset: () => this.doReset(),
+
+      dialogOpen: !!s.dialog, dlgTitle: dlg.t, dlgText: dlg.x, dlgOkLabel: dlg.ok, dlgOk: dlg.fn,
+      dlgCancel: () => this.setState({ dialog: null }),
+      idleOpen: s.idleOpen, idleLeft: s.idleLeft,
+      stay: () => { this.last = Date.now(); this.setState({ idleOpen: false, idleLeft: 20 }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

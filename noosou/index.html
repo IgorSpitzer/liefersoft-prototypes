@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Noosou fresh asian kitchen — Self Order Terminal</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#241a16;--bg2:#140e0c;--ink:#fff;--muted:rgba(255,255,255,.55);--faint:rgba(255,255,255,.12);
+  --chip:#33261f;--chip2:#45322a;--accent:#e63946;--accent2:#b5122e;--brown:#5e3f28;--pink:#f5dfe0;--ok:#8fbf5a;--danger:#e0342b;
+  --page:#0a0b12;
+}
+:root[data-theme="light"]{--page:#dfe7f2}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0}
+body{background:var(--page);font-family:'Comfortaa',ui-rounded,system-ui,sans-serif;color:var(--ink);display:flex;align-items:center;justify-content:center;overflow:hidden}
+#stage{position:relative;width:1080px;height:1920px;transform-origin:top left;user-select:none;-webkit-user-select:none;touch-action:none}
+.kiosk{position:absolute;inset:0;overflow:hidden;background:radial-gradient(110% 60% at 50% 0%,#3a2a22 0%,var(--bg) 40%,var(--bg2) 100%)}
+.speckles{position:absolute;inset:0;pointer-events:none}
+.speckles i{position:absolute;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.14)}
+button{font-family:inherit}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.screen{position:absolute;inset:0;opacity:0;pointer-events:none;transform:translateY(30px);transition:opacity .45s,transform .55s cubic-bezier(.22,.9,.3,1)}
+.screen.on{opacity:1;pointer-events:auto;transform:none}
+/* ---- common chrome ---- */
+.hdr{position:absolute;left:0;right:0;top:0;height:170px;padding:54px 64px 0;display:flex;align-items:flex-start;justify-content:space-between;z-index:5}
+.h-title{font-size:44px;font-weight:600;line-height:1.1}
+.h-title small{display:block;font-size:20px;color:var(--muted);font-weight:400;margin-top:10px}
+.lang{display:flex;background:var(--chip);border-radius:22px;padding:6px}
+.lang button{all:unset;cursor:pointer;padding:12px 22px;border-radius:16px;font-size:20px;color:var(--muted);transition:.25s}
+.lang button.on{background:var(--accent);color:#fff;font-weight:600}
+.iconbtn{all:unset;cursor:pointer;width:84px;height:84px;border-radius:26px;background:var(--chip);display:grid;place-items:center;transition:transform .2s,background .2s}
+.iconbtn:active{transform:scale(.94)}
+.pill{background:var(--chip);color:var(--muted);font-size:20px;padding:14px 26px;border-radius:22px}
+.btn{all:unset;cursor:pointer;border-radius:30px;padding:0 44px;height:104px;font-size:28px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:16px;transition:transform .2s,opacity .25s}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--accent);color:#fff;box-shadow:0 18px 50px rgba(230,57,70,.35)}
+.btn.ghost{background:var(--chip);color:var(--ink)}
+.btn:disabled{opacity:.35;pointer-events:none}
+
+.logo-nsu{display:inline-flex;flex-direction:column;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.45);text-align:center;line-height:1}
+.logo-nsu .a{background:var(--brown);color:var(--pink);font-weight:500;letter-spacing:-1px;padding:.28em .45em .18em}
+.logo-nsu .b{background:var(--accent2);color:#fff;font-weight:500;padding:.38em .6em .42em;font-size:.36em;letter-spacing:.5px}
+/* ---- attract ---- */
+#attract{display:grid;place-items:center;text-align:center}
+#attract .hero{width:600px;height:600px;margin:0 auto 60px;animation:spin 60s linear infinite}
+#attract .hero svg{width:100%;height:100%;filter:drop-shadow(0 60px 80px rgba(0,0,0,.6))}
+@keyframes spin{to{transform:rotate(360deg)}}
+#attract h1{font-size:120px;font-weight:700;margin:0;letter-spacing:-3px}
+#attract p{font-size:34px;color:var(--muted);margin:20px 0 0}
+#attract .tap{margin-top:90px;font-size:28px;color:var(--accent);animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35;transform:translateY(-8px)}}
+#attract .logo{position:absolute;top:70px;left:0;right:0;font-size:30px;letter-spacing:6px;color:var(--muted)}
+/* ---- mode ---- */
+#mode{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:60px}
+#mode h2{font-size:64px;font-weight:600;margin:0 0 40px;text-align:center}
+.modes{display:flex;gap:40px}
+.mode{all:unset;cursor:pointer;width:420px;height:520px;border-radius:48px;background:var(--chip);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;font-size:38px;font-weight:600;transition:.25s}
+.mode:active{transform:scale(.97);background:var(--chip2)}
+.mode svg{width:180px;height:180px}
+/* ---- menu ---- */
+.cats{position:absolute;left:64px;right:64px;top:200px;display:flex;gap:14px;z-index:5;overflow-x:auto;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{all:unset;cursor:pointer;flex:0 0 auto;padding:22px 34px;border-radius:28px;background:var(--chip);color:var(--muted);font-size:24px;transition:.25s;display:flex;align-items:center;gap:12px}
+.cat.on{background:var(--accent);color:#fff;font-weight:600}
+.ring{position:absolute;inset:0;pointer-events:none}
+.dish{position:absolute;left:0;top:0;width:560px;height:560px;margin:-280px 0 0 -280px;pointer-events:auto;cursor:grab;will-change:transform}
+.dish svg{width:100%;height:100%;display:block;filter:drop-shadow(0 70px 80px rgba(0,0,0,.6))}
+.dish.snap{transition:transform .6s cubic-bezier(.22,.9,.3,1),opacity .6s}
+.info{position:absolute;left:0;right:0;top:1130px;text-align:center;z-index:3}
+.info .name{font-size:56px;font-weight:600;transition:opacity .25s}
+.info .desc{font-size:22px;color:var(--muted);margin-top:14px;min-height:30px;transition:opacity .25s}
+.info .stars{margin:16px 0;font-size:22px;letter-spacing:8px;color:#8a8fae}
+.price{font-size:120px;font-weight:700;letter-spacing:-3px;display:inline-block}
+.price .d{font-size:72px;vertical-align:34px;margin-right:4px;font-weight:600}
+.price .n.bump{animation:bump .45s cubic-bezier(.34,1.56,.64,1)}
+@keyframes bump{40%{transform:translateY(-16px) scale(1.06)}}
+.hint{position:absolute;left:0;right:0;top:1090px;text-align:center;font-size:20px;color:var(--muted);opacity:.7}
+.dots{position:absolute;left:0;right:0;top:1500px;display:flex;justify-content:center;gap:12px}
+.dots i{width:12px;height:12px;border-radius:6px;background:var(--faint);transition:.3s}
+.dots i.on{background:var(--accent);width:36px}
+.bottombar{position:absolute;left:0;right:0;bottom:0;height:200px;padding:0 64px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to top,rgba(10,11,20,.9),rgba(10,11,20,0));z-index:6}
+.cartsum{display:flex;align-items:center;gap:22px;font-size:26px}
+.cartsum .cnt{width:64px;height:64px;border-radius:22px;background:var(--chip);display:grid;place-items:center;font-weight:700;position:relative}
+.cartsum .cnt b{position:absolute;inset:0;display:grid;place-items:center}
+.cartsum .cnt.pop b{animation:bump .45s}
+.cartsum .tot{color:var(--muted)}
+.cartsum .tot strong{color:var(--ink);font-size:32px;margin-left:8px}
+/* ---- detail ---- */
+#detail{background:radial-gradient(110% 60% at 50% 0%,#3a2a22 0%,var(--bg) 40%,var(--bg2) 100%)}
+#detail .plate{position:absolute;left:50%;top:560px;width:680px;height:680px;margin:-340px 0 0 -340px;perspective:1800px;cursor:pointer}
+#detail .flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.4,.1,.2,1)}
+#detail .plate.back .flip{transform:rotateY(180deg)}
+#detail .face{position:absolute;inset:0;backface-visibility:hidden;display:grid;place-items:center}
+#detail .face svg{width:100%;height:100%;filter:drop-shadow(0 70px 80px rgba(0,0,0,.6))}
+#detail .face.b{transform:rotateY(180deg)}
+.box{width:560px;height:400px;border-radius:26px;background:linear-gradient(145deg,#171a2c,#0b0d18);box-shadow:0 70px 80px rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,255,255,.05);position:relative;transform:rotateX(18deg) rotateZ(-6deg);display:grid;place-items:center}
+.box .mark{width:240px;height:240px}
+.box .brand{position:absolute;left:36px;bottom:30px;max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.box .meta{position:absolute;right:36px;bottom:34px;font-size:14px;color:var(--muted);letter-spacing:2px}
+.fliphint{position:absolute;left:0;right:0;top:905px;text-align:center;font-size:18px;color:var(--muted);opacity:.6}
+.adds .row{align-items:flex-end}
+.add{width:160px;height:210px;border-radius:38px;justify-content:flex-end;padding-bottom:26px;box-sizing:border-box;background:linear-gradient(180deg,#20243d,#171a2e)}
+.add svg{width:86px;height:86px;filter:drop-shadow(0 14px 18px rgba(0,0,0,.5))}
+.add:nth-child(2){margin-bottom:22px}.add:nth-child(3){margin-bottom:44px}.add:nth-child(4){margin-bottom:66px}
+#detail .dprice{position:absolute;left:0;right:0;top:940px;text-align:center}
+#detail .ddesc{position:absolute;left:120px;right:120px;top:1070px;max-height:150px;overflow:hidden;text-align:center;font-size:24px;color:var(--muted);line-height:1.5}
+.sizes{position:absolute;left:0;right:0;top:1190px;display:flex;justify-content:center;gap:24px}
+.size{all:unset;cursor:pointer;width:170px;height:96px;border-radius:28px;background:var(--chip);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:26px;font-weight:600;transition:.25s}
+.size small{font-size:18px;color:var(--muted);font-weight:400;margin-top:4px}
+.size.on{background:var(--accent);color:#fff}
+.size.on small{color:#fff}
+.adds{position:absolute;left:0;right:0;top:1250px;text-align:center}
+.adds h3{font-size:24px;font-weight:400;color:var(--muted);margin:0 0 26px}
+.adds .row{display:flex;justify-content:center;gap:22px}
+.add{all:unset;cursor:pointer;width:150px;height:170px;border-radius:32px;background:var(--chip);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;font-size:18px;color:var(--muted);transition:.25s}
+.add svg{width:70px;height:70px}
+.add:active{transform:scale(.94)}
+.add.on{background:var(--chip2);box-shadow:inset 0 0 0 3px var(--accent);color:var(--ink)}
+.add:disabled{opacity:.35}
+.add em{position:absolute;top:-12px;right:-12px;height:38px;padding:0 12px;border-radius:19px;background:var(--accent);color:#fff;font:600 18px/38px 'Comfortaa',sans-serif;font-style:normal;transform:scale(0);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.add.on em{transform:scale(1)}
+.fly{position:absolute;width:70px;height:70px;z-index:40;pointer-events:none}
+.qty{display:flex;align-items:center;gap:26px;background:var(--chip);border-radius:30px;height:104px;padding:0 20px;font-size:34px;font-weight:600}
+.qty button{all:unset;cursor:pointer;width:64px;height:64px;border-radius:20px;background:var(--chip2);display:grid;place-items:center;font-size:36px}
+.qty span{min-width:40px;text-align:center}
+/* ---- cart ---- */
+#cart .list{position:absolute;left:64px;right:64px;top:200px;bottom:520px;overflow-y:auto;display:flex;flex-direction:column;gap:20px;padding-right:6px}
+.line{display:flex;align-items:center;gap:26px;background:var(--chip);border-radius:36px;padding:22px 26px;animation:slidein .4s cubic-bezier(.22,.9,.3,1)}
+@keyframes slidein{from{opacity:0;transform:translateX(40px)}}
+.line.out{transition:.35s;opacity:0;transform:translateX(60px) scale(.96)}
+.line .thumb{width:130px;height:130px;flex:0 0 auto}
+.line .thumb svg{width:100%;height:100%}
+.line .txt{flex:1;min-width:0}
+.line .txt b{font-size:30px;display:block}
+.line .txt span{font-size:20px;color:var(--muted);display:block;margin-top:8px}
+.line .lp{font-size:34px;font-weight:700;min-width:130px;text-align:right}
+.line .qty{height:80px;font-size:28px;background:var(--bg2)}
+.line .qty button{width:52px;height:52px;font-size:28px;background:var(--chip2)}
+.empty{text-align:center;color:var(--muted);font-size:28px;margin-top:200px}
+.summary{position:absolute;left:64px;right:64px;bottom:250px;background:var(--chip);border-radius:40px;padding:36px 44px;font-size:24px;color:var(--muted)}
+.summary div{display:flex;justify-content:space-between;margin:12px 0}
+.summary .grand{font-size:40px;color:var(--ink);font-weight:700;border-top:2px solid var(--faint);padding-top:22px;margin-top:22px}
+.actions{position:absolute;left:64px;right:64px;bottom:80px;display:flex;gap:24px}
+.actions .btn{flex:1}
+/* ---- pay ---- */
+#pay .center{position:absolute;left:0;right:0;top:220px;bottom:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;text-align:center}
+#pay h2{font-size:56px;font-weight:600;margin:0}
+#pay .amount{font-size:96px;font-weight:700;letter-spacing:-2px}
+.paymethods{display:flex;gap:30px;margin-top:20px}
+.pm{all:unset;cursor:pointer;width:400px;height:420px;border-radius:44px;background:var(--chip);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;font-size:32px;font-weight:600;transition:.25s;text-align:center}
+.pm small{font-size:20px;color:var(--muted);font-weight:400}
+.pm svg{width:150px;height:150px}
+.pm:active{transform:scale(.97);background:var(--chip2)}
+.paystage{display:none;flex-direction:column;align-items:center;gap:40px}
+.paystage.on{display:flex}
+.reader{width:520px;height:340px;border-radius:44px;background:var(--chip);position:relative;overflow:hidden;display:grid;place-items:center}
+.reader .wave{position:absolute;width:200px;height:200px;border-radius:50%;border:4px solid var(--accent);opacity:0;animation:wave 1.8s ease-out infinite}
+.reader .wave:nth-child(2){animation-delay:.6s}.reader .wave:nth-child(3){animation-delay:1.2s}
+@keyframes wave{0%{transform:scale(.4);opacity:.9}100%{transform:scale(2.4);opacity:0}}
+.reader .card{position:relative;width:260px;height:165px;border-radius:22px;background:linear-gradient(135deg,#f5dfe0,#e8b74d);animation:tap 2.6s ease-in-out infinite;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.reader .card::after{content:'';position:absolute;left:24px;top:60px;width:56px;height:40px;border-radius:8px;background:rgba(27,31,54,.35)}
+@keyframes tap{0%,100%{transform:translate(180px,-150px) rotate(-14deg);opacity:0}25%,60%{transform:translate(0,0) rotate(0);opacity:1}80%{opacity:0}}
+.reader.done .card,.reader.done .wave{animation:none;opacity:0}
+.qrbox{width:520px;height:520px;border-radius:44px;background:#fff;display:grid;place-items:center;position:relative;overflow:hidden}
+.qrbox svg{width:440px;height:440px}
+.qrbox svg rect{fill:#241a16}
+.qrbox .scan{position:absolute;left:0;right:0;height:6px;background:var(--accent);box-shadow:0 0 30px var(--accent);animation:scan 2.4s ease-in-out infinite}
+@keyframes scan{0%{top:20px}50%{top:494px}100%{top:20px}}
+.status{font-size:30px;color:var(--muted);min-height:40px}
+.progress{width:520px;height:10px;border-radius:5px;background:var(--faint);overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.okmark{width:220px;height:220px}
+.okmark circle{stroke:var(--ok);stroke-width:6;fill:none;stroke-dasharray:640;stroke-dashoffset:640;animation:draw .8s ease-out forwards}
+.okmark path{stroke:#fff;stroke-width:8;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:120;stroke-dashoffset:120;animation:draw .5s .6s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+/* ---- done ---- */
+#done{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:30px}
+#done h2{font-size:56px;margin:0;font-weight:600}
+#done .num{font-size:280px;font-weight:700;letter-spacing:-8px;line-height:1;color:var(--accent);text-shadow:0 30px 80px rgba(230,57,70,.35)}
+#done p{font-size:30px;color:var(--muted);margin:0;max-width:760px;line-height:1.5}
+#done .receipt{margin-top:30px;background:var(--chip);border-radius:40px;padding:40px 60px;font-size:24px;text-align:left;min-width:640px}
+#done .receipt div{display:flex;justify-content:space-between;gap:40px;margin:10px 0}
+#done .cd{font-size:22px;color:var(--muted);margin-top:40px}
+.toast{position:absolute;left:50%;bottom:240px;transform:translate(-50%,30px);background:#fff;color:#241a16;font-size:26px;padding:22px 34px;border-radius:26px;opacity:0;transition:.35s;z-index:50;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.idle{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);font-size:18px;color:rgba(255,255,255,.3);z-index:8;opacity:0;transition:.3s}
+.idle.on{opacity:1}
+@media (prefers-reduced-motion: reduce){*{transition-duration:.01ms !important;animation-duration:.01ms !important}}
+</style>
+</head>
+<body>
+<div id="stage"><div class="kiosk" id="kiosk">
+<div class="speckles" id="speckles"></div>
+
+<!-- ATTRACT -->
+<section class="screen on" id="attract">
+  <div class="logo">HANNOVER · KATTENBROOKSTRIFT 26</div>
+  <div>
+    <div class="hero" id="heroPlate"></div>
+    <span class="logo-nsu" style="font-size:110px"><span class="a">noosou</span><span class="b">fresh asian kitchen</span></span>
+    <h1 data-i="welcome" style="font-size:72px;margin-top:40px">Willkommen</h1>
+    <p data-i="welcome_sub">Frisch gerollt, direkt für dich</p>
+    <div class="tap" data-i="tap">Bildschirm berühren, um zu bestellen</div>
+  </div>
+</section>
+
+<!-- MODE -->
+<section class="screen" id="mode">
+  <div class="hdr"><div class="h-title"><span class="logo-nsu" style="font-size:34px"><span class="a">noosou</span><span class="b">fresh asian kitchen</span></span><small data-i="brand_sub" style="margin-top:14px">Self-Order Terminal</small></div><div class="lang" id="lang1"></div></div>
+  <h2 data-i="where">Wo möchtest du essen?</h2>
+  <div class="modes">
+    <button class="mode" data-mode="dinein">
+      <svg viewBox="0 0 100 100" fill="none" stroke="#f5dfe0" stroke-width="3.5" stroke-linecap="round"><ellipse cx="50" cy="62" rx="36" ry="12"/><path d="M14 62c0 12 16 20 36 20s36-8 36-20"/><path d="M50 22v22M40 22v10M60 22v10"/></svg>
+      <span data-i="dinein">Hier essen</span>
+    </button>
+    <button class="mode" data-mode="takeaway">
+      <svg viewBox="0 0 100 100" fill="none" stroke="#f5dfe0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 36h56l-6 46H28z"/><path d="M36 36c0-12 6-18 14-18s14 6 14 18"/><path d="M22 36l4 46"/></svg>
+      <span data-i="takeaway">Zum Mitnehmen</span>
+    </button>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="screen" id="menu">
+  <div class="hdr">
+    <div style="display:flex;gap:20px;align-items:flex-start">
+      <button class="iconbtn" id="menuBack" aria-label="Back"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="h-title"><span data-i="order">Bestellen</span><small id="modeLabel">Hier essen</small></div>
+    </div>
+    <div class="lang" id="lang2"></div>
+  </div>
+  <div class="cats" id="cats"></div>
+  <div class="ring" id="ring"></div>
+  <div class="hint" data-i="hint">Wischen zum Drehen · Tippen für Details</div>
+  <div class="info">
+    <div class="name" id="mName"></div>
+    <div class="desc" id="mDesc"></div>
+    <div class="stars">★★★★★</div>
+    <div class="price"><span class="d">€</span><span class="n" id="mPrice">0</span></div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="bottombar">
+    <div class="cartsum"><div class="cnt" id="cartCnt"><b>0</b></div><div class="tot"><span data-i="total">Summe</span><strong id="cartTot">€0</strong></div></div>
+    <button class="btn primary" id="toCart" disabled><span data-i="checkout">Zur Kasse</span></button>
+  </div>
+</section>
+
+<!-- DETAIL -->
+<section class="screen" id="detail">
+  <div class="hdr">
+    <div style="display:flex;gap:20px;align-items:flex-start">
+      <button class="iconbtn" id="detBack" aria-label="Back"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="h-title" id="dTitle"></div>
+    </div>
+    <div class="pill" id="dTag"></div>
+  </div>
+  <div class="plate" id="dPlate"></div>
+  <div class="fliphint" data-i="fliphint">Tarelka</div>
+  <div class="dprice"><div class="price"><span class="d">€</span><span class="n" id="dPrice">0</span></div></div>
+  <div class="ddesc" id="dDesc"></div>
+  <div class="sizes" id="sizes"></div>
+  <div class="adds"><h3 data-i="addons">Extras (max. 2)</h3><div class="row" id="addRow"></div></div>
+  <div class="bottombar">
+    <div class="qty"><button id="qMinus">−</button><span id="qty">1</span><button id="qPlus">+</button></div>
+    <button class="btn primary" id="addToCart"><span data-i="add">In den Warenkorb</span> · <span id="addTot">€0</span></button>
+  </div>
+</section>
+
+<!-- CART -->
+<section class="screen" id="cart">
+  <div class="hdr">
+    <div style="display:flex;gap:20px;align-items:flex-start">
+      <button class="iconbtn" id="cartBack" aria-label="Back"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="h-title"><span data-i="yourorder">Deine Bestellung</span><small id="cartModeLabel"></small></div>
+    </div>
+    <div class="lang" id="lang3"></div>
+  </div>
+  <div class="list" id="cartList"></div>
+  <div class="summary" id="summary"></div>
+  <div class="actions">
+    <button class="btn ghost" id="addMore" data-i="addmore">Mehr hinzufügen</button>
+    <button class="btn primary" id="toPay" data-i="pay">Bezahlen</button>
+  </div>
+</section>
+
+<!-- PAY -->
+<section class="screen" id="pay">
+  <div class="hdr">
+    <div style="display:flex;gap:20px;align-items:flex-start">
+      <button class="iconbtn" id="payBack" aria-label="Back"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="h-title" data-i="payment">Zahlung</div>
+    </div>
+  </div>
+  <div class="center">
+    <div id="payChoose" class="paystage on">
+      <div style="font-size:28px;color:var(--muted)" data-i="topay">Zu zahlen</div>
+      <div class="amount" id="payAmt">€0</div>
+      <h2 data-i="choose">Wie möchtest du zahlen?</h2>
+      <div class="paymethods">
+        <button class="pm" data-pay="card">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#f5dfe0" stroke-width="3.5" stroke-linecap="round"><rect x="12" y="26" width="76" height="48" rx="8"/><path d="M12 42h76"/><path d="M24 62h18"/></svg>
+          <span data-i="card">Karte</span><small data-i="card_sub">Kontaktlos, Chip, Apple / Google Pay</small>
+        </button>
+        <button class="pm" data-pay="qr">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#f5dfe0" stroke-width="3.5" stroke-linecap="round"><rect x="14" y="14" width="28" height="28" rx="4"/><rect x="58" y="14" width="28" height="28" rx="4"/><rect x="14" y="58" width="28" height="28" rx="4"/><path d="M58 58h10v10H58zM76 58h10M58 76h10M76 76h10v10"/></svg>
+          <span data-i="qr">QR-Code</span><small data-i="qr_sub">PayPal, Banking-App, Wallet</small>
+        </button>
+      </div>
+    </div>
+    <div id="payCard" class="paystage">
+      <div class="amount" id="payAmt2">€0</div>
+      <div class="reader" id="reader"><i class="wave"></i><i class="wave"></i><i class="wave"></i><div class="card"></div></div>
+      <div class="status" id="cardStatus"></div>
+      <div class="progress"><i id="cardProg"></i></div>
+      <button class="btn ghost" id="cardCancel" data-i="cancel">Abbrechen</button>
+    </div>
+    <div id="payQR" class="paystage">
+      <div class="amount" id="payAmt3">€0</div>
+      <div class="qrbox"><div id="qrSvg"></div><div class="scan"></div></div>
+      <div class="status" id="qrStatus"></div>
+      <div class="progress"><i id="qrProg"></i></div>
+      <button class="btn ghost" id="qrCancel" data-i="cancel">Abbrechen</button>
+    </div>
+    <div id="paySuccess" class="paystage">
+      <svg class="okmark" viewBox="0 0 220 220"><circle cx="110" cy="110" r="100"/><path d="M68 112l28 28 58-64"/></svg>
+      <h2 data-i="paid">Zahlung erfolgreich</h2>
+      <div class="status" data-i="printing">Beleg wird gedruckt …</div>
+    </div>
+  </div>
+</section>
+
+<!-- DONE -->
+<section class="screen" id="done">
+  <h2 data-i="thanks">Danke! Deine Bestellnummer</h2>
+  <div class="num" id="orderNum">042</div>
+  <p id="doneText"></p>
+  <div class="receipt" id="receipt"></div>
+  <div class="cd" id="countdown"></div>
+  <button class="btn primary" id="newOrder" data-i="neworder">Neue Bestellung</button>
+</section>
+
+<div id="imp" style="display:none;position:absolute;inset:80px;background:#fff;color:#241a16;z-index:999;border-radius:40px;padding:40px;font-size:22px">
+  <b>Photo import</b> — paste JSON here (cmd+V)<br><textarea id="impT" style="width:100%;height:200px;margin:20px 0;font-size:14px"></textarea>
+  <pre id="impLog" style="font-size:18px;white-space:pre-wrap;max-height:1200px;overflow:auto"></pre></div>
+<div class="toast" id="toast"></div>
+<div class="idle" id="idle"></div>
+</div></div>
+
+<script>
+/* ================= i18n ================= */
+const I18N={
+ de:{welcome:'Willkommen',welcome_sub:'Fresh asian kitchen – Sushi, Bowls, Ramen & mehr',tap:'Bildschirm berühren, um zu bestellen',brand:'Noosou',brand_sub:'Self-Order Terminal · Hannover',where:'Wo möchtest du essen?',dinein:'Hier essen',takeaway:'Zum Mitnehmen',order:'Bestellen',hint:'Wischen zum Drehen · Tippen für Details',total:'Summe',checkout:'Zur Kasse',addons:'Extras (max. 2)',add:'In den Warenkorb',yourorder:'Deine Bestellung',addmore:'Mehr hinzufügen',pay:'Bezahlen',payment:'Zahlung',topay:'Zu zahlen',choose:'Wie möchtest du zahlen?',card:'Karte',card_sub:'Kontaktlos, Chip, Apple / Google Pay',qr:'QR-Code',qr_sub:'PayPal, Banking-App, Wallet',cancel:'Abbrechen',paid:'Zahlung erfolgreich',printing:'Beleg wird gedruckt …',thanks:'Danke! Deine Bestellnummer',neworder:'Neue Bestellung',
+  empty:'Dein Warenkorb ist leer',subtotal:'Zwischensumme',vat:'inkl. MwSt.',pieces:'Stk.',holdcard:'Karte an das Lesegerät halten',reading:'Karte wird gelesen …',auth:'Autorisierung …',scanqr:'QR-Code mit deiner App scannen',waiting:'Warten auf Bestätigung …',confirmed:'Zahlung bestätigt',added:'hinzugefügt',done_dinein:'Wir bringen deine Bestellung an den Tisch. Bitte nimm deinen Beleg mit.',welcome_sub:'Fresh asian kitchen – Sushi, Bowls, Ramen & mehr',done_takeaway:'Behalte die Anzeige im Blick – wir rufen deine Nummer, wenn alles fertig ist.',idle:'Zurück zum Start in',fliphint:'Teller antippen – Verpackung ansehen',size:['Klein','Mittel','Groß'],
+},
+ en:{welcome:'Welcome',welcome_sub:'Fresh asian kitchen – sushi, bowls, ramen & more',tap:'Touch the screen to start your order',brand:'Noosou',brand_sub:'Self-Order Terminal · Hannover',where:'Where would you like to eat?',dinein:'Eat here',takeaway:'Take away',order:'Order',hint:'Swipe to rotate · Tap for details',total:'Total',checkout:'Checkout',addons:'Extras (max. 2)',add:'Add to order',yourorder:'Your order',addmore:'Add more',pay:'Pay now',payment:'Payment',topay:'Amount due',choose:'How would you like to pay?',card:'Card',card_sub:'Contactless, chip, Apple / Google Pay',qr:'QR code',qr_sub:'PayPal, banking app, wallet',cancel:'Cancel',paid:'Payment successful',printing:'Printing receipt …',thanks:'Thank you! Your order number',neworder:'New order',
+  empty:'Your order is empty',subtotal:'Subtotal',vat:'incl. VAT',pieces:'pcs',holdcard:'Hold your card to the reader',reading:'Reading card …',auth:'Authorising …',scanqr:'Scan the QR code with your app',waiting:'Waiting for confirmation …',confirmed:'Payment confirmed',added:'added',done_dinein:'We\'ll bring your order to your table. Please take your receipt.',done_takeaway:'Keep an eye on the board – we\'ll call your number when it\'s ready.',idle:'Back to start in',fliphint:'Tap the plate to see the packaging',size:['Small','Medium','Large'],
+}
+};
+let lang='de';const t=k=>I18N[lang][k];
+
+/* ================= data ================= */
+const CLOUD='https://res.cloudinary.com/liefersoft-live/image/upload/c_fill,w_600,h_600,g_auto,q_auto/AB-77086/products/';
+const RAW={
+"Vorspeisen":[["Buddha-Sommer Rolle","Reispapier, gefüllt mit sautiertem Seitan, Koriander, Gurke und Salat. Serviert mit einem Erdnuss-Hoi-Sin-Dip","5,50","c07f1df0-0ea4-4359-a7ce-f79591dc1b42"],["Ebi Sommer-Rolle","Reispapier, gefüllt mit Garnelen, Reisnudeln, Koriander, Gurke und Salat. Serviert mit einem Erdnuss-Hoi-Sin-Dip","6,50","b31fa988-22ac-4e9d-8b5b-7938eb643d35"],["Gyoza","5 Stück - Gebratene Teigtaschen, gefüllt mit Hühnerfleisch und Gemüse","6,20","b6f84682-4863-4e25-bfa7-337e42fbe8db"],["Ebi Tempura","2 Stück - Panierte Großgarnele mit grünen Reisflocken und Spezial-Sauce","5,60","281de9e6-51e1-4afc-a1b2-526f5ab67a0e"],["Tori Kara","Knuspriges Hühnerfleisch mit Spicy-Mayo","6,20","fdbbea7e-9e17-4302-b701-54887cb53ab7"],["Edamame","Gekochte, grüne, junge Sojabohnen mit Meersalz","5,20","abc4411b-5a23-4bbb-bf07-ec6559a3b9af"],["Veggie Gyoza","Gebratene Teigtaschen mit Gemüse","5,90","44bd06d9-83a1-45d8-b71c-cb19295dee0d"],["Gemüsesuppe","mit Hühnerfleisch","4,50","2be92b3d-d978-491b-9a40-017b2abc1bf7"],["Miso Suppe","mit Tofu, Seetang und Lauchzwiebeln","4,50","2f39cb73-ef7c-4906-b5a9-fe71acf88a2a"],["Kokos-Kürbis-Suppe","mit feinen Gemüsestreifen, Seitan und Süßkartoffelchips","5,30","57946584-93ce-4210-bad4-7aae42f7ec55"],["Wakame Salat","Algensalat mit Sesam","5,20","a52be743-b966-4f22-903f-0509491d1280"],["Gomaae-Salat","Blanchierter Spinat mit Sesam-Dressing","5,20","b916450f-188e-4361-9bf9-188293bbcdd8"]],
+"Bowls":[["Bun Bo Bowl","Dünne Reisnudeln auf Wildkräutersalat, Gurken, Sprossen, Koriander und Erdnüssen. Mit gebratenem Rindfleisch, mariniert in Chili und Zitronengras. Dazu eine Yuzu-Ingwer-Vinaigrette","16,90","bd57caa9-1514-42a0-b57b-4affd29ed4be"],["Bun Chay Bowl","Dünne Reisnudeln auf Wildkräutersalat, Gurken, Sprossen, Koriander, gebratenem Tofu-Seitan-Mix mit Zitronengras und Erdnüssen. Dazu eine Ponzu-Sauce","14,90","f7bffcb7-2666-4698-a281-65f796cc00e2"],["Chicken Bowl","Jasmin-Duftreis mit Spinat und Edamame auf Wildkräutersalat mit gegrilltem Chicken Teriyaki, Wagame, Kimchi-Sesam und Avocado. Dazu eine Chili-Mayo und Teriyaki-Sauce","15,90","3ab4746e-360d-4acb-ac8e-d1b0d483f850"],["Tuna Bowl","Kurz angebratener Thunfisch mit Sushi-Reis, Avocado, Edamame, Wagame und Kimchi-Sesam. Dazu eine Chili-Mayo, Teriyaki-Sauce und Miso-Trüffel-Butter","17,90","c7eeed44-62e4-4d92-a381-3cb122cee71c"],["Lachs Bowl","Kurz angebratener Lachs mit Sushi-Reis, Avocado, Edamame, Wagame und Kimchi-Sesam. Dazu eine Chili-Mayo, Teriyaki-Sauce und Miso-Trüffel-Butter","17,20","10eb642d-309e-40d1-8361-97fa3411e637"]],
+"Curries":[["Gemüsecurry","Tofu mit Zitronengras, Kürbis, Kartoffeln und verschiedenem Gemüse","14,50","8004549d-a925-4a53-94b3-8f3713622437"],["Red Thai Curry","Hühnerbrust in roter Curry-Kokosmilch-Sauce mit Bambus, Pak Choi, Limettenblättern und Paprika","15,20","96a0fd73-f860-43f9-b8a9-5ae5e1af3645"],["Green Thai Curry","Hühnerbrust in grüner Curry-Kokosmilch-Sauce mit Bambus, Auberginen, grünen Bohnen und Thai-Basilikum","15,20","729fcdd7-1430-4f9a-846e-f94cc7280c0a"],["Massaman Beef","Rindfleisch in Massaman-Curry und Kokosmilch-Sauce mit Paprika, Zwiebeln, Kartoffeln und Erdnüssen","15,90","0297647a-22dc-4271-8d41-302f7989f40e"]],
+"Nudeln":[["Bratnudeln mit Gemüse","","12,00",""],["Bratnudeln mit Seitan-Tofu","","13,50","3060a613-f6cc-4efe-8eaa-3805394f3a93"],["Bratnudeln mit Chicken Teriyaki","","15,50","ded15e63-1b45-407e-af82-81f6720b900c"],["Bratnudeln mit Ente Teriyaki","","17,20","a707c9b7-3593-4d6d-8129-593927fb0d51"],["Bratnudeln mit geb. Hühnerbrust","","15,50","e07c32b0-383c-4237-b17b-32e06fb407d0"],["Yaki Udon","Gebratene Udon-Nudeln mit Rindfleisch, Pak Choi, Möhren, Sesam und Sojasprossen","16,50","c9e4cd51-f331-4f10-a532-f38e62951844"],["Malaysische Bratnudeln","Frische, hausgemachte Eiernudeln mit Hühnerbrust und Gemüse in pikanter Curry-Tomaten-Sauce, mit Knoblauch","15,50","d6ecd14f-5dea-4b38-a4f1-d0dd33b3378f"],["Kantonesische Bratnudeln","Frische, hausgemachte Eiernudeln mit Hühnerbrust, Gemüse in scharfer Sauce mit gerösteten Cashewnüssen","15,50","d1491f3d-3536-4819-bd62-8b23a9d9b2f5"],["Bratnudeln Fernost","Reisnudeln mit Hühnerfleisch, Garnelen, Sojasprossen, Paprika und Pak Choi in einer pikanten Austern-Sauce","16,20","dc8a54d0-7d67-4b55-b6b7-4f3143f33840"],["Pad Thai","Gebratene Reisnudeln mit Garnelen, Tofu, Ei, Erdnüssen und Sojasprossen in einer Tamarinde-Thai-Sauce","17,30","e9fc96bd-2af9-4f30-9997-98243e9d789c"]],
+"Klassiker":[["Hühnerbrust süß-sauer","","15,50","34cd8457-1146-4321-a1f2-00fa1c72497f"],["Hühnerbrust Hoi Sin-Soja-Sauce","","15,50","c549afd1-2479-4b26-9623-e446440031ed"],["Hühnerbrust pikante Erdnuss-Sauce","","15,50","83cacd15-bf13-43f2-bebb-92a7f7ed3cf1"],["Hühnerbrust Curry-Kokos-Sauce","","15,50","0b6e609a-9ca0-4558-acf2-7852102e53f5"],["Ente süß-sauer","","17,20","a7d7cdc2-5243-4155-b209-8acddcafb053"],["Ente Hoi Sin-Soja-Sauce","","17,20","90527c8b-4b5c-4de5-ac7c-44e0a05bbcdc"],["Ente Erdnuss-Sauce","","17,20","8a55ef74-b1d6-42f0-9a6a-3d692e0525b5"],["Ente Curry-Kokos-Sauce","","17,20","80621242-eb5b-4bd5-8f13-0a25d6baa514"]],
+"Asiatisch":[["Rindfleisch Vietnam Art","Scharf - Geschnetzeltes vom Rind, mariniert in Chili und Zitronengras, gebraten mit Lauch und Zwiebeln","16,50","406fcdaf-4ce7-4653-9ae9-75ab97942930"],["Fastenspeise d. Buddhisten","Gebratenes Gemüse mit hausgemachtem Seitan, Ingwer, Knoblauch und Sesamöl. Verfeinert mit karamellisierter Soja-Sauce","14,90","ddf6376c-0dbe-4da4-afe3-e3d543e074a5"],["Dakgang Jeong","Knuspriges Hühnerfleisch mit Erdnüssen und Sesam, geschwenkt in einer scharfen Knoblauch-Sauce","15,90","b28be39d-2599-48f0-9c1a-7d4cb6761a86"],["Teriyaki Salmon","Gegrilltes Lachs-Teriyaki mit Wildkräutersalat, Kimchi-Sesam und saisonalem Gemüse. Serviert mit Süßkartoffeln","18,90","079a6fbd-950d-43ec-96e4-0363dcc6ef2c"],["Ga Xao Xa","Gebratene Hühnerbrust mit Zitronengras, Thai-Basilikum, Ingwer und Gemüse","15,50","5205ba45-1980-4843-8d1b-b39860986563"],["Chow Chicken","Gebratene Hühnerbrust mit verschiedenem Gemüse und Cashewkernen","15,50","cde33601-e318-4441-b43c-dbbce10577a1"],["Chicken Gumbo","Gebratene Hühnerbrust mit Gemüse und scharfer Knoblauch-Sauce","15,50","15740dff-426b-45fa-a985-97a2175be6b7"],["Chow Beef","Gebratenes Rindfleisch mit verschiedenem Gemüse und Cashewkernen","16,50","1c69632c-3e0d-4d14-b96d-bd920be6b927"],["Beef Gumbo","Gebratenes Rindfleisch mit Gemüse und scharfer Knoblauch-Sauce","16,50","9fc68d28-a2a1-43ba-bcff-d6b820c8228b"]],
+"Ramen":[["Chicken Teriyaki Ramen","Ramen-Nudeln mit gegrilltem Chicken Teriyaki in einer Shoyu-Brühe mit Pak Choi, Sojasprossen und Frühlingszwiebeln","15,40","8a46802b-ee69-47af-ae11-8335c291c6f1"],["Chicken Teriyaki Udon","Udon-Nudeln mit gegrilltem Chicken Teriyaki in einer Shoyu-Brühe mit Pak Choi, Sojasprossen und Frühlingszwiebeln","15,40","0904ca45-b694-46f4-8fc8-93c1d870c965"],["Tan Tan Mi","Nudelsuppe auf Sesam-Miso-Basis, Gemüse, Chashu und gebratenem Schweinehack, verfeinert mit Chili-Öl","15,90","57fab90d-444e-47b4-a324-d690deb62a59"],["Tokio Udon","Japanische Udon-Nudeln mit geschmortem Chashu Schweinebraten, Lava-Ei, Narutomaki, Mais und Gemüse","16,30","3e0beee0-c25a-4d3b-a960-320221937e0b"],["Tokio Ramen","Japanische Ramen-Nudeln mit geschmortem Chashu Schweinebraten, Lava-Ei, Narutomaki, Mais und Gemüse","16,30","29ec4e9d-4f39-4436-9eee-72904834454a"],["Yasai Miso","Vegetarische Miso-Ramen mit Nudeln, gebratenem Gemüse, Tofu, Lava-Ei, Mais und Sesam","14,50","278a4521-7864-49ef-9f29-f5bf47447180"],["Osaka","Japanische Udon-Nudeln mit gebratenem Seitan in einer Miso-Brühe, mit Pak Choi, Sojasprossen, Mais und Frühlingszwiebeln","14,50","bd897ab9-4f66-4807-84a9-2f1136d2e9bb"]],
+"Nigiri":[["Sake Nigiri","Lachs","4,60","a5679a42-f3ec-4826-8911-74d27f06b2a7"],["Maguro Nigiri","Thunfisch","4,90",""],["Inari Nigiri","Tofutasche und Sesam","4,50",""],["Tamago Nigiri","Eieromelette","4,80",""],["Ebi Nigiri","Gekochte Riesengarnele","5,40",""],["Unagi Nigiri","Gegrillter Aal","5,20",""],["Avocado Nigiri","","4,00",""],["Flambierte Lachs Nigiri","mit Tobiko","5,60",""]],
+"Sashimi":[["Sashimi Sake","Lachs (6 Scheiben)","12,00",""],["Sashimi Maguro","Thunfisch (6 Scheiben)","13,50",""],["Sashimi Maguro Toro","Lachs und Thunfisch (6 Scheiben)","13,00",""],["Salmon Tataki","","16,50","4447a8ed-f807-441f-a9f7-28a2df2e314a"],["Tuna Tataki","","19,00","1464ac2f-fa3b-4c7a-8d97-ef2e25436c29"]],
+"Maki":[["Sake Maki","Lachs","5,20","48391751-39d8-4ea2-92bb-f92e1198ce05"],["Sake Avocado Maki","Lachs und Avocado","5,40",""],["Tekka Maki","Thunfisch","5,40",""],["Tekka Avocado Maki","Thunfisch und Avocado","5,60",""],["Ebi Maki","Gekochte Riesengarnele","5,90",""],["Asparagus Maki","Grüner Spargel und Sesam","4,60",""],["Kappa Maki","Gurke und Sesam","4,40",""],["Avocado Maki","Avocado und Sesam","4,80",""],["Rocket Maki","Rucola und Frischkäse","4,60",""],["Satsu Maki","Süßkartoffel, Avocado und Sesam","4,80",""],["Kampo Maki","Japanischer Kürbis und Sesam","4,80",""],["Oshinko Maki","Japanischer Rettich und Sesam","4,80",""],["Tamago Maki","Japanisches Eieromelette","4,80",""]],
+"Inside-Out":[["Sake Inside-Out","Lachs, Avocado, Gurke, Tobiko und Sesam","5,00",""],["Maguro Inside-Out","Thunfisch, Avocado, Gurke, Tobiko und Sesam","5,40",""],["California Inside-Out","Krebs-Surimi, Avocado, Gurke, Tobiko und Sesam","4,60",""],["Yakitori Inside-Out","Hühnerfleisch, Avocado, Gurke, Sesam, Spezial-Sauce","5,40",""],["Rocket Inside-Out","Rucola, Gurke, Frischkäse und Sesam","4,60",""],["Vegeta Inside-Out","Grüner Spargel, Gurke, Avocado und Sesam","4,80",""],["Tuna Inside-Out","Gekochter Thunfisch, Chili-Mayo, Gurke und Sesam","5,00",""]],
+"Crunchy Rolls":[["Gebackener Salmon","Gebackene Rolle mit Lachs, Avocado und Frischkäse","7,50","a5cd2d14-f084-4675-855d-a613dcdfa1f6"],["Gebackenes Chicken","Gebackene Rolle mit Hühnerfleisch, Avocado und Frischkäse","7,50","823d4a5f-df30-4b03-96a2-853fe4cc0426"],["Gebackene Ebi","Gebackene Rolle mit Garnele, Avocado und Frischkäse","7,50","3edbbeb0-140f-4cd9-ba00-3704c7810e09"],["Gebackene Tuna","Gebackene Rolle mit Thunfisch, Avocado und Frischkäse","7,50","2b9eecc9-1205-4c56-bafa-cadb000d9a7b"],["Gebackene Vegeta","Gebackene Rolle mit Avocado, Kürbis, Frischkäse und Rettich","7,20","3bf8e351-cf0b-4fa8-adf0-5079405422c6"]],
+"Style Sushi":[["Lachs Oshi","Sushi-Reis, flambierter Lachs und japanische Mayo-Sesam-Sauce","8,70","7208af01-1150-45d8-9497-41b6ca416acf"],["Noosou Roll","Gebackene Garnele, Gurke, Spicy-Mayo, Sesam, flambierter Lachs und Teriyaki-Sauce","7,50","2642c1da-f587-4229-a27b-c5588c9f565c"],["Ben Roll","Gebackene Garnele, flambierter Thunfisch, Gurke, Sesam, Spicy-Mayo und Teriyaki-Sauce","7,90","89435196-de71-463e-a400-92d79bdf4e12"],["Fuji Roll","Gebackene Garnele, flambiertes Rinderfilet, Gurke, Wasabi-Sesam, Spicy-Mayo und Honig-Sauce","8,70","78359d3c-6a06-4d2d-80f5-7cf5066a87d3"],["Ebi Tempura Roll","Gebackene Garnele, Gurke, Tobiko und Sesam","7,20","0d0a9fc2-3c15-4dd2-adf4-2e9407fe8669"],["Tam An Roll","California Roll, Frischkäse, flambierter Lachs, Sesam und Teriyaki-Sauce","7,20","dbf03d3b-a75d-444c-8dbb-4be109f6ff1d"],["Chiba Roll","Gebackene Avocado mit Lauchzwiebeln, flambiertem Rinderfilet, Wasabi-Sesam und Honig-Sauce","7,70","70592f17-32b4-4138-87c4-c121795a71aa"],["Chicken Roll","Gegrilltes Chicken Teriyaki, Gurke, Spicy-Mayo und gebackene Fadennudeln","6,50","4356a588-8d1c-4a21-9a63-8bc929e6043a"],["Rainbow Roll","","7,90","01e2775d-cc2a-4419-b4c5-1ab3221527d0"],["Taiyo Roll","California Roll, Frischkäse und Sesam, umwickelt mit Lachs","7,20","27837444-3486-4c92-8059-6e7e328284b5"],["Red Dragon","Lachs, Avocado, Frischkäse, Gurke und Sesam, umwickelt mit Thunfisch","7,90","ca381e02-9795-4f9e-ae8a-513797460d23"],["Sakura Roll","Lachs, Avocado, Gurke, Avocadocreme und knusprige Chips","6,70","2de251b1-ff8a-4291-b65e-f594418d859f"],["Ikesu Roll","Gegrillter Aal, Avocado, Gurke, Lachs, Spicy-Mayo und Unagi-Sauce","7,70","3b9f51d1-4f3f-4ed3-8668-ef2dd196a2bf"],["Dynamite Tuna Roll","Thunfisch, Gurke, Spicy-Mayo, Sesam und gebackene Fadennudeln","7,20","049d626f-ee1e-4712-ae79-67d66b5698ff"],["Scallop Tower","California Roll, Frischkäse, flambierte Jakobsmuschel, Schnittlauch und Trüffelpilze","11,50","dd53417a-34bf-4fd5-95e9-e5c46a32255b"],["Spicy Lachs Tartar","Gebackene Avocado, Lauchzwiebeln, Tobiko, Lachs-Tartar und Wasabi-Sesam","8,20","5b7baf22-e384-4016-aaf2-606fcb887e48"],["Spicy Tuna Tartar","Gebackene Avocado, Lauchzwiebeln, Tobiko, Thunfisch-Tartar und Wasabi-Sesam","8,70","e409a724-2791-4dfe-8044-47f6f4c0861f"],["Buddha Roll","Spargel, Gurke, Avocado und Sesam-Sauce","6,70","413539b5-d08d-45ff-bb57-fb0a5c99b361"],["Tam My Roll","Gebackene Avocado, Lauchzwiebeln, Blattspinat, Sesam und Unagi-Sauce","6,20","9f1893fe-44aa-4dd7-aec1-8cae41b6298a"],["Tuna Friends Roll","Gekochter Thunfisch, Spicy-Mayo, Gurke, gebackene Fadennudeln, Lachs-Tartar","7,90","5721bb90-004e-46ba-b8d8-81caaca92694"]],
+"Bento Sushi":[["Bento Nr. 1","8 Kappa Maki, 8 Avocado Maki, 2 Inari Nigiri, 2 Tamago Nigiri","16,90","197e9e31-5891-423a-89ab-8b9afe84f6cf"],["Bento Nr. 2","8 Kappa Maki, 8 Avocado Maki, 5 Vegeta Inside Out","12,90","b215b22d-a73e-4068-87c9-5f645962dc22"],["Bento Nr. 3","8 Kappa Maki, 5 Tam My Rolls, 8 gebackene Vegeta","15,90","2b7cb3c9-e71d-456f-8ab6-4bc425726b2b"],["Bento Nr. 4","8 Sake Maki, 8 Tekka Maki, 5 California Inside Out","14,90","1c1193c6-6b1b-4508-973f-1c9bfe16c5a9"],["Bento Nr. 5","8 Sake Maki, 5 California Inside Out, 5 Sake Inside Out","14,20","e6523f2d-47e6-4528-bd41-736ba9b07090"],["Bento Nr. 6","8 Sake Maki, 5 California Inside Out, 2 Nigiri (Sake, Maguro)","14,20","94a0e846-03f1-4d7a-b7a5-23f3ba916375"],["Bento Nr. 7","8 Sake Maki, 8 Tekka Maki, 4 Nigiri (2 Sake, 2 Maguro)","17,90","7ca56365-14d5-43a8-ad51-1bf8bba7efd3"],["Bento Nr. 8","8 Sake Maki, 5 California Inside Out, 4 Nigiri (2 Sake, 2 Maguro)","16,90","4ac5a436-18e4-448b-9f10-7d9f09d4effe"],["Bento Nr. 9","5 Ebi Tempura Rolls, 5 California Inside Out, 8 gebackene Lachs","16,50","c386679f-ed25-4b64-b9a8-9ba07a8ab11f"],["Bento Nr. 10","5 Ebi Tempura Rolls, 2 Ebi Tempura, 8 gebackene Lachs","19,50","8d9a12b2-21f9-4333-8d0a-0906ad98a02f"],["Bento Nr. 11","8 Sake Maki, 5 California Inside Out, 5 Sake Inside Out, 2 Nigiri (1 Sake, 1 Maguro), 8 gebackene Lachs","26,90","999a24b1-65bd-4768-8509-8cfebf62a503"],["Bento Nr. 12","8 Sake Maki, 5 California Inside Out, 4 Nigiri (2 Sake, 2 Maguro), 5 Ebi Tempura Rolls","21,90","6473eeaa-3221-4609-b912-fa12e81a072c"],["Bento Nr. 13","5 Chicken Rolls, 5 Yakitori Inside Out, 5 Ebi Tempura Rolls, 8 gebackene Lachs","21,90","159e2355-b990-40f5-9d0b-411717271bcd"],["Bento Nr. 14","5 Sakura Rolls, 5 Dynamite Tuna Rolls, 4 Nigiri (2 Sake, 2 Maguro), 6 Sashimi (Lachs, Thunfisch)","36,00","23839abf-f0ed-43a4-8a7a-a2891a41ad1e"],["Bento Nr. 15","8 Sake Maki, 5 California Inside Out, 5 Sake Inside Out, 5 Ebi Tempura Rolls, 2 Ebi Tempura, 8 gebackene Lachs","30,90","7f1d54da-137c-47a8-8768-8e67a17df80f"],["Bento Nr. 16","8 Sake Maki, 8 Nigiri (4 Sake, 4 Maguro), 8 Tekka Maki, 5 Sakura Rolls, 5 Red Dragon","39,90","6c35c9a6-4efe-4cdc-b94b-5172620c0e5f"],["Bento Nr. 17","8 Sake Maki, 4 Nigiri (2 Sake, 2 Maguro), 8 Tekka Maki, 5 California Inside Out, 5 Sake Inside Out, 5 Ebi Tempura Rolls, 8 gebackene Lachs","39,00","93653f5e-4a1d-4754-89da-d6571a8d8aff"],["Bento Nr. 18","5 Lachs Oshi, 5 Tam An Roll, 8 geb. Lachs, 5 Noosou Roll, 5 Spicy Lachs Tatar, 5 Tuna Friends Roll, 5 Chiba Roll","50,00","397e3e4e-7155-4078-a028-8da0bd2b564d"]],
+"Desserts":[["Panna Coco","","6,90",""],["Mango Mochi","","5,90",""],["Strawberry Mochi","","5,90",""],["Chocolate Mochi","","5,90",""]],
+"Extras":[["Bratnudeln statt Reisbeilage","","5,00",""],["Cashewnüsse","","2,50",""],["Chili Mayo","","1,00",""],["Erdnüsse","","1,50",""],["Erdnuss Sauce","","4,00",""],["Hoisin-Soja Sauce","","4,00",""],["Kokos Curry Sauce Extra","","4,00",""],["Lava Ei","","1,50",""],["Portion Reis","","3,00",""],["Süß Saure Sauce","","4,00",""],["Teriyaki Dip","","1,00",""]]
+};
+const CAT_META={
+ "Vorspeisen":{icon:'🥟',kind:'bowl',en:'Starters',fill:'#8fbf5a'},
+ "Bowls":{icon:'🥗',kind:'bowl',en:'Bowls',fill:'#f28b3a'},
+ "Curries":{icon:'🍛',kind:'bowl',en:'Curries',fill:'#e8b74d'},
+ "Nudeln":{icon:'🍜',kind:'noodle',en:'Noodles',fill:'#f2c35a'},
+ "Klassiker":{icon:'🍗',kind:'bowl',en:'Classics',fill:'#d84b57'},
+ "Asiatisch":{icon:'🥢',kind:'bowl',en:'Asian dishes',fill:'#e8622a'},
+ "Ramen":{icon:'🍲',kind:'noodle',en:'Ramen',fill:'#f2c35a'},
+ "Nigiri":{icon:'🍣',kind:'platter',en:'Nigiri',fill:'#f28b3a'},
+ "Sashimi":{icon:'🐟',kind:'platter',en:'Sashimi',fill:'#d84b57'},
+ "Maki":{icon:'🍣',kind:'rolls',en:'Maki',fill:'#f28b3a'},
+ "Inside-Out":{icon:'🍣',kind:'rolls',en:'Inside-Out',fill:'#8fbf5a'},
+ "Crunchy Rolls":{icon:'🔥',kind:'rolls',en:'Crunchy Rolls',fill:'#e8b74d'},
+ "Style Sushi":{icon:'✨',kind:'gunkan',en:'Style Sushi',fill:'#e5a63b'},
+ "Bento Sushi":{icon:'🍱',kind:'gunkan',en:'Bento Sets',fill:'#d84b57'},
+ "Desserts":{icon:'🍡',kind:'dessert',en:'Desserts',fill:'#e9a0c8'},
+};
+const MENU={};let __n=0;
+for(const [cat,items] of Object.entries(RAW)){if(cat==='Extras')continue;const m=CAT_META[cat];
+ MENU[cat]=items.map(([n,d,p,img],i)=>({id:'p'+(__n++),name:n,desc:d,price:parseFloat(p.replace(',','.')),img:img?CLOUD+img+'.webp':'',kind:m.kind,fill:m.fill,count:m.kind==='gunkan'?11:m.kind==='rolls'?9:8}));}
+const ADDS=[
+ {id:'chili',name:{de:'Chili Mayo',en:'Chili mayo'},price:1.0,svg:`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#3a1b1b"/><circle cx="20" cy="20" r="11" fill="#e8562a"/><ellipse cx="16" cy="16" rx="4" ry="2.5" fill="#ff9a6e" opacity=".7"/></svg>`},
+ {id:'teri',name:{de:'Teriyaki Dip',en:'Teriyaki dip'},price:1.0,svg:`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#111427"/><circle cx="20" cy="20" r="11" fill="#2a1b12"/><ellipse cx="16" cy="16" rx="4" ry="2.5" fill="#5a3a26" opacity=".6"/></svg>`},
+ {id:'egg',name:{de:'Lava Ei',en:'Lava egg'},price:1.5,svg:`<svg viewBox="0 0 40 40"><ellipse cx="20" cy="21" rx="13" ry="15" fill="#f7f3ea"/><path d="M8 21a12 15 0 0 0 24 0z" fill="#f7f3ea"/><ellipse cx="20" cy="24" rx="7" ry="6" fill="#f2a83a"/><ellipse cx="18" cy="22" rx="3" ry="2" fill="#ffd08a" opacity=".8"/></svg>`},
+ {id:'nuts',name:{de:'Erdnüsse',en:'Peanuts'},price:1.5,svg:`<svg viewBox="0 0 40 40"><g fill="#d9a35a"><ellipse cx="14" cy="18" rx="6" ry="4" transform="rotate(-30 14 18)"/><ellipse cx="25" cy="15" rx="6" ry="4" transform="rotate(20 25 15)"/><ellipse cx="20" cy="26" rx="6" ry="4" transform="rotate(-10 20 26)"/></g><g fill="#b47a3a" opacity=".5"><ellipse cx="14" cy="18" rx="2" ry="1"/><ellipse cx="25" cy="15" rx="2" ry="1"/><ellipse cx="20" cy="26" rx="2" ry="1"/></g></svg>`},
+];
+
+const SIZES=[{k:'S',d:-3},{k:'M',d:0},{k:'L',d:5}];
+const fmt=v=>v.toFixed(2).replace('.',',');
+
+/* ================= artwork ================= */
+let seed=7;const rnd=()=>{seed=(seed*9301+49297)%233280;return seed/233280;};
+function roll(x,y,r,d,alt){const fill=alt?'#f28b3a':d.fill;return `<g><circle cx="${x}" cy="${y}" r="${r}" fill="#1f2a1e"/><circle cx="${x}" cy="${y}" r="${r*.82}" fill="#f7f3ea"/><circle cx="${x}" cy="${y}" r="${r*.42}" fill="${fill}"/><circle cx="${x-r*.18}" cy="${y-r*.18}" r="${r*.14}" fill="#8fbf5a"/></g>`;}
+function plateSVG(d,extras){
+  seed=d.id.charCodeAt(1)*31+7;let items='';const cx=110,cy=110;
+  if(d.kind==='rolls'){for(let i=0;i<d.count;i++){let x=cx,y=cy;if(i>0){const a=(i-1)/(d.count-1)*Math.PI*2-Math.PI/2;x=cx+Math.cos(a)*48;y=cy+Math.sin(a)*48;}items+=roll(x,y,20,d);}}
+  else if(d.kind==='platter'){for(let i=0;i<d.count;i++){const a=i/d.count*Math.PI*2;const r=i%2?38:56;items+=roll(cx+Math.cos(a)*r,cy+Math.sin(a)*r,15,d,i%3===0);}items+=`<rect x="${cx-4}" y="${cy-34}" width="8" height="68" rx="4" fill="#d9c9a5" transform="rotate(-35 ${cx} ${cy})"/>`;}
+  else if(d.kind==='gunkan'){for(let i=0;i<d.count;i++){const a=Math.PI*0.75+i/(d.count-1)*Math.PI*1.35;const r=i%2?46:62;items+=roll(cx+Math.cos(a)*r,cy+Math.sin(a)*r,13,d,i%2===0);}
+    items+=`<circle cx="${cx+6}" cy="${cy-2}" r="16" fill="#1a1d2e"/><circle cx="${cx+6}" cy="${cy-2}" r="12" fill="#2a1b12"/><circle cx="${cx+42}" cy="${cy+18}" r="14" fill="#e0342b"/><circle cx="${cx+30}" cy="${cy+40}" r="7" fill="#8fbf5a"/>`;
+    for(let i=0;i<70;i++){const a=rnd()*6.28,r=30+rnd()*60;items+=`<circle cx="${cx+Math.cos(a)*r}" cy="${cy+Math.sin(a)*r}" r="1.2" fill="#f7f3ea" opacity=".7"/>`;}}
+  else if(d.kind==='bowl'){items=`<circle cx="110" cy="112" r="78" fill="#3a2a22"/><circle cx="110" cy="112" r="66" fill="${d.fill}"/><ellipse cx="92" cy="98" rx="22" ry="12" fill="#f7f3ea" opacity=".85"/><circle cx="128" cy="120" r="14" fill="#8fbf5a"/><circle cx="100" cy="132" r="10" fill="#e0342b"/><path d="M60 60l40 40M140 60l-40 40" stroke="#d9c9a5" stroke-width="5" stroke-linecap="round"/>`;}
+  else if(d.kind==='noodle'){items=`<circle cx="110" cy="112" r="78" fill="#3a2a22"/><circle cx="110" cy="112" r="66" fill="#8a4a2a"/>${[...Array(9)].map((_,i)=>`<path d="M${60+i*12} 80 q10 30 0 60" stroke="${d.fill}" stroke-width="5" fill="none" stroke-linecap="round"/>`).join('')}<ellipse cx="128" cy="96" rx="16" ry="10" fill="#f7f3ea"/><ellipse cx="128" cy="96" rx="8" ry="5" fill="#f2a83a"/><circle cx="86" cy="130" r="10" fill="#8fbf5a"/>`;}
+  else if(d.kind==='drink'){items=`<rect x="80" y="40" width="60" height="140" rx="18" fill="${d.fill}"/><rect x="86" y="50" width="14" height="110" rx="7" fill="#fff" opacity=".35"/><rect x="92" y="28" width="36" height="22" rx="6" fill="#f7f3ea"/><circle cx="110" cy="150" r="60" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="8"/>`;}
+  else if(d.kind==='dessert'){items=`<circle cx="80" cy="110" r="30" fill="${d.fill}"/><circle cx="130" cy="95" r="30" fill="#f7d36e"/><circle cx="118" cy="140" r="26" fill="#f7f3ea"/><circle cx="74" cy="100" r="8" fill="#fff" opacity=".35"/><circle cx="124" cy="86" r="8" fill="#fff" opacity=".35"/>`;}
+  let ex='';(extras||[]).forEach((id,i)=>{const a=ADDS.find(x=>x.id===id);const inner=a.svg.replace(/<svg[^>]*>|<\/svg>/g,'');ex+=`<g transform="translate(${i?52:140} 154) scale(.7)">${inner}</g>`;});
+  return `<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="g${d.id}" cx="40%" cy="35%"><stop offset="0" stop-color="#2a1f1a"/><stop offset="1" stop-color="#0d0908"/></radialGradient></defs><circle cx="110" cy="110" r="108" fill="url(#g${d.id})"/><circle cx="110" cy="110" r="106" fill="none" stroke="rgba(255,255,255,.06)"/><g>${items}</g>${d.img?`<clipPath id="c${d.id}"><circle cx="110" cy="110" r="100"/></clipPath><image href="${d.img}" x="10" y="10" width="200" height="200" clip-path="url(#c${d.id})" preserveAspectRatio="xMidYMid slice" onerror="this.remove()"/><circle cx="110" cy="110" r="100" fill="none" stroke="rgba(0,0,0,.35)" stroke-width="6"/>`:''}<g class="extras">${ex}</g></svg>`;
+}
+
+/* ================= stage scaling ================= */
+const stage=document.getElementById('stage');
+function fit(){const s=Math.min(innerWidth/1080,innerHeight/1920);stage.style.transform=`scale(${s})`;stage.style.marginLeft=(innerWidth-1080*s)/2+'px';stage.style.position='absolute';stage.style.left='0';stage.style.top=(innerHeight-1920*s)/2+'px';}
+fit();addEventListener('resize',fit);
+const sp=document.getElementById('speckles');for(let i=0;i<60;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.transform=`scale(${.5+Math.random()})`;sp.appendChild(s);}
+
+/* ================= state ================= */
+let mode='dinein',cat='Style Sushi',active=0,angle=0,cart=[],orderNo=41;
+let sel={size:'M',adds:new Set(),qty:1,item:null};
+
+/* ================= i18n apply ================= */
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i]').forEach(el=>{const v=t(el.dataset.i);if(typeof v==='string')el.textContent=v;});
+  document.querySelectorAll('.lang').forEach(box=>{box.innerHTML=['de','en'].map(l=>`<button class="${l===lang?'on':''}" data-l="${l}">${l.toUpperCase()}</button>`).join('');});
+  document.getElementById('modeLabel').textContent=t(mode);
+  document.getElementById('cartModeLabel').textContent=t(mode);
+  buildCats();setInfo(active,false);renderSizes();renderAdds();renderCart();
+}
+document.addEventListener('click',e=>{const b=e.target.closest('.lang button');if(b){lang=b.dataset.l;applyLang();}});
+
+/* ================= screens ================= */
+const screens=[...document.querySelectorAll('.screen')];
+function go(id){screens.forEach(s=>s.classList.toggle('on',s.id===id));resetIdle();if(id==='menu')layout(true);}
+document.getElementById('attract').addEventListener('click',()=>go('mode'));
+document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;document.getElementById('modeLabel').textContent=t(mode);document.getElementById('cartModeLabel').textContent=t(mode);go('menu');}));
+document.getElementById('menuBack').addEventListener('click',()=>go('mode'));
+
+/* ================= categories ================= */
+function catLabel(k){return lang==='en'?CAT_META[k].en:k;}
+function buildCats(){const c=document.getElementById('cats');c.innerHTML=Object.keys(MENU).map(k=>`<button class="cat ${k===cat?'on':''}" data-c="${k}"><span>${CAT_META[k].icon}</span>${catLabel(k)}</button>`).join('');const on=c.querySelector('.on');on&&on.scrollIntoView({inline:'center',block:'nearest'});}
+document.getElementById('cats').addEventListener('click',e=>{const b=e.target.closest('.cat');if(!b||b.dataset.c===cat)return;cat=b.dataset.c;buildCats();buildRing();});
+
+/* ================= ring ================= */
+const ring=document.getElementById('ring');let nodes=[],N=0,STEP=0;
+function buildRing(){
+  ring.innerHTML='';const list=MENU[cat];N=list.length;STEP=Math.PI/4.2;angle=0;active=0;
+  nodes=list.map((d,i)=>{const el=document.createElement('div');el.className='dish';el.innerHTML=plateSVG(d);el.dataset.i=i;ring.appendChild(el);return el;});
+  layout(false);requestAnimationFrame(()=>nodes.forEach(n=>n.classList.add('snap')));setInfo(0,false);
+  document.getElementById('dots').innerHTML=list.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join('');
+}
+const G={cx:540,cy:1270,R:720};
+function layout(snap){
+  nodes.forEach((el,i)=>{
+    const span=N*STEP;let raw=i*STEP+angle;raw=((raw+span/2)%span+span)%span-span/2; // wrap around ring
+    const a=-Math.PI/2+raw;
+    const far=Math.abs(raw)>STEP*2.3;
+    const closeness=far||Math.abs(raw)>Math.PI/2?0:Math.cos(raw);
+    const s=0.38+closeness*0.62;
+    const x=G.cx+Math.cos(a)*G.R,y=G.cy+Math.sin(a)*G.R;
+    el.classList.toggle('snap',!!snap&&!el.dataset.jump);delete el.dataset.jump;
+    el.style.transform=`translate(${x}px,${y}px) scale(${s})`;
+    el.style.opacity=far?0:Math.max(.2,closeness*1.2);el.style.pointerEvents=far?'none':'auto';el.style.zIndex=Math.round(s*10);
+  });
+}
+const nearest=()=>{const k=Math.round(-angle/STEP);return ((k%N)+N)%N;};
+function snapTo(k){angle=-k*STEP;active=k;layout(true);setInfo(k,true);}
+let drag=null;
+ring.addEventListener('pointerdown',e=>{drag={x:e.clientX,a:angle,moved:false,t:e.target.closest('.dish')};resetIdle();});
+addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x;if(Math.abs(dx)>6)drag.moved=true;const scale=stage.getBoundingClientRect().width/1080;angle=drag.a+dx/scale/1080*STEP*1.5;layout(false);const k=nearest();if(k!==active){active=k;setInfo(k,false);}});
+addEventListener('pointerup',()=>{if(!drag)return;const d=drag;drag=null;if(!d.moved&&d.t){const k=+d.t.dataset.i;if(k===active)openDetail(MENU[cat][k]);else snapTo(k);}else snapTo(nearest());});
+function setInfo(k,anim){
+  const d=MENU[cat][k];if(!d)return;const n=document.getElementById('mName'),ds=document.getElementById('mDesc');
+  const set=()=>{n.textContent=d.name;ds.textContent=d.desc;};
+  if(anim){n.style.opacity=0;ds.style.opacity=0;setTimeout(()=>{set();n.style.opacity=1;ds.style.opacity=1;},150);}else set();
+  const p=document.getElementById('mPrice');if(p.textContent!==fmt(d.price)){p.textContent=fmt(d.price);p.classList.remove('bump');void p.offsetWidth;p.classList.add('bump');}
+  [...document.getElementById('dots').children].forEach((x,i)=>x.classList.toggle('on',i===k));
+}
+
+/* ================= detail ================= */
+function openDetail(d){
+  sel={size:'M',adds:new Set(),qty:1,item:d};
+  document.getElementById('dTitle').textContent=d.name;
+  document.getElementById('dTag').textContent=catLabel(cat);
+  document.getElementById('dDesc').textContent=d.desc;
+  renderPlate(d,[]);document.getElementById('dPlate').classList.remove('back');
+  document.querySelector('.sizes').style.display='none';
+  document.querySelector('.adds').style.display=d.kind==='dessert'?'none':'block';
+  renderSizes();renderAdds();updDetail();go('detail');
+}
+function unitPrice(){let p=sel.item.price;sel.adds.forEach(id=>p+=ADDS.find(a=>a.id===id).price);return p;}
+function updDetail(){
+  const p=document.getElementById('dPrice'),v=fmt(unitPrice());
+  if(p.textContent!==v){p.textContent=v;p.classList.remove('bump');void p.offsetWidth;p.classList.add('bump');}
+  document.getElementById('qty').textContent=sel.qty;
+  document.getElementById('addTot').textContent='€'+fmt(unitPrice()*sel.qty);
+}
+function renderSizes(){document.getElementById('sizes').innerHTML=SIZES.map((s,i)=>`<button class="size ${s.k===sel.size?'on':''}" data-s="${s.k}">${s.k}<small>${t('size')[i]}${s.d?` · ${s.d>0?'+':'−'}€${fmt(Math.abs(s.d))}`:''}</small></button>`).join('');}
+document.getElementById('sizes').addEventListener('click',e=>{const b=e.target.closest('.size');if(!b)return;sel.size=b.dataset.s;renderSizes();updDetail();});
+function renderAdds(){document.getElementById('addRow').innerHTML=ADDS.map(a=>`<button class="add ${sel.adds.has(a.id)?'on':''}" data-id="${a.id}" ${!sel.adds.has(a.id)&&sel.adds.size>=2?'disabled':''}>${a.svg}<span>${a.name[lang]}</span><em>+€${fmt(a.price)}</em></button>`).join('');}
+document.getElementById('addRow').addEventListener('click',e=>{
+  const b=e.target.closest('.add');if(!b)return;const id=b.dataset.id;
+  if(sel.adds.has(id)){sel.adds.delete(id);redrawExtras();}else{if(sel.adds.size>=2)return;sel.adds.add(id);fly(b,id);}
+  renderAdds();updDetail();
+});
+function boxSVG(d){return `<div class="box"><span class="logo-nsu" style="font-size:64px"><span class="a">noosou</span><span class="b">fresh asian kitchen</span></span><div class="brand" style="font-size:20px;letter-spacing:3px;color:var(--muted)">${d.name.toUpperCase()}</div><div class="meta">TAKE AWAY</div></div>`;}
+function renderPlate(d,extras){const el=document.getElementById('dPlate');const was=el.classList.contains('back');el.innerHTML=`<div class="flip"><div class="face a">${plateSVG(d,extras)}</div><div class="face b">${boxSVG(d)}</div></div>`;el.classList.toggle('back',was);}
+function redrawExtras(){renderPlate(sel.item,[...sel.adds]);}
+document.getElementById('dPlate').addEventListener('click',()=>{document.getElementById('dPlate').classList.toggle('back');resetIdle();});
+function fly(btn,id){
+  const a=ADDS.find(x=>x.id===id),k=document.getElementById('kiosk'),pr=k.getBoundingClientRect(),sc=pr.width/1080;
+  const br=btn.getBoundingClientRect(),dr=document.getElementById('dPlate').getBoundingClientRect();
+  const c=document.createElement('div');c.className='fly';c.innerHTML=a.svg;k.appendChild(c);
+  const slot=sel.adds.size-1;
+  const x0=(br.left-pr.left+br.width/2)/sc-35,y0=(br.top-pr.top+br.height*.4)/sc-35;
+  const x1=(dr.left-pr.left)/sc+680*(slot?0.30:0.70)-35,y1=(dr.top-pr.top)/sc+680*0.76-35;
+  const dur=matchMedia('(prefers-reduced-motion: reduce)').matches?1:700,t0=performance.now();
+  (function f(tm){const p=Math.min(1,(tm-t0)/dur),e=1-Math.pow(1-p,3);
+    c.style.transform=`translate(${x0+(x1-x0)*e}px,${y0+(y1-y0)*e-Math.sin(p*Math.PI)*260}px) scale(${1-.3*e}) rotate(${e*50}deg)`;
+    if(p<1)requestAnimationFrame(f);else{c.remove();redrawExtras();}})(t0);
+}
+document.getElementById('qPlus').addEventListener('click',()=>{if(sel.qty<20)sel.qty++;updDetail();});
+document.getElementById('qMinus').addEventListener('click',()=>{if(sel.qty>1)sel.qty--;updDetail();});
+document.getElementById('detBack').addEventListener('click',()=>go('menu'));
+document.getElementById('addToCart').addEventListener('click',()=>{
+  const key=sel.item.id+sel.size+[...sel.adds].sort().join();
+  const ex=cart.find(l=>l.key===key);
+  if(ex)ex.qty+=sel.qty;else cart.push({key,item:sel.item,size:sel.size,adds:[...sel.adds],qty:sel.qty,unit:unitPrice()});
+  updCartSum(true);toast(`${sel.item.name} × ${sel.qty} ${t('added')}`);go('menu');
+});
+
+/* ================= cart ================= */
+const cartTotal=()=>cart.reduce((s,l)=>s+l.unit*l.qty,0);
+const cartCount=()=>cart.reduce((s,l)=>s+l.qty,0);
+function updCartSum(pop){const c=document.getElementById('cartCnt');c.querySelector('b').textContent=cartCount();document.getElementById('cartTot').textContent='€'+fmt(cartTotal());document.getElementById('toCart').disabled=!cart.length;if(pop){c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop');}}
+document.getElementById('toCart').addEventListener('click',()=>{renderCart();go('cart');});
+document.getElementById('cartBack').addEventListener('click',()=>go('menu'));
+document.getElementById('addMore').addEventListener('click',()=>go('menu'));
+function renderCart(){
+  const L=document.getElementById('cartList');
+  if(!cart.length){L.innerHTML=`<div class="empty">${t('empty')}</div>`;}
+  else L.innerHTML=cart.map((l,i)=>`<div class="line" data-i="${i}"><div class="thumb">${plateSVG(l.item,l.adds)}</div><div class="txt"><b>${l.item.name}</b><span>${l.adds.length?l.adds.map(a=>ADDS.find(x=>x.id===a).name[lang]).join(', '):''}</span></div><div class="qty"><button data-d="-1">−</button><span>${l.qty}</span><button data-d="1">+</button></div><div class="lp">€${fmt(l.unit*l.qty)}</div></div>`).join('');
+  const tot=cartTotal(),vat=tot-tot/1.07;
+  document.getElementById('summary').innerHTML=`<div><span>${t('subtotal')}</span><span>€${fmt(tot)}</span></div><div><span>${t('vat')} 7 %</span><span>€${fmt(vat)}</span></div><div class="grand"><span>${t('total')}</span><span>€${fmt(tot)}</span></div>`;
+  document.getElementById('toPay').disabled=!cart.length;updCartSum(false);
+}
+document.getElementById('cartList').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;const line=b.closest('.line'),i=+line.dataset.i,l=cart[i];l.qty+=+b.dataset.d;
+  if(l.qty<=0){line.classList.add('out');setTimeout(()=>{cart.splice(i,1);renderCart();},300);}else renderCart();
+});
+
+/* ================= payment ================= */
+let payTimer=[];
+const clearPay=()=>{payTimer.forEach(clearTimeout);payTimer=[];};
+const after=(ms,fn)=>payTimer.push(setTimeout(fn,ms));
+function showPayStage(id){document.querySelectorAll('.paystage').forEach(s=>s.classList.toggle('on',s.id===id));}
+document.getElementById('toPay').addEventListener('click',()=>{const v='€'+fmt(cartTotal());['payAmt','payAmt2','payAmt3'].forEach(i=>document.getElementById(i).textContent=v);showPayStage('payChoose');go('pay');});
+document.getElementById('payBack').addEventListener('click',()=>{clearPay();go('cart');});
+document.querySelectorAll('.pm').forEach(b=>b.addEventListener('click',()=>b.dataset.pay==='card'?payCard():payQR()));
+document.getElementById('cardCancel').addEventListener('click',()=>{clearPay();showPayStage('payChoose');});
+document.getElementById('qrCancel').addEventListener('click',()=>{clearPay();showPayStage('payChoose');});
+function payCard(){
+  clearPay();showPayStage('payCard');const st=document.getElementById('cardStatus'),pg=document.getElementById('cardProg'),rd=document.getElementById('reader');rd.classList.remove('done');
+  st.textContent=t('holdcard');pg.style.width='0';
+  after(2600,()=>{st.textContent=t('reading');pg.style.width='40%';});
+  after(4200,()=>{st.textContent=t('auth');pg.style.width='80%';rd.classList.add('done');});
+  after(5600,()=>{pg.style.width='100%';success();});
+}
+function payQR(){
+  clearPay();showPayStage('payQR');document.getElementById('qrSvg').innerHTML=fakeQR();const st=document.getElementById('qrStatus'),pg=document.getElementById('qrProg');
+  st.textContent=t('scanqr');pg.style.width='0';
+  after(3500,()=>{st.textContent=t('waiting');pg.style.width='55%';});
+  after(6500,()=>{st.textContent=t('confirmed');pg.style.width='100%';});
+  after(7200,success);
+}
+function fakeQR(){seed=cartTotal()*100|0;let r='';const n=29;for(let y=0;y<n;y++)for(let x=0;x<n;x++){const fp=(x<8&&y<8)||(x>=n-8&&y<8)||(x<8&&y>=n-8);let on;if(fp){const lx=x<8?x:x-(n-8),ly=y<8?y:y-(n-8);on=lx===0||lx===6||ly===0||ly===6||(lx>=2&&lx<=4&&ly>=2&&ly<=4);}else on=rnd()<.47;if(on)r+=`<rect x="${x}" y="${y}" width="1" height="1"/>`;}return `<svg viewBox="-1 -1 ${n+2} ${n+2}" fill="#241a16" shape-rendering="crispEdges">${r}</svg>`;}
+function success(){
+  showPayStage('paySuccess');
+  const svg=document.querySelector('.okmark');svg.replaceWith(svg.cloneNode(true));
+  after(2600,finish);
+}
+
+/* ================= done ================= */
+let cdTimer;
+function finish(){
+  orderNo=(orderNo%999)+1;const no=String(orderNo).padStart(3,'0');
+  document.getElementById('orderNum').textContent=no;
+  document.getElementById('doneText').textContent=t(mode==='dinein'?'done_dinein':'done_takeaway');
+  document.getElementById('receipt').innerHTML=cart.map(l=>`<div><span>${l.qty} × ${l.item.name}</span><span>€${fmt(l.unit*l.qty)}</span></div>`).join('')+`<div style="border-top:2px solid var(--faint);padding-top:16px;margin-top:16px;font-weight:700;color:#fff;font-size:30px"><span>${t('total')}</span><span>€${fmt(cartTotal())}</span></div>`;
+  go('done');
+  let s=30;const cd=document.getElementById('countdown');const tick=()=>{cd.textContent=`${t('idle')} ${s}s`;if(s--<=0){resetAll();}else cdTimer=setTimeout(tick,1000);};clearTimeout(cdTimer);tick();
+}
+document.getElementById('newOrder').addEventListener('click',resetAll);
+function resetAll(){clearTimeout(cdTimer);clearPay();cart=[];updCartSum(false);cat='Style Sushi';buildCats();buildRing();go('attract');}
+
+/* ================= idle ================= */
+let idleT,idleShow;const IDLE=60;
+function resetIdle(){clearTimeout(idleT);clearInterval(idleShow);document.getElementById('idle').classList.remove('on');
+  if(document.getElementById('attract').classList.contains('on')||document.getElementById('done').classList.contains('on'))return;
+  idleT=setTimeout(()=>{let s=15;const el=document.getElementById('idle');el.classList.add('on');el.textContent=`${t('idle')} ${s}s`;idleShow=setInterval(()=>{s--;el.textContent=`${t('idle')} ${s}s`;if(s<=0){clearInterval(idleShow);resetAll();}},1000);},(IDLE-15)*1000);}
+['pointerdown','keydown'].forEach(ev=>addEventListener(ev,resetIdle,{passive:true}));
+
+/* ================= misc ================= */
+let toastT;function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('on'),1800);}
+document.getElementById('heroPlate').innerHTML=plateSVG({...MENU['Style Sushi'][1],img:''},['chili','teri']);
+
+
+/* ================= photo import (hidden, Shift+I) ================= */
+const imp=document.getElementById('imp'),impT=document.getElementById('impT'),impLog=document.getElementById('impLog');
+addEventListener('keydown',e=>{if(e.shiftKey&&e.key==='I'){imp.style.display=imp.style.display==='none'?'block':'none';impT.focus();}});
+function b64blob(dataUrl){const [h,b]=dataUrl.split(',');const mime=h.match(/data:([^;]+)/)[1];const bin=atob(b);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new Blob([u],{type:mime});}
+impT.addEventListener('paste',async e=>{
+  e.preventDefault();const txt=(e.clipboardData||window.clipboardData).getData('text');impT.value='';
+  let arr;try{arr=JSON.parse(txt);}catch(err){impLog.textContent+='bad JSON\n';return;}
+  const assets=window.claude&&await claude.use('assets'),db=window.claude&&await claude.use('db');
+  if(!assets||!db){impLog.textContent+='assets/db unavailable\n';return;}
+  const ref=db.doc('photos/map');let snap=await ref.get();let map=snap.exists?{...snap.data()}:{};
+  for(const [cid,durl] of arr){try{if(map[cid]){impLog.textContent+='skip '+cid+'\n';continue;}const r=await assets.upload(b64blob(durl));map[cid]=r.id;impLog.textContent+='ok '+cid+' -> '+r.id+'\n';}catch(err){impLog.textContent+='FAIL '+cid+' '+(err.code||err.message)+'\n';}}
+  await ref.set(map);impLog.textContent+='saved map: '+Object.keys(map).length+' photos\n';document.title='IMPORT '+Object.keys(map).length;
+});
+
+/* init */
+applyLang();buildRing();updCartSum(false);
+</script>
+</body>
+</html>

@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>GIAZZO – Self-Order Terminal</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Barlow+Condensed:wght@500;600;700&amp;family=Barlow:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#2A2A2A;font-family:"Barlow","Segoe UI",system-ui,sans-serif;color:#111111}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{cursor:default}
+button:focus-visible{outline:3px solid #F2B233;outline-offset:2px}
+.pzs{scrollbar-width:none}
+.pzs::-webkit-scrollbar{width:0;height:0}
+@keyframes pzrot{to{transform:rotate(360deg)}}
+.pzrot{animation:pzrot 90s linear infinite}
+@keyframes pzspin{to{transform:rotate(360deg)}}
+.pzspin{animation:pzspin 1s linear infinite;transform-origin:50% 50%}
+@keyframes pzup{from{transform:translateY(60px);opacity:0}to{transform:none;opacity:1}}
+.pzup{animation:pzup .24s ease-out}
+@keyframes pzfade{from{opacity:0}to{opacity:1}}
+.pzfade{animation:pzfade .18s ease-out}
+@keyframes pzscan{0%{top:6%}50%{top:82%}100%{top:6%}}
+.pzscan{animation:pzscan 2.4s ease-in-out infinite}
+a{color:#C62A1E}a:hover{color:#9E1F15}
+.gzs{background-image:url(/_blob/184ff6764d50b9c7b99f26392b8c1bf7);background-repeat:no-repeat;display:block}
+.gzx{background-image:url(/_blob/37c616987d95a2ac28de2b17cb45a6c5);background-repeat:no-repeat;display:block;flex-shrink:0}
+</style>
+</helmet>
+<div onPointerDown="{{touch}}" style="width: 600px; height: 1066px; position: relative; overflow: hidden; background: #111111; display: flex; flex-direction: column; font-family: 'Barlow', 'Segoe UI', system-ui, sans-serif; color: #111111;">
+
+<!-- ================= START ================= -->
+<sc-if value="{{isStart}}" hint-placeholder-val="{{true}}">
+<main style="flex-grow: 1; position: relative; display: flex; flex-direction: column; padding: 28px 30px 32px; box-sizing: border-box; color: #FFFFFF; overflow: hidden;">
+<span class="pzrot gzs" style="position: absolute; left: 50%; top: 250px; width: 640px; height: 640px; margin-left: -320px; background-size: 4480px 4480px; background-position: -3200px 0px;"></span>
+<div style="position: relative; display: flex; justify-content: space-between; align-items: center;">
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 16px; letter-spacing: 3px;">GIESSEN · SCHÜTZENSTRASSE 22A</span>
+<div style="display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(255,255,255,0.12);">
+<button aria-pressed="true" style="height: 44px; min-width: 54px; border-radius: 999px; border: 0; background: #FFFFFF; color: #111111; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px;">DE</button>
+<button onClick="{{langEn}}" aria-pressed="false" style="height: 44px; min-width: 54px; border-radius: 999px; border: 0; background: none; color: #FFFFFF; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px;">EN</button>
+</div>
+</div>
+<div style="position: relative; margin-top: 34px; display: flex;">
+<img src="/_blob/1a9c3c5664cb0d65bb9b57b4f873efa8" alt="GIAZZO – the new pizza generation" style="width: 230px; height: 230px; border-radius: 6px; box-shadow: 0 20px 50px rgba(0,0,0,0.45);">
+</div>
+<div style="flex-grow: 1;"></div>
+<div style="position: relative; display: flex; flex-direction: column; gap: 12px;">
+<span style="align-self: center; padding: 10px 18px; border-radius: 999px; background: rgba(17,17,17,0.75); font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: 2px;">WIE MÖCHTEST DU ESSEN?</span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+<button onClick="{{chooseHere}}" style="height: 96px; border-radius: 20px; border: 0; background: #C62A1E; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 12px; font-family: 'Anton', 'Impact', sans-serif; font-size: 30px; letter-spacing: 1px;">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3v7a3 3 0 0 0 3 3v8M7 3v6M10 3v7a3 3 0 0 1-3 3M17 21V3c-2 0-4 3-4 7s2 4 4 4"></path></svg>HIER ESSEN</button>
+<button onClick="{{chooseTogo}}" style="height: 96px; border-radius: 20px; border: 0; background: #FFFFFF; color: #111111; display: flex; align-items: center; justify-content: center; gap: 12px; font-family: 'Anton', 'Impact', sans-serif; font-size: 30px; letter-spacing: 1px;">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12.5H6L5 8Z"></path><path d="M9 10V6.5a3 3 0 0 1 6 0V10"></path></svg>MITNEHMEN</button>
+</div>
+</div>
+</main>
+</sc-if>
+
+<!-- ================= MENU ================= -->
+<sc-if value="{{isMenu}}" hint-placeholder-val="{{false}}">
+<main style="flex-grow: 1; min-height: 0; display: flex; flex-direction: column;">
+<div style="position: relative; height: 318px; flex-shrink: 0; overflow: hidden; color: #FFFFFF;">
+<span class="gzs" style="position: absolute; right: -120px; top: 40px; width: 400px; height: 400px; background-size: 2800px 2800px; background-position: -2000px 0px;"></span>
+<div style="position: relative; display: flex; align-items: center; gap: 8px; padding: 22px 24px 0;">
+<button onClick="{{askRestart}}" style="height: 44px; padding: 0 14px; border-radius: 12px; border: 0; background: rgba(255,255,255,0.14); color: #FFFFFF; display: flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 1px;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5M4 9h11a5 5 0 0 1 0 10h-3"></path></svg>ZURÜCK</button>
+<img src="/_blob/1a9c3c5664cb0d65bb9b57b4f873efa8" alt="GIAZZO" style="width: 44px; height: 44px; border-radius: 4px;">
+<span style="flex-grow: 1;"></span>
+<button onClick="{{toggleService}}" aria-label="Service wechseln" style="height: 44px; padding: 0 12px; border-radius: 12px; border: 0; background: rgba(17,17,17,0.7); color: #FFFFFF; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 1px; display: flex; align-items: center; gap: 6px;">{{serviceLabel}}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<span style="height: 44px; padding: 0 12px; border-radius: 12px; background: rgba(17,17,17,0.7); display: flex; align-items: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 16px; letter-spacing: 1px;">{{clock}}</span>
+<span style="height: 44px; padding: 0 12px; border-radius: 12px; background: rgba(17,17,17,0.7); display: flex; align-items: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px;">#{{orderNoPad}}</span>
+</div>
+<div style="position: relative; padding: 26px 24px 0; display: flex; flex-direction: column; gap: 10px;">
+<h1 style="margin: 0; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; font-size: 66px; line-height: 0.98; letter-spacing: 0.5px;">LUST AUF<br>PIZZA?</h1>
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 20px; letter-spacing: 2px;">FRISCH AUS DEM STEINOFEN.</span>
+</div>
+</div>
+<div style="flex-grow: 1; min-height: 0; margin-top: -28px; position: relative; background: #FFFFFF; border-radius: 28px 28px 0 0; display: flex; overflow: hidden;">
+<nav aria-label="Kategorien" class="pzs" style="width: 110px; flex-shrink: 0; overflow-y: auto; padding: 16px 10px 16px 12px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; border-right: 1px solid #EDEDED;">
+<sc-for list="{{rail}}" as="r" hint-placeholder-count="7">
+<button onClick="{{r.pick}}" aria-pressed="{{r.pressed}}" style="{{r.style}}">
+<sc-if value="{{r.isAll}}" hint-placeholder-val="{{false}}"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"></rect><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"></rect><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"></rect></svg></sc-if>
+<sc-if value="{{r.hasImg}}" hint-placeholder-val="{{true}}"><span class="gzs" style="{{r.spStyle}}"></span></sc-if>
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; line-height: 1.1; letter-spacing: 0.5px; text-align: center;">{{r.label}}</span>
+</button>
+</sc-for>
+</nav>
+<div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column;">
+<div style="display: flex; align-items: center; gap: 8px; padding: 16px 14px 12px 14px; flex-shrink: 0;">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="3">
+<button onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="{{f.style}}">
+<sc-if value="{{f.isVeg}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19c0-8 6-14 15-14 0 9-6 15-14 15"></path><path d="M5 19l8-8"></path></svg></sc-if>
+<sc-if value="{{f.isHot}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-9Z"></path></svg></sc-if>
+{{f.label}}</button>
+</sc-for>
+<span style="flex-grow: 1;"></span>
+<button onClick="{{cycleSort}}" aria-label="{{sortAria}}" style="{{sortStyle}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16M3 16l4 4 4-4M17 20V4M13 8l4-4 4 4"></path></svg></button>
+</div>
+<div class="pzs" style="flex-grow: 1; min-height: 0; overflow-y: auto; padding: 0 14px 18px;">
+<sc-if value="{{hasNote}}" hint-placeholder-val="{{false}}"><p style="margin: 0 2px 12px; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.5px; line-height: 1.35; color: #5C5C5C;">{{catNote}}</p></sc-if>
+<sc-if value="{{noItems}}" hint-placeholder-val="{{false}}"><p style="margin: 30px 6px; font-size: 18px; color: #5C5C5C;">Hier gibt es gerade keine passenden Produkte.</p></sc-if>
+<sc-if value="{{layOriginal}}" hint-placeholder-val="{{false}}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+<sc-for list="{{items}}" as="p" hint-placeholder-count="4">
+<button onClick="{{p.open}}" aria-label="{{p.aria}}" style="position: relative; height: 236px; border-radius: 20px; border: 0; background: #F1F1F1; overflow: hidden; padding: 16px 14px; display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
+<sc-if value="{{p.hasSp}}" hint-placeholder-val="{{true}}"><span class="gzs" style="{{p.spStyle}}"></span></sc-if><sc-if value="{{p.noSp}}" hint-placeholder-val="{{false}}"><img src="{{p.img}}" alt="" style="position: absolute; right: -40px; bottom: -40px; width: 176px; height: 176px;"></sc-if>
+<span style="position: relative; width: 88%; font-family: 'Anton', 'Impact', sans-serif; font-size: 21px; line-height: 1.08; letter-spacing: 0.3px; color: #111111; overflow-wrap: anywhere;">{{p.name}}</span>
+<sc-if value="{{p.hasBadge}}" hint-placeholder-val="{{false}}"><span style="{{p.badgeStyle}}">{{p.badge}}</span></sc-if>
+<span style="flex-grow: 1;"></span>
+<span style="position: relative; padding: 4px 8px 2px 0; background: rgba(241,241,241,0.9); border-radius: 8px;"><span style="{{p.priceStyle}}">{{p.priceTxt}}</span></span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{layCenter}}" hint-placeholder-val="{{true}}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+<sc-for list="{{items}}" as="p" hint-placeholder-count="4">
+<button onClick="{{p.open}}" aria-label="{{p.aria}}" style="position: relative; height: 282px; border-radius: 22px; border: 0; background: #F4F4F4; padding: 12px 14px 14px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
+<sc-if value="{{p.hasBadge}}" hint-placeholder-val="{{false}}"><span style="position: absolute; top: 10px; left: 10px; z-index: 1;"><span style="{{p.badgeStyleTop}}">{{p.badge}}</span></span></sc-if>
+<sc-if value="{{p.hasSp}}" hint-placeholder-val="{{true}}"><span class="gzs" style="{{p.spMid}}"></span></sc-if><sc-if value="{{p.noSp}}" hint-placeholder-val="{{false}}"><img src="{{p.img}}" alt="" style="width: 150px; height: 150px;"></sc-if>
+<span style="font-family: 'Anton', 'Impact', sans-serif; font-size: 20px; line-height: 1.08; letter-spacing: 0.3px; color: #111111; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{p.name}}</span>
+<span style="flex-grow: 1;"></span>
+<span style="width: 100%; display: flex; align-items: center; justify-content: space-between;"><span style="{{p.priceStyleS}}">{{p.priceTxt}}</span>
+<span style="width: 44px; height: 44px; border-radius: 14px; background: #111111; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></span></span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{layList}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<sc-for list="{{items}}" as="p" hint-placeholder-count="5">
+<button onClick="{{p.open}}" aria-label="{{p.aria}}" style="min-height: 128px; border-radius: 20px; border: 0; background: #F4F4F4; padding: 12px 14px 12px 12px; display: flex; align-items: center; gap: 14px; text-align: left;">
+<sc-if value="{{p.hasSp}}" hint-placeholder-val="{{true}}"><span class="gzs" style="{{p.spRow}}"></span></sc-if><sc-if value="{{p.noSp}}" hint-placeholder-val="{{false}}"><img src="{{p.img}}" alt="" style="width: 104px; height: 104px; flex-shrink: 0;"></sc-if>
+<span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
+<span style="font-family: 'Anton', 'Impact', sans-serif; font-size: 20px; line-height: 1.08; letter-spacing: 0.3px; color: #111111;">{{p.name}}</span>
+<span style="font-size: 14px; line-height: 1.35; color: #5C5C5C; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{p.desc}}</span>
+<span style="display: flex; align-items: center; gap: 8px; margin-top: 2px;"><span style="{{p.priceStyleS}}">{{p.priceTxt}}</span><sc-if value="{{p.hasBadge}}" hint-placeholder-val="{{false}}"><span style="{{p.badgeStyleTop}}">{{p.badge}}</span></sc-if></span>
+</span>
+<span style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 14px; background: #111111; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{layCompact}}" hint-placeholder-val="{{false}}">
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px;">
+<sc-for list="{{items}}" as="p" hint-placeholder-count="6">
+<button onClick="{{p.open}}" aria-label="{{p.aria}}" style="position: relative; height: 206px; border-radius: 18px; border: 0; background: #F4F4F4; padding: 10px 8px 12px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px;">
+<sc-if value="{{p.hasBadge}}" hint-placeholder-val="{{false}}"><span style="position: absolute; top: 6px; left: 6px; z-index: 1;"><span style="{{p.badgeStyleTop}}">{{p.badge}}</span></span></sc-if>
+<sc-if value="{{p.hasSp}}" hint-placeholder-val="{{true}}"><span class="gzs" style="{{p.spSmall}}"></span></sc-if><sc-if value="{{p.noSp}}" hint-placeholder-val="{{false}}"><img src="{{p.img}}" alt="" style="width: 104px; height: 104px;"></sc-if>
+<span style="font-family: 'Anton', 'Impact', sans-serif; font-size: 16px; line-height: 1.1; letter-spacing: 0.2px; color: #111111; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{p.name}}</span>
+<span style="flex-grow: 1;"></span>
+<span style="{{p.priceStyleXS}}">{{p.priceTxt}}</span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+<div style="height: 88px; flex-shrink: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); background: #FFFFFF; border-top: 1px solid #E6E6E6;">
+<button onClick="{{openCart}}" style="border: 0; background: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 12px; font-family: 'Anton', 'Impact', sans-serif; font-size: 24px; letter-spacing: 1px; color: #111111;">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h16l-1.5 10.5a1.5 1.5 0 0 1-1.5 1.3H7a1.5 1.5 0 0 1-1.5-1.3L4 9Z"></path><path d="M8 9l4-6 4 6"></path></svg>WARENKORB
+<span style="min-width: 34px; height: 34px; padding: 0 8px; box-sizing: border-box; border-radius: 17px; background: #EFEFEF; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px;">{{cartCount}}</span>
+</button>
+<button onClick="{{openMethod}}" disabled="{{isEmptyCart}}" style="{{checkoutStyle}}">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 10h18M7 15h4"></path></svg>ZUR KASSE</button>
+</div>
+</main>
+</sc-if>
+
+<!-- ================= PAY ================= -->
+<sc-if value="{{isPay}}" hint-placeholder-val="{{false}}">
+<main style="flex-grow: 1; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; gap: 18px; overflow: hidden;">
+<span class="gzs" style="position: absolute; right: -160px; top: -60px; width: 480px; height: 480px; opacity: 0.35; background-size: 3360px 3360px; background-position: -2400px 0px;"></span>
+<div class="pzup" style="position: relative; width: 100%; border-radius: 26px; background: #FFFFFF; padding: 34px 28px 26px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center;">
+<h1 style="margin: 0; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; font-size: 40px; line-height: 1.02;">{{payTitle1}}<br>{{payTitle2}}</h1>
+<p style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: 1px; color: #5C5C5C;">{{paySub}}</p>
+<sc-if value="{{payIsQr}}" hint-placeholder-val="{{true}}">
+<div style="position: relative; width: 240px; height: 240px; padding: 14px; box-sizing: border-box; border-radius: 18px; border: 1px solid #E6E6E6; overflow: hidden;">
+<img src="/_blob/b7339e163f62b45d42d5caa73701f9db" alt="Demo-QR-Code" style="width: 100%; height: 100%;">
+<span class="pzscan" style="position: absolute; left: 8px; right: 8px; height: 26px; background: rgba(46,160,90,0.35); border-top: 2px solid #2EA05A;"></span>
+</div>
+</sc-if>
+<sc-if value="{{payIsTap}}" hint-placeholder-val="{{false}}">
+<div style="position: relative; width: 200px; height: 200px; display: flex; align-items: center; justify-content: center;">
+<svg class="pzspin" width="200" height="200" viewBox="0 0 50 50" fill="none" aria-hidden="true" style="position: absolute;"><circle cx="25" cy="25" r="22" stroke="#EFEFEF" stroke-width="2.5"></circle><path d="M25 3a22 22 0 0 1 22 22" stroke="#C62A1E" stroke-width="2.5" stroke-linecap="round"></path></svg>
+<svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="3" y="6" width="13" height="10" rx="1.6"></rect><path d="M3 9.5h13M18 8a5 5 0 0 1 0 7M20.5 6a8 8 0 0 1 0 11"></path></svg>
+</div>
+</sc-if>
+<div style="width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-radius: 16px; background: #F4F4F4; padding: 14px 0;">
+<span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 1px; color: #5C5C5C;">ARTIKEL</span><span style="font-family: 'Anton', 'Impact', sans-serif; font-size: 26px;">{{cartCount}}</span></span>
+<span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 1px; color: #5C5C5C;">ZU ZAHLEN</span><span style="font-family: 'Anton', 'Impact', sans-serif; font-size: 26px; color: #C62A1E;">{{totalTxt}}</span></span>
+</div>
+<span style="font-size: 14px; color: #6B6B6B;">Demo: Die Zahlung wird nach wenigen Sekunden bestätigt.</span>
+</div>
+<div style="position: relative; width: 100%; display: flex; justify-content: space-between; gap: 12px;">
+<button onClick="{{changeMethod}}" style="height: 52px; padding: 0 16px; border-radius: 12px; border: 0; background: rgba(255,255,255,0.14); color: #FFFFFF; display: flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 1px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5M4 9h11a5 5 0 0 1 0 10h-3"></path></svg>ZAHLART ÄNDERN</button>
+<button onClick="{{askCancel}}" style="height: 52px; padding: 0 16px; border-radius: 12px; border: 0; background: rgba(255,255,255,0.14); color: #FFFFFF; display: flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 1px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>ABBRECHEN</button>
+</div>
+</main>
+</sc-if>
+
+<!-- ================= DONE ================= -->
+<sc-if value="{{isDone}}" hint-placeholder-val="{{false}}">
+<main style="flex-grow: 1; position: relative; display: flex; flex-direction: column; align-items: center; padding: 70px 30px 30px; gap: 18px; overflow: hidden; color: #FFFFFF; text-align: center;">
+<span class="pzrot gzs" style="position: absolute; left: 50%; bottom: -330px; width: 640px; height: 640px; margin-left: -320px; opacity: 0.5; background-size: 4480px 4480px; background-position: -640px 0px;"></span>
+<span style="position: relative; width: 104px; height: 104px; border-radius: 52px; background: #C62A1E; display: flex; align-items: center; justify-content: center;"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg></span>
+<h1 style="position: relative; margin: 6px 0 0; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; font-size: 50px; line-height: 1;">BESTELLUNG<br>BESTÄTIGT</h1>
+<div style="position: relative; width: 100%; border-radius: 26px; background: #FFFFFF; color: #111111; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 2px;">
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 3px; color: #5C5C5C;">DEINE NUMMER</span>
+<span style="font-family: 'Anton', 'Impact', sans-serif; font-size: 120px; line-height: 1;">#{{doneNo}}</span>
+<span style="font-size: 18px; line-height: 1.4; margin-top: 6px;">{{doneMsg}}</span>
+<sc-if value="{{doneCash}}" hint-placeholder-val="{{false}}"><span style="margin-top: 8px; padding: 8px 14px; border-radius: 10px; background: #FBE6E3; color: #9E1F15; font-weight: 600; font-size: 17px;">Bitte zahle {{doneTotal}} an der Kasse.</span></sc-if>
+</div>
+<div style="position: relative; display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 14px; background: rgba(17,17,17,0.8); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 1px;">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F2B233" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5h4"></path></svg>FERTIG IN CA. 12–15 MIN.</div>
+<div style="flex-grow: 1;"></div>
+<div style="position: relative; width: 100%; display: flex; align-items: center; gap: 14px; padding: 12px; box-sizing: border-box; border-radius: 20px; background: rgba(17,17,17,0.85);">
+<span style="position: relative; width: 60px; height: 60px; flex-shrink: 0;"><svg width="60" height="60" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="none" stroke="#3A3A3A" stroke-width="5"></circle><circle cx="32" cy="32" r="28" fill="none" stroke="#F2B233" stroke-width="5" stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="{{ringOffset}}" transform="rotate(-90 32 32)"></circle></svg><span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px;">{{doneLeft}}</span></span>
+<span style="flex-grow: 1; text-align: left; font-size: 16px; line-height: 1.35; color: #DADADA;">Der Bildschirm startet gleich neu.</span>
+<button onClick="{{reset}}" style="height: 60px; padding: 0 22px; border-radius: 14px; border: 0; background: #FFFFFF; color: #111111; font-family: 'Anton', 'Impact', sans-serif; font-size: 20px; letter-spacing: 1px;">NEUE BESTELLUNG</button>
+</div>
+</main>
+</sc-if>
+
+<!-- ================= SHEETS ================= -->
+<sc-if value="{{sheetOpen}}" hint-placeholder-val="{{false}}">
+<div class="pzfade" style="position: absolute; inset: 0; z-index: 10; background: rgba(0,0,0,0.55);">
+<button onClick="{{closeSheet}}" aria-label="Schließen" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: none; cursor: default;"></button>
+<div class="pzup" role="dialog" aria-label="{{sheetTitle}}" style="position: absolute; left: 0; right: 0; bottom: 0; max-height: 900px; background: #FFFFFF; border-radius: 28px 28px 0 0; display: flex; flex-direction: column; overflow: hidden;">
+<button onClick="{{closeSheet}}" aria-label="Schließen" style="position: absolute; top: 14px; right: 14px; z-index: 2; width: 52px; height: 52px; border-radius: 26px; border: 0; background: #F1F1F1; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+
+<!-- detail -->
+<sc-if value="{{isDetail}}" hint-placeholder-val="{{true}}">
+<div class="pzs" style="overflow-y: auto; min-height: 0; padding: 24px 26px 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;">
+<sc-if value="{{d.hasSp}}" hint-placeholder-val="{{true}}"><span class="gzs" role="img" aria-label="{{d.name}}" style="{{d.spStyle}}"></span></sc-if><sc-if value="{{d.noSp}}" hint-placeholder-val="{{false}}"><img src="{{d.img}}" alt="{{d.name}}" style="width: 230px; height: 230px;"></sc-if>
+<h2 style="margin: 4px 0 0; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; font-size: 34px; line-height: 1.05; letter-spacing: 0.3px;">{{d.name}}</h2>
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: 1px; color: #5C5C5C;">{{d.tag}}</span>
+<span style="display: flex; align-items: baseline; gap: 10px;"><span style="{{d.priceStyle}}">{{d.priceTxt}}</span><sc-if value="{{d.hasWas}}" hint-placeholder-val="{{false}}"><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 20px; color: #6B6B6B; text-decoration: line-through;">{{d.wasTxt}}</span></sc-if></span>
+<div style="display: flex; align-items: center; gap: 16px;">
+<button onClick="{{qtyDec}}" aria-label="Menge verringern" style="width: 52px; height: 52px; border-radius: 14px; border: 0; background: #EFEFEF; font-size: 26px; line-height: 1;">−</button>
+<span aria-live="polite" style="min-width: 30px; font-family: 'Anton', 'Impact', sans-serif; font-size: 26px;">{{d.qty}}</span>
+<button onClick="{{qtyInc}}" aria-label="Menge erhöhen" style="width: 52px; height: 52px; border-radius: 14px; border: 0; background: #111111; color: #FFFFFF; font-size: 26px; line-height: 1;">+</button>
+</div>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="2">
+<div style="width: 100%; display: flex; flex-direction: column; gap: 8px; text-align: left; margin-top: 6px;">
+<span style="display: flex; align-items: baseline; gap: 10px;"><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: 1.5px;">{{g.label}}</span><span style="font-size: 15px; color: #6B6B6B;">{{g.hint}}</span></span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+<sc-for list="{{g.opts}}" as="o" hint-placeholder-count="4">
+<button onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}"><span style="display: flex; align-items: center; gap: 10px; min-width: 0;"><sc-if value="{{o.hasIc}}" hint-placeholder-val="{{false}}"><span class="gzx" style="{{o.icStyle}}"></span></sc-if><sc-if value="{{o.checked}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg></sc-if>{{o.label}}</span><span style="font-weight: 700;">{{o.sub}}</span></button>
+</sc-for>
+</div>
+<sc-if value="{{g.hasMore}}" hint-placeholder-val="{{false}}"><button onClick="{{g.toggleMore}}" style="align-self: center; height: 48px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #111111; background: #FFFFFF; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 1px;">{{g.moreLabel}}</button></sc-if>
+</div>
+</sc-for>
+<button onClick="{{toggleAllerg}}" aria-expanded="{{allergExpanded}}" style="margin-top: 4px; height: 44px; padding: 0 14px; border: 0; background: none; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 1px; text-decoration: underline; text-underline-offset: 3px;">ZUTATEN &amp; ALLERGENE</button>
+<sc-if value="{{allergOpen}}" hint-placeholder-val="{{false}}"><div style="width: 100%; box-sizing: border-box; border-radius: 14px; border: 1.5px dashed #9C9C9C; padding: 12px 14px; font-size: 15px; line-height: 1.4; color: #5C5C5C; text-align: left;">[Zutaten &amp; Allergene aus der Warenwirtschaft einsetzen] – Kennzeichnung nach LMIV.</div></sc-if>
+</div>
+<button onClick="{{confirmDetail}}" style="flex-shrink: 0; height: 88px; border: 0; background: #C62A1E; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 14px; font-family: 'Anton', 'Impact', sans-serif; font-size: 25px; letter-spacing: 1px;">{{detailCta}} · {{detailTotal}}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+</sc-if>
+
+<!-- cart -->
+<sc-if value="{{isCartSheet}}" hint-placeholder-val="{{false}}">
+<div class="pzs" style="overflow-y: auto; min-height: 0; padding: 26px 24px 16px; display: flex; flex-direction: column; gap: 4px;">
+<h2 style="margin: 0 0 10px; text-align: center; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; font-size: 32px; letter-spacing: 1px;">WARENKORB</h2>
+<sc-if value="{{isEmptyCart}}" hint-placeholder-val="{{false}}"><p style="margin: 20px 0 30px; text-align: center; font-size: 18px; color: #5C5C5C;">Noch leer – such dir eine Pizza aus!</p></sc-if>
+<sc-for list="{{lines}}" as="l" hint-placeholder-count="3">
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #EDEDED;">
+<sc-if value="{{l.hasSp}}" hint-placeholder-val="{{true}}"><span class="gzs" style="{{l.spStyle}}"></span></sc-if><sc-if value="{{l.noSp}}" hint-placeholder-val="{{false}}"><img src="{{l.img}}" alt="" style="width: 62px; height: 62px; flex-shrink: 0;"></sc-if>
+<div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;">
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.5px; line-height: 1.1;">{{l.name}}</span>
+<sc-if value="{{l.hasOpts}}" hint-placeholder-val="{{true}}"><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.5px; color: #5C5C5C;">{{l.optsTxt}}</span></sc-if>
+<sc-if value="{{l.canEdit}}" hint-placeholder-val="{{true}}"><button onClick="{{l.edit}}" style="align-self: flex-start; height: 34px; padding: 0; border: 0; background: none; font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px;">Ändern</button></sc-if>
+</div>
+<div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+<button onClick="{{l.dec}}" aria-label="{{l.decAria}}" style="width: 44px; height: 44px; border-radius: 12px; border: 0; background: #EFEFEF; font-size: 22px; line-height: 1;">−</button>
+<span style="min-width: 20px; text-align: center; font-weight: 600; font-size: 18px;">{{l.qty}}</span>
+<button onClick="{{l.inc}}" aria-label="{{l.incAria}}" style="width: 44px; height: 44px; border-radius: 12px; border: 0; background: #111111; color: #FFFFFF; font-size: 22px; line-height: 1;">+</button>
+</div>
+<span style="width: 82px; text-align: right; flex-shrink: 0; font-family: 'Anton', 'Impact', sans-serif; font-size: 22px;">{{l.priceTxt}}</span>
+</div>
+</sc-for>
+<sc-if value="{{hasItems}}" hint-placeholder-val="{{true}}">
+<sc-if value="{{hasSavings}}" hint-placeholder-val="{{false}}"><div style="display: flex; justify-content: space-between; padding: 12px 4px 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 1px; color: #1F7A3E;"><span>DU SPARST</span><span>{{savingsTxt}}</span></div></sc-if>
+<div style="margin-top: 12px; border-radius: 16px; background: #F4F4F4; padding: 16px 18px; display: flex; justify-content: space-between; align-items: center;"><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 1.5px;">GESAMT</span><span style="font-family: 'Anton', 'Impact', sans-serif; font-size: 30px;">{{totalTxt}}</span></div>
+<button onClick="{{askClear}}" style="align-self: center; margin-top: 6px; height: 44px; padding: 0 14px; border: 0; background: none; font-size: 15px; font-weight: 600; color: #9E1F15; text-decoration: underline; text-underline-offset: 3px;">Warenkorb leeren</button>
+</sc-if>
+</div>
+<button onClick="{{cartCta}}" style="flex-shrink: 0; height: 88px; border: 0; background: #C62A1E; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 14px; font-family: 'Anton', 'Impact', sans-serif; font-size: 25px; letter-spacing: 1px;">{{cartCtaLabel}}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+</sc-if>
+
+<!-- method -->
+<sc-if value="{{isMethod}}" hint-placeholder-val="{{false}}">
+<div style="padding: 28px 24px 24px; display: flex; flex-direction: column; gap: 18px;">
+<h2 style="margin: 0; text-align: center; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; font-size: 30px; letter-spacing: 1px;">ZAHLUNGSART WÄHLEN</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+<sc-for list="{{methods}}" as="m" hint-placeholder-count="4">
+<button onClick="{{m.pick}}" aria-pressed="{{m.pressed}}" style="{{m.style}}">
+<sc-if value="{{m.checked}}" hint-placeholder-val="{{false}}"><span style="position: absolute; top: 12px; right: 12px; width: 28px; height: 28px; border-radius: 14px; background: #111111; display: flex; align-items: center; justify-content: center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg></span></sc-if>
+<span style="width: 56px; height: 56px; border-radius: 14px; background: #F1F1F1; display: flex; align-items: center; justify-content: center;">
+<sc-if value="{{m.isCard}}" hint-placeholder-val="{{true}}"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 10h18M7 15h4"></path></svg></sc-if>
+<sc-if value="{{m.isQr}}" hint-placeholder-val="{{false}}"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><path d="M14 14h3v3M21 14v.01M14 21h7v-4"></path></svg></sc-if>
+<sc-if value="{{m.isCash}}" hint-placeholder-val="{{false}}"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"></rect><circle cx="12" cy="12" r="2.8"></circle></svg></sc-if>
+<sc-if value="{{m.isWallet}}" hint-placeholder-val="{{false}}"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.2"></rect><path d="M10.5 5h3M3.5 9.5c-1 1.5-1 3.5 0 5"></path></svg></sc-if>
+</span>
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 1px;">{{m.label}}</span>
+</button>
+</sc-for>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px;"><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: 1.5px;">ZU ZAHLEN</span><span style="font-family: 'Anton', 'Impact', sans-serif; font-size: 30px;">{{totalTxt}}</span></div>
+</div>
+<button onClick="{{startPay}}" style="flex-shrink: 0; height: 88px; border: 0; background: #C62A1E; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 14px; font-family: 'Anton', 'Impact', sans-serif; font-size: 25px; letter-spacing: 1px;">{{methodCta}}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<!-- ================= DIALOG ================= -->
+<sc-if value="{{dialogOpen}}" hint-placeholder-val="{{false}}">
+<div class="pzfade" style="position: absolute; inset: 0; z-index: 20; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 30px;">
+<div role="alertdialog" aria-label="{{dlgTitle}}" class="pzup" style="width: 100%; border-radius: 26px; background: #FFFFFF; padding: 30px 26px 24px; display: flex; flex-direction: column; gap: 10px; text-align: center;">
+<h2 style="margin: 0; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; font-size: 32px; letter-spacing: 0.5px;">{{dlgTitle}}</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.4; color: #5C5C5C;">{{dlgText}}</p>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 14px;">
+<button onClick="{{dlgCancel}}" style="height: 64px; border-radius: 14px; border: 0; background: #EFEFEF; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 1px;">ZURÜCK</button>
+<button onClick="{{dlgOk}}" style="height: 64px; border-radius: 14px; border: 0; background: #C62A1E; color: #FFFFFF; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 1px;">{{dlgOkLabel}}</button>
+</div></div></div>
+</sc-if>
+
+<!-- ================= IDLE ================= -->
+<sc-if value="{{idleOpen}}" hint-placeholder-val="{{false}}">
+<div class="pzfade" style="position: absolute; inset: 0; z-index: 30; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; padding: 30px;">
+<div role="alertdialog" aria-label="Noch da?" style="width: 100%; border-radius: 28px; background: #FFFFFF; padding: 34px 26px 24px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center;">
+<span style="font-family: 'Anton', 'Impact', sans-serif; font-size: 90px; line-height: 1; color: #C62A1E;">{{idleLeft}}</span>
+<h2 style="margin: 0; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; font-size: 34px;">NOCH DA?</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.4; color: #5C5C5C;">Sonst starten wir neu und deine Auswahl wird gelöscht.</p>
+<button onClick="{{stay}}" style="margin-top: 12px; width: 100%; height: 76px; border-radius: 16px; border: 0; background: #C62A1E; color: #FFFFFF; font-family: 'Anton', 'Impact', sans-serif; font-size: 24px; letter-spacing: 1px;">JA, WEITER BESTELLEN</button>
+<button onClick="{{reset}}" style="width: 100%; height: 56px; border: 0; background: none; font-weight: 600; font-size: 17px; text-decoration: underline; text-underline-offset: 3px;">Neu starten</button>
+</div></div>
+</sc-if>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{false}}">
+<div role="status" class="pzfade" style="position: absolute; left: 50%; top: 84px; transform: translateX(-50%); z-index: 40; padding: 14px 22px; border-radius: 14px; background: #FFFFFF; color: #111111; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; white-space: nowrap; box-shadow: 0 10px 30px rgba(0,0,0,0.35);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F7A3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg>{{toast}}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"kartenLayout":{"editor":"enum","options":["Zentriert","Liste","Kompakt","Original"],"default":"Kompakt"},"direktInsMenue":{"editor":"boolean","default":true},"$preview":{"width":600,"height":1066}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = this.initial();
+    if (!props || props.direktInsMenue !== false) { this.state.screen = 'menu'; this.state.cat = 'pizza'; }
+    this.last = Date.now();
+  }
+  initial() {
+    const keep = this.state || {};
+    return {
+      screen: 'start', service: 'here', cat: 'alle', filter: 'all', sort: 0,
+      cart: [], uid: 1, sheet: null, allerg: false, method: 'card', dialog: null,
+      orderNo: keep.orderNo || 12, last: null, idleOpen: false, idleLeft: 20, doneLeft: 20, toast: '',
+      clock: this.clockTxt()
+    };
+  }
+  clockTxt() {
+    const d = new Date();
+    const day = d.toLocaleDateString('de-DE', { weekday: 'short', day: 'numeric', month: 'short' }).toUpperCase();
+    const t = d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    return day + ' · ' + t;
+  }
+  componentDidMount() { this.iv = setInterval(() => this.tick(), 1000); }
+  componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.pt); clearTimeout(this.tt); }
+  tick() {
+    const s = this.state;
+    const c = this.clockTxt();
+    if (c !== s.clock) this.setState({ clock: c });
+    if (s.screen === 'done') { if (s.doneLeft <= 1) this.doReset(); else this.setState({ doneLeft: s.doneLeft - 1 }); return; }
+    if (s.screen === 'start' || s.screen === 'pay') return;
+    if (s.idleOpen) { if (s.idleLeft <= 1) this.doReset(); else this.setState({ idleLeft: s.idleLeft - 1 }); return; }
+    if (Date.now() - this.last > 60000) this.setState({ idleOpen: true, idleLeft: 20 });
+  }
+  doReset() { clearTimeout(this.pt); this.last = Date.now(); this.setState(this.initial()); }
+  flash(t) { clearTimeout(this.tt); this.setState({ toast: t }); this.tt = setTimeout(() => this.setState({ toast: '' }), 1500); }
+
+  data() {
+    const B = (id) => '/_blob/' + id;
+    const I = {
+      margherita: B('9e81b9a2a593304ceebf80f5f28e49f3'), salame: B('42dd3301438c5b21180d4eff93facfed'), funghi: B('c598cdad1f2af0459ab49140ca726cac'),
+      tonno: B('9d8141188a53679081ff32bba72b0376'), trueffel: B('aefc469485b066c43642829d32b71d95'), bbq: B('8375c8165fd3b95ef2eadbb19a2583d4'),
+      diavola: B('ebce777a9ac67b04d591f72edb58ad4d'), vegana: B('3c11d9fad1bc3b689b70559d68fe105a'), brot: B('6bee4c1572ade7f76b4a24d4d362dfac'),
+      salat: B('9c5040862d4c0eda0ae66ed8fababe1f'), cola: B('d54c6b646b3a05cbabba10494d8ad851'), limo: B('9395c111428f2403d49cae4f8258ea85'),
+      wasser: B('89a1517d1c326144e13316f7ae3e6403'), dipK: B('2e8a57abac00dbbab8e731d263ac7332'), dipT: B('7f97e981d795cb51b2fd6681618b2091'),
+      dipP: B('8cf3fa0b8ca52e03f6652a851f3f1dbc'), calzone: B('9e6b5d3f568ef0cbcdfbb7466259357d'), eisA: B('8c2585f20313c457eabc40157dcd3d38'),
+      eisT: B('5c64437ea398e6d93232c2f48134923e'), eisZ: B('fb2c9e141afcac40b4c9aa7bda4e7e5d'), bOrange: B('35450c590c4999ff3ec33d91b5e47600'),
+      bLemon: B('1aae7032fc90cd603466576830dd7d0b'), bBrown: B('6fc24dba281ccf9ddeecf6d5ca446928'), schorle: B('857facb3c864132737f706d45950e766')
+    };
+    const ex = (label, d) => ({ id: label.toLowerCase().replace(/[^a-z0-9]+/g, '-'), label: label.toUpperCase(), d });
+    const extras = { id: 'ex', label: 'EXTRAS', type: 'many', icons: true, opts: [
+      ex('Champignons', 1.5), ex('Kirschtomaten', 1.5), ex('Zwiebeln', 1.5), ex('Oliven', 1.5), ex('Paprika', 1.5), ex('Rucola', 1.5),
+      ex('Spinat', 1.5), ex('Gegrillte Zucchini', 1.5), ex('Gegrillte Aubergine', 1.5), ex('Mais', 1.5), ex('Ananas', 1.5), ex('Knoblauch-Öl', 1.5),
+      ex('Chili-Öl', 1.5), ex('Spicy Honey', 1.5), ex('Fior di Latte', 2.5), ex('Fior di Latte vegan', 2.5), ex('Salame', 2.5), ex('Salame Piccante', 2.5),
+      ex('Thunfisch', 2.5), ex('Cotto di Tacchino', 2.5), ex('Gorgonzola', 2.5), ex('Ricotta', 2.5), ex('Bresaola', 3.5), ex('Burrata', 3.5),
+      ex('Büffelmozzarella DOP', 3.5), ex('Grana Padano', 3.5), ex('Riesengarnelen', 3.5)] };
+    const pz = (name, price, img, tag, o) => Object.assign({ name: name.toUpperCase(), price, img, tag: tag.toUpperCase(), groups: [extras] }, o || {});
+    const dipOpts = [{ id: 'k', label: 'KNOBLAUCH-MUNDI', d: 0, def: true }, { id: 't', label: 'TRÜFFEL-EKSTASE', d: 0 }, { id: 'p', label: 'PICCANTE DIP', d: 0 }];
+    const drinkOpts = [{ id: 'afri', label: 'AFRI COLA', d: 0, def: true }, { id: 'afri0', label: 'AFRI COLA ZUCKERFREI', d: 0 }, { id: 'bluna', label: 'BLUNA ORANGE', d: 0 }, { id: 'blunaz', label: 'BLUNA ZITRONE', d: 0 }, { id: 'wasser', label: 'SPESSART-WALD CLASSIC', d: 0 }, { id: 'naturell', label: 'SPESSART-WALD NATURELL', d: 0 }];
+    const drink = (name, price, img, o) => Object.assign({ name: name.toUpperCase(), price, img, tag: '0,33 L', drink: true, groups: [] }, o || {});
+    const P = {
+      menu1: { name: 'MITTAGS MENÜ #1', price: 12.0, img: I.margherita, tag: 'MARGHERITA + DIP + GETRÄNK', badge: 'MITTAG', groups: [
+        { id: 'dip', label: 'DIP', type: 'one', show: true, opts: dipOpts }, { id: 'gt', label: 'GETRÄNK', type: 'one', show: true, opts: drinkOpts }] },
+      menu2: { name: 'MITTAGS MENÜ #2', price: 13.0, img: I.salame, tag: 'PIZZA NACH WAHL + DIP + GETRÄNK', badge: 'MITTAG', groups: [
+        { id: 'mp', label: 'PIZZA', type: 'one', show: true, opts: [{ id: 'sal', label: 'SALAMI', d: 0, def: true }, { id: 'sch', label: 'SCHINKEN', d: 0 }, { id: 'pic', label: 'PICCANTE', d: 0 }, { id: 'mv', label: 'MARGHERITA VEGAN', d: 0 }] },
+        { id: 'dip', label: 'DIP', type: 'one', show: true, opts: dipOpts }, { id: 'gt', label: 'GETRÄNK', type: 'one', show: true, opts: drinkOpts }] },
+      marinara: pz('Marinara', 8.5, I.vegana, 'San Marzano Tomatensoße, Oregano, hausgemachtes Knoblauchöl', { veg: true, badge: 'VEGAN' }),
+      margherita: pz('Pizza Margherita', 9.5, I.margherita, 'San Marzano Tomatensauce, Fior di Latte, Basilikum, Olivenöl', { veg: true }),
+      margvegan: pz('Pizza Margherita (vegan)', 11.5, I.margherita, 'San Marzano Tomatensauce, Fior di Latte vegan, Basilikum, Olivenöl', { veg: true, badge: 'VEGAN' }),
+      cotto: pz('Pizza Cotto di Tacchino', 12.0, I.tonno, 'San Marzano Tomatensauce, Fior di Latte, Truthahnschinken, Olivenöl'),
+      milano: pz('Pizza Salame-Milano', 12.5, I.salame, 'San Marzano Tomatensauce, Fior di Latte, Salame Milano, Olivenöl'),
+      piccante: pz('Pizza Salame-Piccante', 13.0, I.diavola, 'San Marzano Tomatensauce, Fior di Latte, Salame Piccante, Olivenöl', { hot: true }),
+      tuna: pz('Pizza Tuna', 14.0, I.tonno, 'San Marzano Tomatensauce, Fior di Latte, Thunfisch, rote Zwiebel, Olivenöl'),
+      gamba: pz('Pizza Gamba', 14.5, I.bbq, 'San Marzano Tomatensauce, Fior di Latte, Riesengarnelen, Knoblauch, Spinat, Olivenöl'),
+      toskana: pz('Pizza Toskana', 15.0, I.salame, 'Tomatensauce, Fior di Latte, Truthahnschinken, Salame Milano, rote Zwiebel, Pilze, Basilikum'),
+      veggie: pz('Pizza Veggie', 14.0, I.vegana, 'San Marzano Tomatensauce, Fior di Latte, gegrillte Zucchini & Aubergine, Olivenöl, Basilikum', { veg: true }),
+      pesto: pz('Pizza Pesto', 15.5, I.margherita, 'Basilikum-Pesto, Burrata, Parmigiano D.O.P., Kirschtomaten, Olivenöl', { veg: true }),
+      bufala: pz('Pizza di Bufala', 14.0, I.margherita, 'San Marzano Tomatensauce, Fior di Latte, Büffelmozzarella Campana DOP, Basilikum, Olivenöl', { veg: true }),
+      burratina: pz('Pizza Burratina', 15.0, I.margherita, 'Tomatensauce, Fior di Latte, Rucola, Burrata, Kirschtomaten, Creme Balsamico, Olivenöl', { veg: true }),
+      gorgonzola: pz('Pizza Gorgonzola', 13.5, I.funghi, 'San Marzano Tomatensauce, Fior di Latte, Gorgonzola, rote Zwiebel, Rucola, Walnüsse, Olivenöl', { veg: true }),
+      diavolo: pz('Pizza Diavolo', 13.5, I.diavola, 'San Marzano Tomatensauce, Fior di Latte, Salami Piccante Spianata, Chili-Öl, Basilikum', { hot: true }),
+      bresaola: pz('Bresaola Punta d’Anca', 15.5, I.salame, 'Tomatensauce, Fior di Latte, Rucola, luftgetrockneter Rinderschinken, Parmigiano DOP, Olivenöl'),
+      hawaii: pz('Pizza Hawaii', 13.5, I.bbq, 'San Marzano Tomatensauce, Fior di Latte, Truthahnschinken, Ananas, Olivenöl'),
+      quattro: pz('Quattro Formaggi', 13.5, I.margherita, 'San Marzano Tomatensauce, Fior di Latte, Gorgonzola, Ricotta, Parmesan, Olivenöl', { veg: true }),
+      antipasti: pz('Pizza Antipasti (Emilia-Romagna)', 14.0, I.vegana, 'San Marzano Tomatensauce, Fior di Latte, mediterranes Antipasti-Gemüse, Basilikum', { veg: true }),
+      spianata: pz('Piccante Spianata', 12.0, I.diavola, 'San Marzano Tomatensauce, Fior di Latte, Salami Piccante Spianata, Basilikum', { hot: true }),
+      dipk: { name: 'KNOBLAUCH-MUNDI', price: 2.5, img: I.dipK, tag: 'DIP', groups: [], veg: true },
+      dipt: { name: 'TRÜFFEL-EKSTASE', price: 2.5, img: I.dipT, tag: 'DIP', groups: [], veg: true },
+      dipp: { name: 'PICCANTE DIP', price: 2.5, img: I.dipP, tag: 'DIP', groups: [], hot: true },
+      salat1: { name: 'SALAT EIN-AUF-GESUND', price: 6.0, img: I.salat, tag: 'KIRSCHTOMATEN, RUCOLA, CREME BALSAMICO, OLIVENÖL, SCHWARZER PFEFFER', groups: [], veg: true },
+      salat2: { name: 'SALAT BURRATA', price: 12.0, img: I.salat, tag: 'MIT BURRATA, KIRSCHTOMATEN, RUCOLA – DAZU BREAD ROLLS', groups: [], veg: true },
+      salat3: { name: 'SALAT BUFFALINA', price: 12.0, img: I.salat, tag: 'MIT BÜFFELMOZZARELLA, KIRSCHTOMATEN, RUCOLA – DAZU BREAD ROLLS', groups: [], veg: true },
+      salat4: { name: 'TUNA SALAT', price: 13.5, img: I.salat, tag: 'MIT THUNFISCH, KIRSCHTOMATEN, RUCOLA – DAZU BREAD ROLLS', groups: [] },
+      pizzabrot: { name: 'PIZZABROT', price: 5.0, img: I.brot, tag: 'AUS DEM PIZZAOFEN', groups: [], veg: true },
+      calzone: { name: 'NUTELLA CALZONE', price: 8.0, img: I.calzone, tag: 'MIT NUTELLA, SCHOKOFLOCKEN, ERDBEERSOSSE, PUDERZUCKER', groups: [], veg: true },
+      eisA: { name: 'GIAZZO JOGHURT-AMARENA', price: 3.9, img: I.eisA, tag: '100 ML', groups: [], veg: true },
+      eisT: { name: 'GIAZZO TIRAMISU', price: 3.9, img: I.eisT, tag: '100 ML', groups: [], veg: true },
+      eisZ: { name: 'GIAZZO ZIMTSCHNECKE', price: 3.9, img: I.eisZ, tag: '100 ML', groups: [], veg: true },
+      afri: drink('Afri Cola', 3.0, I.cola, { badge: 'MEHRWEG' }),
+      afri0: drink('Afri Cola Zuckerfrei', 3.0, I.cola, { badge: 'MEHRWEG' }),
+      misch: drink('Afri Mischmasch', 3.0, I.cola, { badge: 'MEHRWEG' }),
+      bluna: drink('Bluna Orange', 3.0, I.bOrange, { badge: 'MEHRWEG' }),
+      blunaz: drink('Bluna Zitrone', 3.0, I.bLemon, { badge: 'MEHRWEG' }),
+      eisteeP: drink('Granini Pfirsich Eistee', 3.5, I.limo, { badge: 'MEHRWEG' }),
+      eisteeZ: drink('Granini Zitrone Eistee', 3.5, I.limo, { badge: 'MEHRWEG' }),
+      kirsch: drink('Granini Kirsch Schorle', 3.5, I.schorle),
+      maracuja: drink('Granini Maracuja Schorle', 3.5, I.schorle, { badge: 'MEHRWEG' }),
+      apfel: drink('Granini Apfel Schorle', 3.5, I.schorle, { badge: 'MEHRWEG' }),
+      johannis: drink('Granini Schwarze Johannisbeere Schorle', 3.5, I.schorle),
+      peroni: drink('Peroni Nastro Azzurro 0,0 (alkoholfrei)', 3.9, I.bBrown),
+      wasser: drink('Spessart-Wald Classic', 2.5, I.wasser, { badge: 'MEHRWEG' }),
+      naturell: drink('Spessart-Wald Naturell', 2.5, I.wasser, { badge: 'MEHRWEG' })
+    };
+    const C = [
+      { id: 'alle', label: 'ALLE', all: true },
+      { id: 'mittag', label: 'MITTAGS-ANGEBOTE', img: I.margherita, items: ['menu1', 'menu2'] },
+      { id: 'pizza', label: 'PIZZA', img: I.salame, note: 'Ø 32 CM · ALLE PIZZEN MIT SAN MARZANO, FIOR DI LATTE & OLIVENÖL · FLEISCH-ZUTATEN HALAL', items: ['marinara', 'margherita', 'margvegan', 'cotto', 'milano', 'piccante', 'tuna', 'gamba', 'toskana', 'veggie', 'pesto', 'bufala', 'burratina', 'gorgonzola', 'diavolo', 'bresaola', 'hawaii', 'quattro', 'antipasti', 'spianata'] },
+      { id: 'dips', label: 'DIPS', img: I.dipK, items: ['dipk', 'dipt', 'dipp'] },
+      { id: 'salate', label: 'SALATE', img: I.salat, items: ['salat1', 'salat2', 'salat3', 'salat4', 'pizzabrot'] },
+      { id: 'dessert', label: 'EIS & DESSERT', img: I.eisA, items: ['calzone', 'eisA', 'eisT', 'eisZ'] },
+      { id: 'drinks', label: 'GETRÄNKE', img: I.cola, items: ['afri', 'afri0', 'misch', 'bluna', 'blunaz', 'eisteeP', 'eisteeZ', 'kirsch', 'maracuja', 'apfel', 'johannis', 'peroni', 'wasser', 'naturell'] }
+    ];
+    const SP = {marinara: 0, margherita: 1, margvegan: 2, cotto: 3, milano: 4, piccante: 5, tuna: 6, gamba: 7, toskana: 8, veggie: 9, pesto: 10, bufala: 11, burratina: 12, gorgonzola: 13, diavolo: 14, bresaola: 15, hawaii: 16, quattro: 17, antipasti: 18, spianata: 19, menu1: 20, menu2: 21, dipk: 22, dipt: 23, salat1: 24, salat2: 25, salat3: 26, salat4: 27, pizzabrot: 28, calzone: 29, eisA: 30, eisT: 31, eisZ: 32, afri: 33, afri0: 34, misch: 35, bluna: 36, blunaz: 37, eisteeP: 38, eisteeZ: 39, maracuja: 40, apfel: 41, wasser: 42, naturell: 43};
+    Object.keys(SP).forEach((k) => { P[k].sp = SP[k]; P[k].photo = [20, 21, 22, 23, 29, 30, 31, 32].indexOf(SP[k]) >= 0; });
+    C.forEach((c) => { if (c.id === 'mittag') c.sp = 20; if (c.id === 'pizza') c.sp = 5; if (c.id === 'dips') c.sp = 22; if (c.id === 'salate') c.sp = 25; if (c.id === 'dessert') c.sp = 31; if (c.id === 'drinks') c.sp = 33; });
+    return { P, C };
+  }
+  spr(k, size, radius) { return 'width: ' + size + 'px; height: ' + size + 'px; flex-shrink: 0; background-size: ' + (7 * size) + 'px ' + (7 * size) + 'px; background-position: ' + (-(k % 7) * size) + 'px ' + (-Math.floor(k / 7) * size) + 'px;' + (radius ? ' border-radius: ' + radius + 'px;' : ''); }
+
+  fmt(n) { return (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' €'; }
+  r2(n) { return Math.round(n * 100) / 100; }
+  defSel(p) { const o = {}; (p.groups || []).forEach((g) => { o[g.id] = g.type === 'one' ? (g.opts.find((x) => x.def) || g.opts[0]).id : []; }); return o; }
+  unit(p, sel) {
+    let u = p.price;
+    (p.groups || []).forEach((g) => {
+      const v = sel[g.id];
+      if (g.type === 'one') { const o = g.opts.find((x) => x.id === v); if (o) u += o.d; }
+      else (v || []).forEach((id) => { const o = g.opts.find((x) => x.id === id); if (o) u += o.d; });
+    });
+    return this.r2(u);
+  }
+  optsTxt(p, sel) {
+    const out = [];
+    (p.groups || []).forEach((g) => {
+      const v = sel[g.id];
+      if (g.type === 'one') { const o = g.opts.find((x) => x.id === v); if (o && (g.show || !o.def)) out.push(o.label); }
+      else (v || []).forEach((id) => { const o = g.opts.find((x) => x.id === id); if (o) out.push(o.label); });
+    });
+    return out.join(' · ');
+  }
+  addLine(cart, uid, pid, qty, sel) {
+    const key = JSON.stringify(sel);
+    const i = cart.findIndex((l) => l.pid === pid && JSON.stringify(l.sel) === key);
+    if (i >= 0) return { cart: cart.map((l, j) => j === i ? Object.assign({}, l, { qty: l.qty + qty }) : l), uid };
+    return { cart: cart.concat([{ id: uid, pid, qty, sel }]), uid: uid + 1 };
+  }
+  openDetail(pid, o) {
+    const { P } = this.data();
+    const x = o || {};
+    this.setState({ sheet: { kind: 'detail', pid, qty: x.qty || 1, sel: x.sel || this.defSel(P[pid]), editId: x.editId || null }, allerg: false, showAll: false });
+  }
+  finish(method) {
+    const st = this.state;
+    const { P } = this.data();
+    const total = this.r2(st.cart.reduce((a, l) => a + this.unit(P[l.pid], l.sel) * l.qty, 0));
+    this.setState({ screen: 'done', sheet: null, doneLeft: 20, cart: [], orderNo: st.orderNo + 1,
+      last: { no: st.orderNo, service: st.service, method, total } });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const { P, C } = this.data();
+    const lay = this.props.kartenLayout ?? 'Kompakt';
+    const pad = (n) => String(n).padStart(3, '0');
+
+    const lineTotal = (l) => this.r2(this.unit(P[l.pid], l.sel) * l.qty);
+    const total = this.r2(s.cart.reduce((a, l) => a + lineTotal(l), 0));
+    const savings = this.r2(s.cart.reduce((a, l) => a + (P[l.pid].was ? (P[l.pid].was - P[l.pid].price) * l.qty : 0), 0));
+    const cartCount = s.cart.reduce((a, l) => a + l.qty, 0);
+
+    const rail = C.map((c) => {
+      const a = s.cat === c.id;
+      return { label: c.label, img: c.img || '', hasImg: !c.all, spStyle: c.sp != null ? this.spr(c.sp, 44, c.sp >= 20 && c.sp !== 25 && c.sp !== 33 ? 22 : 0) : '', isAll: !!c.all, pressed: a ? 'true' : 'false',
+        pick: () => this.setState({ cat: c.id }),
+        style: 'width: 88px; min-height: 92px; padding: 10px 4px; border-radius: 18px; border: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; flex-shrink: 0; ' + (a ? 'background: #111111; color: #FFFFFF;' : 'background: #FFFFFF; color: #111111;') };
+    });
+    const fdefs = [{ id: 'all', label: 'ALLE' }, { id: 'veg', label: 'VEGGIE', isVeg: true }, { id: 'hot', label: 'SCHARF', isHot: true }];
+    const pill = (a) => 'height: 44px; padding: 0 14px; border-radius: 999px; display: flex; align-items: center; gap: 6px; font-family: \'Barlow Condensed\', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 1px; white-space: nowrap; border: 1.5px solid ' + (a ? '#111111' : '#E0E0E0') + '; background: ' + (a ? '#111111' : '#FFFFFF') + '; color: ' + (a ? '#FFFFFF' : '#111111') + ';';
+    const filters = fdefs.map((f) => { const a = s.filter === f.id; return { label: f.label, isVeg: !!f.isVeg, isHot: !!f.isHot, pressed: a ? 'true' : 'false', style: pill(a), pick: () => this.setState({ filter: f.id }) }; });
+
+    const cat = C.find((c) => c.id === s.cat) || C[0];
+    let ids = cat.all ? C.filter((c) => !c.all).reduce((a, c) => a.concat(c.items), []) : cat.items.slice();
+    if (s.filter === 'veg') ids = ids.filter((id) => P[id].veg);
+    if (s.filter === 'hot') ids = ids.filter((id) => P[id].hot);
+    if (s.sort === 1) ids.sort((a, b) => P[a].price - P[b].price);
+    if (s.sort === 2) ids.sort((a, b) => P[b].price - P[a].price);
+    const priceStyle = (was, big) => 'font-family: \'Anton\', \'Impact\', sans-serif; font-size: ' + (big ? 34 : 26) + 'px; line-height: 1.05; color: ' + (was ? '#C62A1E' : '#111111') + ';';
+    const items = ids.map((id) => {
+      const p = P[id];
+      return { name: p.name, img: p.img, priceTxt: this.fmt(p.price), hasWas: !!p.was, wasTxt: p.was ? this.fmt(p.was) : '',
+        pct: p.was ? '−' + Math.round((1 - p.price / p.was) * 100) + ' %' : '', priceStyle: priceStyle(!!p.was, false),
+        hasBadge: !!p.badge || !!p.hot, badge: p.badge || 'SCHARF', badgeStyle: 'position: relative; margin-top: 8px; padding: 3px 9px; border-radius: 999px; font-family: \'Barlow Condensed\', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; ' + (p.badge === 'MEHRWEG' ? 'background: #FFFFFF; color: #1F6B3A; border: 1.5px solid #1F6B3A;' : (p.badge === 'VEGAN' ? 'background: #1F6B3A; color: #FFFFFF;' : (p.badge === 'MITTAG' ? 'background: #F2B233; color: #111111;' : 'background: #C62A1E; color: #FFFFFF;'))),
+        aria: p.name + ', ' + this.fmt(p.price), open: () => this.openDetail(id),
+        hasSp: p.sp != null, noSp: p.sp == null, desc: p.tag,
+        spMid: p.sp == null ? '' : this.spr(p.sp, p.photo ? 138 : 158, p.photo ? 16 : 0) + (p.photo ? ' margin: 6px 0 4px;' : ' margin: -2px 0 -4px;'),
+        spRow: p.sp == null ? '' : this.spr(p.sp, 104, p.photo ? 14 : 0),
+        spSmall: p.sp == null ? '' : this.spr(p.sp, p.photo ? 96 : 110, p.photo ? 12 : 0) + (p.photo ? ' margin: 8px 0 6px;' : ''),
+        priceStyleS: 'font-family: \'Anton\', \'Impact\', sans-serif; font-size: 22px; line-height: 1; color: #111111;',
+        priceStyleXS: 'font-family: \'Anton\', \'Impact\', sans-serif; font-size: 18px; line-height: 1; color: #111111;',
+        badgeStyleTop: 'display: inline-block; padding: 3px 8px; border-radius: 999px; font-family: \'Barlow Condensed\', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; ' + (p.badge === 'MEHRWEG' ? 'background: #FFFFFF; color: #1F6B3A; border: 1.5px solid #1F6B3A;' : (p.badge === 'VEGAN' ? 'background: #1F6B3A; color: #FFFFFF;' : (p.badge === 'MITTAG' ? 'background: #F2B233; color: #111111;' : 'background: #C62A1E; color: #FFFFFF;'))),
+        spStyle: p.sp == null ? '' : (p.photo ? 'position: absolute; right: 12px; bottom: 12px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); ' + this.spr(p.sp, 124, 16) : 'position: absolute; right: -38px; bottom: -38px; ' + this.spr(p.sp, 180)) };
+    });
+
+    // detail
+    let d = {}, groups = [], detailTotal = '';
+    const sh = s.sheet;
+    if (sh && sh.kind === 'detail') {
+      const p = P[sh.pid];
+      d = { name: p.name, img: p.img, hasSp: p.sp != null, noSp: p.sp == null, spStyle: p.sp == null ? '' : this.spr(p.sp, 250, p.photo ? 20 : 0), tag: p.tag, qty: sh.qty, priceTxt: this.fmt(p.price), hasWas: !!p.was, wasTxt: p.was ? this.fmt(p.was) : '', priceStyle: priceStyle(!!p.was, true) };
+      const setSel = (gid, v) => this.setState({ sheet: Object.assign({}, sh, { sel: Object.assign({}, sh.sel, { [gid]: v }) }) });
+      groups = (p.groups || []).map((g) => ({
+        label: g.label, hint: g.type === 'one' ? 'Bitte wählen' : 'Optional',
+        hasMore: g.opts.length > 6, moreLabel: s.showAll ? 'WENIGER ANZEIGEN' : 'ALLE ' + g.opts.length + ' EXTRAS ANZEIGEN', toggleMore: () => this.setState({ showAll: !s.showAll }),
+        opts: g.opts.filter((o, i) => s.showAll || g.opts.length <= 6 || i < 6 || (g.type === 'many' && (sh.sel[g.id] || []).indexOf(o.id) >= 0)).map((o) => {
+          const c = g.type === 'one' ? sh.sel[g.id] === o.id : (sh.sel[g.id] || []).indexOf(o.id) >= 0;
+          const oi = g.opts.indexOf(o);
+          return { label: o.label, sub: o.d > 0 ? '+' + this.fmt(o.d) : 'inkl.', checked: c, pressed: c ? 'true' : 'false',
+            hasIc: !!g.icons, icStyle: g.icons ? 'width: 44px; height: 44px; border-radius: 22px; background-color: ' + (c ? '#FFFFFF' : '#F5F1EC') + '; background-size: 308px 176px; background-position: ' + (-(oi % 7) * 44) + 'px ' + (-Math.floor(oi / 7) * 44) + 'px;' : '',
+            style: 'min-height: ' + (g.icons ? 60 : 56) + 'px; padding: 0 16px 0 ' + (g.icons ? 8 : 16) + 'px; border-radius: 999px; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-family: \'Barlow Condensed\', sans-serif; font-weight: 600; font-size: 16px; letter-spacing: 0.5px; text-align: left; border: 1.5px solid ' + (c ? '#111111' : '#E0E0E0') + '; background: ' + (c ? '#111111' : '#FFFFFF') + '; color: ' + (c ? '#FFFFFF' : '#111111') + ';',
+            pick: () => { if (g.type === 'one') setSel(g.id, o.id); else { const cur = sh.sel[g.id] || []; setSel(g.id, c ? cur.filter((x) => x !== o.id) : cur.concat([o.id])); } } };
+        })
+      }));
+      detailTotal = this.fmt(this.unit(p, sh.sel) * sh.qty);
+    }
+
+    const lines = s.cart.map((l) => {
+      const p = P[l.pid];
+      const setQty = (q) => this.setState({ cart: q <= 0 ? s.cart.filter((x) => x.id !== l.id) : s.cart.map((x) => x.id === l.id ? Object.assign({}, x, { qty: q }) : x) });
+      const ot = this.optsTxt(p, l.sel);
+      return { name: p.name, img: p.img, hasSp: p.sp != null, noSp: p.sp == null, spStyle: p.sp == null ? '' : this.spr(p.sp, 64, p.photo ? 10 : 0), qty: l.qty, optsTxt: ot, hasOpts: !!ot, priceTxt: this.fmt(lineTotal(l)),
+        canEdit: (p.groups || []).length > 0,
+        edit: () => this.openDetail(l.pid, { qty: l.qty, sel: Object.assign(this.defSel(p), l.sel), editId: l.id }),
+        dec: () => setQty(l.qty - 1), inc: () => setQty(l.qty + 1), decAria: p.name + ': eins weniger', incAria: p.name + ': eins mehr' };
+    });
+
+    const mdefs = [{ id: 'card', label: 'KARTE', isCard: true }, { id: 'qr', label: 'QR-CODE', isQr: true }, { id: 'cash', label: 'BAR AN DER KASSE', isCash: true }, { id: 'wallet', label: 'SMARTPHONE', isWallet: true }];
+    const methods = mdefs.map((m) => { const c = s.method === m.id; return { label: m.label, isCard: !!m.isCard, isQr: !!m.isQr, isCash: !!m.isCash, isWallet: !!m.isWallet, checked: c, pressed: c ? 'true' : 'false',
+      pick: () => this.setState({ method: m.id }),
+      style: 'position: relative; height: 150px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #FFFFFF; border: 2px solid ' + (c ? '#111111' : '#E6E6E6') + ';' }; });
+    const payTexts = {
+      qr: ['QR SCANNEN', 'UND BEZAHLEN', 'PRÜFE DEN BETRAG VOR DEM BESTÄTIGEN.'],
+      card: ['KARTE AN DAS', 'LESEGERÄT HALTEN', 'DAS LESEGERÄT IST UNTER DEM BILDSCHIRM.'],
+      wallet: ['SMARTPHONE AN DAS', 'LESEGERÄT HALTEN', 'DAS LESEGERÄT IST UNTER DEM BILDSCHIRM.'],
+      cash: ['', '', '']
+    }[s.method];
+    const L = s.last || { no: s.orderNo, service: 'here', method: 'card', total: 0 };
+
+    const dlgs = {
+      clear: { t: 'WARENKORB LEEREN?', x: 'Alle ' + cartCount + ' Artikel werden entfernt.', ok: 'LEEREN', fn: () => this.setState({ cart: [], dialog: null }) },
+      restart: { t: 'NEU STARTEN?', x: 'Deine Auswahl wird gelöscht.', ok: 'NEU STARTEN', fn: () => this.doReset() },
+      cancel: { t: 'BESTELLUNG ABBRECHEN?', x: 'Die Zahlung wird abgebrochen und dein Warenkorb gelöscht.', ok: 'ABBRECHEN', fn: () => this.doReset() }
+    };
+    const dlg = dlgs[s.dialog] || dlgs.restart;
+
+    return {
+      touch: () => { this.last = Date.now(); },
+      isStart: s.screen === 'start', isMenu: s.screen === 'menu', isPay: s.screen === 'pay', isDone: s.screen === 'done',
+      langEn: () => this.flash('ENGLISH FOLGT'),
+      chooseHere: () => { this.last = Date.now(); this.setState({ screen: 'menu', service: 'here' }); },
+      chooseTogo: () => { this.last = Date.now(); this.setState({ screen: 'menu', service: 'togo' }); },
+      serviceLabel: s.service === 'here' ? 'HIER ESSEN' : 'MITNEHMEN',
+      toggleService: () => { const n = s.service === 'here' ? 'togo' : 'here'; this.setState({ service: n }); this.flash(n === 'here' ? 'UMGESTELLT: HIER ESSEN' : 'UMGESTELLT: MITNEHMEN'); },
+      clock: s.clock, orderNoPad: pad(s.orderNo),
+      askRestart: () => s.cart.length ? this.setState({ dialog: 'restart' }) : this.doReset(),
+      layCenter: lay === 'Zentriert', layList: lay === 'Liste', layCompact: lay === 'Kompakt', layOriginal: lay === 'Original',
+      rail, filters, items, noItems: items.length === 0, hasNote: !!cat.note, catNote: cat.note || '',
+      cycleSort: () => { const n = (s.sort + 1) % 3; this.setState({ sort: n }); this.flash(['STANDARD-REIHENFOLGE', 'PREIS AUFSTEIGEND', 'PREIS ABSTEIGEND'][n]); },
+      sortAria: 'Sortierung: ' + ['Standard', 'Preis aufsteigend', 'Preis absteigend'][s.sort],
+      sortStyle: 'width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1.5px solid ' + (s.sort ? '#111111' : '#E0E0E0') + '; background: ' + (s.sort ? '#111111' : '#FFFFFF') + '; color: ' + (s.sort ? '#FFFFFF' : '#111111') + ';',
+
+      cartCount, isEmptyCart: s.cart.length === 0, hasItems: s.cart.length > 0, totalTxt: this.fmt(total),
+      hasSavings: savings > 0, savingsTxt: this.fmt(savings),
+      openCart: () => this.setState({ sheet: { kind: 'cart' } }),
+      openMethod: () => { if (s.cart.length) this.setState({ sheet: { kind: 'method' } }); },
+      checkoutStyle: 'border: 0; display: flex; align-items: center; justify-content: center; gap: 12px; font-family: \'Anton\', \'Impact\', sans-serif; font-size: 24px; letter-spacing: 1px; ' + (s.cart.length ? 'background: #C62A1E; color: #FFFFFF;' : 'background: #E6E6E6; color: #4A4A4A;'),
+
+      sheetOpen: !!sh, isDetail: !!sh && sh.kind === 'detail', isCartSheet: !!sh && sh.kind === 'cart', isMethod: !!sh && sh.kind === 'method',
+      sheetTitle: sh ? (sh.kind === 'detail' ? d.name : (sh.kind === 'cart' ? 'Warenkorb' : 'Zahlungsart wählen')) : '',
+      closeSheet: () => this.setState({ sheet: null }),
+      d, groups, detailTotal, detailCta: sh && sh.editId ? 'ÜBERNEHMEN' : 'HINZUFÜGEN',
+      allergOpen: s.allerg, allergExpanded: s.allerg ? 'true' : 'false', toggleAllerg: () => this.setState({ allerg: !s.allerg }),
+      qtyDec: () => this.setState({ sheet: Object.assign({}, sh, { qty: Math.max(1, sh.qty - 1) }) }),
+      qtyInc: () => this.setState({ sheet: Object.assign({}, sh, { qty: Math.min(20, sh.qty + 1) }) }),
+      confirmDetail: () => {
+        const st = this.state, x = st.sheet;
+        let r = { cart: st.cart, uid: st.uid };
+        if (x.editId) r.cart = r.cart.map((l) => l.id === x.editId ? Object.assign({}, l, { qty: x.qty, sel: x.sel }) : l);
+        else r = this.addLine(r.cart, r.uid, x.pid, x.qty, x.sel);
+        this.setState(Object.assign(r, { sheet: x.editId ? { kind: 'cart' } : null }));
+        this.flash(x.editId ? 'GEÄNDERT' : 'ZUM WARENKORB HINZUGEFÜGT');
+      },
+      lines, askClear: () => this.setState({ dialog: 'clear' }),
+      cartCtaLabel: s.cart.length ? 'WEITER ZUR ZAHLUNG' : 'ZUR SPEISEKARTE',
+      cartCta: () => this.setState({ sheet: s.cart.length ? { kind: 'method' } : null }),
+      methods, methodCta: s.method === 'cash' ? 'BESTELLUNG ABSCHICKEN' : 'ZAHLUNG STARTEN',
+      startPay: () => {
+        if (!s.cart.length) return;
+        if (s.method === 'cash') { this.finish('cash'); return; }
+        this.setState({ screen: 'pay', sheet: null });
+        clearTimeout(this.pt);
+        this.pt = setTimeout(() => this.finish(this.state.method), 4500);
+      },
+      payTitle1: payTexts[0], payTitle2: payTexts[1], paySub: payTexts[2], payIsQr: s.method === 'qr', payIsTap: s.method === 'card' || s.method === 'wallet',
+      changeMethod: () => { clearTimeout(this.pt); this.setState({ screen: 'menu', sheet: { kind: 'method' } }); },
+      askCancel: () => { clearTimeout(this.pt); this.setState({ dialog: 'cancel' }); },
+
+      doneNo: pad(L.no), doneTotal: this.fmt(L.total), doneCash: L.method === 'cash',
+      doneMsg: L.service === 'here' ? 'Wir rufen deine Nummer auf – abholen an der Ausgabe und genießen.' : 'Wir rufen deine Nummer auf – deine Bestellung kommt fertig verpackt.',
+      doneLeft: s.doneLeft, ringOffset: String(175.9 * (1 - s.doneLeft / 20)),
+      reset: () => this.doReset(),
+
+      dialogOpen: !!s.dialog, dlgTitle: dlg.t, dlgText: dlg.x, dlgOkLabel: dlg.ok, dlgOk: dlg.fn,
+      dlgCancel: () => {
+        const wasCancel = s.dialog === 'cancel';
+        this.setState({ dialog: null });
+        if (wasCancel && s.screen === 'pay') { clearTimeout(this.pt); this.pt = setTimeout(() => this.finish(this.state.method), 4500); }
+      },
+      idleOpen: s.idleOpen, idleLeft: s.idleLeft,
+      stay: () => { this.last = Date.now(); this.setState({ idleOpen: false, idleLeft: 20 }); },
+      toast: s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
