@@ -556,7 +556,7 @@ class Component extends DCLogic {
   flash(t) { clearTimeout(this.tt); this.setState({ toast: t }); this.tt = setTimeout(() => this.setState({ toast: '' }), 1500); }
 
   data() {
-    const B = (id) => '/_blob/' + id;
+    const __EXT={"3275780bb0074318ffcb29c58831b2e5": "jpg", "30ddd83911c5bac5cc41eec27748fcfe": "jpg", "2f2537892f1aead835fac8f132443158": "jpg", "bd07ea8bd8a1e76f23c587c45107047f": "jpg", "d07d5733782d225cfc9012a38fbe355a": "jpg", "d66d7e69064d658a87bf7132dd5e4299": "jpg", "4775ee6f2159192056308b961ee2b77c": "jpg", "97fcb442bc78c411b4ed1f741013a812": "jpg", "75f53befe3d9b2610a6a6defb8f7f5f9": "jpg", "9a0db8d7280cd57ccfa347f5dd0342ba": "jpg", "b47a870c48be872d04c8bcc30d2ff3d3": "jpg", "ae8a726a8c67b444d7c0c76733fbad44": "jpg", "817145355e3bfe43b7c0f0fe2b677ffa": "jpg", "4481eecca5b71d9da0db8cf4c135c13b": "jpg", "3cfca28dadd106781106d4084463a47f": "jpg", "09c5bac8a9cd2c558fe679d5e01ee7f8": "jpg", "b56b3598384699f4b4d81abc2aef17a4": "jpg", "ede11500b57f5d7babade5a0c9047ffe": "jpg", "c7fdb3c99be30e151887bb9041279352": "jpg", "434f2e9ca0a42c5172dd6d06d5d7ea8f": "jpg", "4193d5e0fc6ade8437259aa5d65dd868": "jpg", "e236d4c2c026c1f9617fb5fc5905e8cb": "jpg", "8cdbfb8fe39fb357b429ee4cfababd1f": "jpg", "d3270ba89c4317b3782b0baf9d9fc6d0": "jpg"}; const B = (id) => './assets/' + id + '.' + (__EXT[id]||'jpg');
     const I = {
       apfel: B('b47a870c48be872d04c8bcc30d2ff3d3'), brezel: B('09c5bac8a9cd2c558fe679d5e01ee7f8'), cBrezeln: B('75f53befe3d9b2610a6a6defb8f7f5f9'),
       cBroetchen: B('4775ee6f2159192056308b961ee2b77c'), cFrueh: B('ae8a726a8c67b444d7c0c76733fbad44'), cGetr: B('4193d5e0fc6ade8437259aa5d65dd868'),
