@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="de">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Brava — терминал самообслуживания</title>
+<title>Brava — Self-Order-Terminal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -383,16 +383,16 @@ const IDLE_AFTER = 60, IDLE_COUNT = 15, DONE_COUNT = 20;
 
 /* ================= i18n ================= */
 const L = {
-ru:{here:'Поесть здесь',togo:'С собой',hero1:'Пицца из дровяной печи',hero2:'Закажите здесь и заберите без очереди',where:'Где будете есть?',payFoot:'Оплата картой, телефоном, по QR-коду или на кассе',
- pizza:'Пицца',snacks:'Закуски',drinks:'Напитки',desserts:'Десерты',from:'от',choose:'Выбрать',extras:'Добавки',upTo3:'можно выбрать до трёх',full3:'уже три добавки, уберите одну, чтобы заменить',
- crust:'Бортик',classic:'Классический',cheesy:'Сырный +150',cheesyCrust:'сырный бортик',toCart:'В корзину',added:'{x} в корзине',yourOrder:'Ваш заказ',checkout:'Оформить',emptyBar:'Корзина пока пустая',
- emptyCart:'В корзине пока пусто. Выберите блюдо, и оно появится здесь.',total:'Итого',more:'Добавить ещё',toPay:'К оплате',back:'Назад',
- upsT:'К пицце часто берут',upsS:'Добавьте в один тап или продолжайте',upsNo:'Продолжить',
- payHow:'Как оплатите?',card:'Картой или телефоном',cardS:'Приложите к считывателю под экраном',qr:'QR-код СБП',qrS:'Через приложение банка',counter:'На кассе',counterS:'Наличными или картой у кассира',
- tapCard:'Приложите карту',tapCardP:'Поднесите карту или телефон к считывателю под экраном. К оплате {x} €.',scanQR:'Отсканируйте код',scanQRP:'Откройте приложение банка и наведите камеру на QR-код. К оплате {x} €.',cancel:'Отмена',
- ok:'Заказ принят',okCounter:'Заказ создан',yourNum:'Ваш номер',infoHere:'Садитесь за любой стол. Мы принесём заказ, когда номер загорится на экране в зале.',infoTogo:'Заберите заказ на стойке выдачи, когда номер загорится на экране.',infoCounter:'Назовите номер на кассе и оплатите. Мы начнём готовить сразу после оплаты.',
- paidCard:'Оплачено {x} € картой',paidQR:'Оплачено {x} € через QR-код',toPayCounter:'К оплате на кассе {x} €',receipt:'Чек',print:'Напечатать',noReceipt:'Не нужен',newOrder:'Новый заказ',newIn:'через {x} с',
- still:'Вы ещё здесь?',idleP:'Заказ сбросится через {x} с, чтобы следующий гость начал с чистого листа.',cont:'Продолжить заказ',restart:'Начать заново',cm:'см',g:'г',oven:'Тесто 48 часов, печь 450°'},
+de:{here:'Hier essen',togo:'Mitnehmen',hero1:'Pizza aus dem Holzofen',hero2:'Hier bestellen, ohne Anstehen abholen',where:'Wo möchtest du essen?',payFoot:'Zahlung mit Karte, Handy, QR-Code oder an der Kasse',
+ pizza:'Pizza',snacks:'Snacks',drinks:'Getränke',desserts:'Desserts',from:'ab',choose:'Auswählen',extras:'Extras',upTo3:'bis zu drei wählbar',full3:'schon drei Extras – entferne eins, um zu tauschen',
+ crust:'Rand',classic:'Klassisch',cheesy:'Käserand +2,10',cheesyCrust:'Käserand',toCart:'In den Warenkorb',added:'{x} im Warenkorb',yourOrder:'Deine Bestellung',checkout:'Zur Kasse',emptyBar:'Warenkorb ist noch leer',
+ emptyCart:'Noch nichts im Warenkorb. Wähle ein Gericht, es erscheint hier.',total:'Gesamt',more:'Weiter bestellen',toPay:'Zu zahlen',back:'Zurück',
+ upsT:'Dazu passt',upsS:'Mit einem Tipp hinzufügen oder weiter',upsNo:'Weiter',
+ payHow:'Wie möchtest du zahlen?',card:'Karte oder Handy',cardS:'An das Lesegerät unter dem Bildschirm halten',qr:'QR-Code',qrS:'Mit der Banking-App',counter:'An der Kasse',counterS:'Bar oder mit Karte am Tresen',
+ tapCard:'Karte anhalten',tapCardP:'Halte Karte oder Handy an das Lesegerät unter dem Bildschirm. Zu zahlen: {x} €.',scanQR:'Code scannen',scanQRP:'Öffne deine Banking-App und richte die Kamera auf den QR-Code. Zu zahlen: {x} €.',cancel:'Abbrechen',
+ ok:'Bestellung angenommen',okCounter:'Bestellung erstellt',yourNum:'Deine Nummer',infoHere:'Setz dich an einen beliebigen Tisch. Wir bringen die Bestellung, sobald deine Nummer auf dem Bildschirm erscheint.',infoTogo:'Hol deine Bestellung an der Ausgabe ab, sobald die Nummer auf dem Bildschirm erscheint.',infoCounter:'Nenne deine Nummer an der Kasse und bezahle. Wir legen direkt nach der Zahlung los.',
+ paidCard:'{x} € mit Karte bezahlt',paidQR:'{x} € per QR-Code bezahlt',toPayCounter:'An der Kasse zu zahlen: {x} €',receipt:'Beleg',print:'Drucken',noReceipt:'Nicht nötig',newOrder:'Neue Bestellung',newIn:'in {x} s',
+ still:'Noch da?',idleP:'Die Bestellung wird in {x} s zurückgesetzt, damit der nächste Gast neu starten kann.',cont:'Weiter bestellen',restart:'Neu beginnen',cm:'cm',g:'g',oven:'48-Stunden-Teig, 450°-Ofen'},
 en:{here:'Eat in',togo:'Take away',hero1:'Pizza from a wood-fired oven',hero2:'Order here and skip the queue',where:'Where will you eat?',payFoot:'Pay by card, phone, QR code or at the counter',
  pizza:'Pizza',snacks:'Starters',drinks:'Drinks',desserts:'Desserts',from:'from',choose:'Choose',extras:'Extras',upTo3:'choose up to three',full3:'three extras chosen, remove one to swap',
  crust:'Crust',classic:'Classic',cheesy:'Cheese +150',cheesyCrust:'cheese crust',toCart:'Add to order',added:'{x} added',yourOrder:'Your order',checkout:'Checkout',emptyBar:'Your order is empty',
@@ -404,11 +404,11 @@ en:{here:'Eat in',togo:'Take away',hero1:'Pizza from a wood-fired oven',hero2:'O
  paidCard:'Paid {x} € by card',paidQR:'Paid {x} € by QR',toPayCounter:'To pay at the counter: {x} €',receipt:'Receipt',print:'Print',noReceipt:'No thanks',newOrder:'New order',newIn:'in {x} s',
  still:'Are you still there?',idleP:'Your order will reset in {x} s so the next guest can start fresh.',cont:'Continue order',restart:'Start over',cm:'cm',g:'g',oven:'48-hour dough, 450° oven'}
 };
-let lang='ru';
+let lang='de';
 const t=(k,x)=>(L[lang][k]??k).replace('{x}',x);
 const N=o=>o[lang];
 const fmt=n=>(Math.round(n/70*10)/10).toFixed(2).replace('.',',');
-function plural(n){if(lang==='en')return n+' '+(n===1?'item':'items');const a=n%10,b=n%100;return n+' '+(a===1&&b!==11?'позиция':a>=2&&a<=4&&(b<12||b>14)?'позиции':'позиций')}
+function plural(n){if(lang==='en')return n+' '+(n===1?'item':'items');return n+' '+(n===1?'Artikel':'Artikel')}
 
 /* ================= drawing ================= */
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let q=Math.imul(seed^seed>>>15,1|seed);q=q+Math.imul(q^q>>>7,61|q)^q;return((q^q>>>14)>>>0)/4294967296}}
@@ -431,15 +431,15 @@ function spiral(n,rad,R,off=0){const o=[];for(let i=0;i<n;i++){const r=rad*Math.
 
 /* ================= menu data ================= */
 const PIZZAS=[
- {name:{ru:'Пепперони Наполи',en:'Pepperoni Napoli'},desc:{ru:'Томаты Сан-Марцано, фиор ди латте и пикантная пепперони',en:'San Marzano tomatoes, fior di latte and spicy pepperoni'},price:890,g:650,seed:5,sauce:'#c4371e',base:[['pepperoni',15,1],['basil',5,.8]]},
- {name:{ru:'Маргарита',en:'Margherita'},desc:{ru:'Томаты, моцарелла буффало, базилик и оливковое масло',en:'Tomatoes, buffalo mozzarella, basil and olive oil'},price:690,g:560,seed:11,sauce:'#c63a20',mozz:true,base:[['basil',7,.95]]},
- {name:{ru:'Прошутто и грибы',en:'Prosciutto & mushrooms'},desc:{ru:'Ветчина прошутто котто, шампиньоны и моцарелла',en:'Prosciutto cotto, mushrooms and mozzarella'},price:990,g:690,seed:23,sauce:'#c13a21',base:[['ham',9,1.05],['mushroom',10,1]]},
- {name:{ru:'Четыре сыра',en:'Four cheeses'},desc:{ru:'Моцарелла, горгонзола, пармезан и пекорино на сливочной основе',en:'Mozzarella, gorgonzola, parmesan and pecorino on cream'},price:950,g:620,seed:31,sauce:'#efe0bb',cheese4:true,base:[['parmesan',12,1]]},
- {name:{ru:'Огород',en:'Orto'},desc:{ru:'Томаты черри, сладкий перец, красный лук и маслины',en:'Cherry tomatoes, sweet pepper, red onion and olives'},price:790,g:640,seed:43,sauce:'#c63c22',base:[['tomato',8,1],['pepper',8,1],['onion',7,1],['olive',9,1]]}
+ {name:{de:'Pepperoni Napoli',en:'Pepperoni Napoli'},desc:{de:'San-Marzano-Tomaten, Fior di Latte und pikante Pepperoni',en:'San Marzano tomatoes, fior di latte and spicy pepperoni'},price:890,g:650,seed:5,sauce:'#c4371e',base:[['pepperoni',15,1],['basil',5,.8]]},
+ {name:{de:'Margherita',en:'Margherita'},desc:{de:'Tomaten, Büffelmozzarella, Basilikum und Olivenöl',en:'Tomatoes, buffalo mozzarella, basil and olive oil'},price:690,g:560,seed:11,sauce:'#c63a20',mozz:true,base:[['basil',7,.95]]},
+ {name:{de:'Prosciutto & Pilze',en:'Prosciutto & mushrooms'},desc:{de:'Prosciutto cotto, Champignons und Mozzarella',en:'Prosciutto cotto, mushrooms and mozzarella'},price:990,g:690,seed:23,sauce:'#c13a21',base:[['ham',9,1.05],['mushroom',10,1]]},
+ {name:{de:'Vier Käse',en:'Four cheeses'},desc:{de:'Mozzarella, Gorgonzola, Parmesan und Pecorino auf Sahnebasis',en:'Mozzarella, gorgonzola, parmesan and pecorino on cream'},price:950,g:620,seed:31,sauce:'#efe0bb',cheese4:true,base:[['parmesan',12,1]]},
+ {name:{de:'Ortolana',en:'Orto'},desc:{de:'Kirschtomaten, Paprika, rote Zwiebeln und Oliven',en:'Cherry tomatoes, sweet pepper, red onion and olives'},price:790,g:640,seed:43,sauce:'#c63c22',base:[['tomato',8,1],['pepper',8,1],['onion',7,1],['olive',9,1]]}
 ];
 const TOPS=[
- {id:'mushroom',name:{ru:'Грибы',en:'Mushrooms'},p:90},{id:'jalapeno',name:{ru:'Халапеньо',en:'Jalapeño'},p:90},{id:'olive',name:{ru:'Маслины',en:'Olives'},p:90},
- {id:'basil',name:{ru:'Базилик',en:'Basil'},p:60},{id:'onion',name:{ru:'Лук',en:'Onion'},p:60},{id:'tomato',name:{ru:'Томаты',en:'Tomatoes'},p:90},{id:'parmesan',name:{ru:'Пармезан',en:'Parmesan'},p:120}
+ {id:'mushroom',name:{de:'Pilze',en:'Mushrooms'},p:90},{id:'jalapeno',name:{de:'Jalapeños',en:'Jalapeño'},p:90},{id:'olive',name:{de:'Oliven',en:'Olives'},p:90},
+ {id:'basil',name:{de:'Basilikum',en:'Basil'},p:60},{id:'onion',name:{de:'Zwiebeln',en:'Onion'},p:60},{id:'tomato',name:{de:'Tomaten',en:'Tomatoes'},p:90},{id:'parmesan',name:{de:'Parmesan',en:'Parmesan'},p:120}
 ];
 const SIZES=[{k:'S',cm:25,d:-200,sc:.8,gk:.7},{k:'M',cm:30,d:0,sc:1,gk:1},{k:'L',cm:35,d:250,sc:1.1,gk:1.36}];
 
@@ -463,22 +463,22 @@ const ART={
 };
 const ITEMS={
  snacks:[
-  {id:'garlic',name:{ru:'Чесночный хлеб',en:'Garlic bread'},desc:{ru:'Наше тесто, масло и розмарин',en:'Our dough, butter and rosemary'},p:290},
-  {id:'wings',name:{ru:'Куриные крылья',en:'Chicken wings'},desc:{ru:'Острая глазурь, соус блю чиз',en:'Hot glaze, blue cheese dip'},p:490},
-  {id:'caesar',name:{ru:'Цезарь',en:'Caesar salad'},desc:{ru:'Романо, пармезан, гренки',en:'Romaine, parmesan, croutons'},p:520},
-  {id:'arancini',name:{ru:'Аранчини',en:'Arancini'},desc:{ru:'Рисовые шарики с моцареллой',en:'Rice balls with mozzarella'},p:390}],
+  {id:'garlic',name:{de:'Knoblauchbrot',en:'Garlic bread'},desc:{de:'Unser Teig, Butter und Rosmarin',en:'Our dough, butter and rosemary'},p:290},
+  {id:'wings',name:{de:'Chicken Wings',en:'Chicken wings'},desc:{de:'Scharfe Glasur, Blue-Cheese-Dip',en:'Hot glaze, blue cheese dip'},p:490},
+  {id:'caesar',name:{de:'Caesar Salad',en:'Caesar salad'},desc:{de:'Romana, Parmesan, Croutons',en:'Romaine, parmesan, croutons'},p:520},
+  {id:'arancini',name:{de:'Arancini',en:'Arancini'},desc:{de:'Reisbällchen mit Mozzarella',en:'Rice balls with mozzarella'},p:390}],
  drinks:[
-  {id:'lemonade',name:{ru:'Лимонад',en:'Lemonade'},desc:{ru:'Лимон и мята, 0,4 л',en:'Lemon and mint, 0.4 l'},p:250},
-  {id:'mors',name:{ru:'Ягодный морс',en:'Berry mors'},desc:{ru:'Клюква и брусника, 0,4 л',en:'Cranberry and lingonberry, 0.4 l'},p:220},
-  {id:'orange',name:{ru:'Апельсиновый фреш',en:'Fresh orange juice'},desc:{ru:'Выжимаем при вас, 0,3 л',en:'Squeezed to order, 0.3 l'},p:350},
-  {id:'water',name:{ru:'Вода',en:'Still water'},desc:{ru:'Негазированная, 0,5 л',en:'0.5 l'},p:150},
-  {id:'espresso',name:{ru:'Эспрессо',en:'Espresso'},desc:{ru:'Двойная обжарка, 30 мл',en:'Italian roast, 30 ml'},p:160},
-  {id:'cappuccino',name:{ru:'Капучино',en:'Cappuccino'},desc:{ru:'На цельном молоке, 300 мл',en:'Whole milk, 300 ml'},p:240}],
+  {id:'lemonade',name:{de:'Limonade',en:'Lemonade'},desc:{de:'Zitrone und Minze, 0,4 l',en:'Lemon and mint, 0.4 l'},p:250},
+  {id:'mors',name:{de:'Beeren-Schorle',en:'Berry mors'},desc:{de:'Cranberry und Preiselbeere, 0,4 l',en:'Cranberry and lingonberry, 0.4 l'},p:220},
+  {id:'orange',name:{de:'Frischer Orangensaft',en:'Fresh orange juice'},desc:{de:'Frisch gepresst, 0,3 l',en:'Squeezed to order, 0.3 l'},p:350},
+  {id:'water',name:{de:'Wasser',en:'Still water'},desc:{de:'Still, 0,5 l',en:'0.5 l'},p:150},
+  {id:'espresso',name:{de:'Espresso',en:'Espresso'},desc:{de:'Italienische Röstung, 30 ml',en:'Italian roast, 30 ml'},p:160},
+  {id:'cappuccino',name:{de:'Cappuccino',en:'Cappuccino'},desc:{de:'Mit Vollmilch, 300 ml',en:'Whole milk, 300 ml'},p:240}],
  desserts:[
-  {id:'tiramisu',name:{ru:'Тирамису',en:'Tiramisù'},desc:{ru:'Маскарпоне, савоярди, эспрессо',en:'Mascarpone, savoiardi, espresso'},p:420},
-  {id:'pannacotta',name:{ru:'Панна котта',en:'Panna cotta'},desc:{ru:'Со свежим ягодным соусом',en:'With fresh berry sauce'},p:360},
-  {id:'gelato',name:{ru:'Джелато',en:'Gelato'},desc:{ru:'Фисташка и клубника',en:'Pistachio and strawberry'},p:320},
-  {id:'cannoli',name:{ru:'Канноли',en:'Cannoli'},desc:{ru:'Рикотта и апельсиновая цедра',en:'Ricotta and orange zest'},p:340}]
+  {id:'tiramisu',name:{de:'Tiramisù',en:'Tiramisù'},desc:{de:'Mascarpone, Löffelbiskuit, Espresso',en:'Mascarpone, savoiardi, espresso'},p:420},
+  {id:'pannacotta',name:{de:'Panna cotta',en:'Panna cotta'},desc:{de:'Mit frischer Beerensauce',en:'With fresh berry sauce'},p:360},
+  {id:'gelato',name:{de:'Gelato',en:'Gelato'},desc:{de:'Pistazie und Erdbeere',en:'Pistachio and strawberry'},p:320},
+  {id:'cannoli',name:{de:'Cannoli',en:'Cannoli'},desc:{de:'Ricotta und Orangenschale',en:'Ricotta and orange zest'},p:340}]
 };
 const ITEM=Object.fromEntries(Object.values(ITEMS).flat().map(i=>[i.id,i]));
 const UPSELL=['lemonade','garlic','tiramisu'];
@@ -525,7 +525,7 @@ function renderTexts(){
   document.documentElement.lang=lang;
   document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=t(e.dataset.i18n));
   document.querySelectorAll('[data-i18n-aria]').forEach(e=>e.setAttribute('aria-label',t(e.dataset.i18nAria)));
-  ['lang1','lang2'].forEach(id=>{$(id).textContent=lang==='ru'?'EN':'RU';$(id).setAttribute('aria-label',lang==='ru'?'English':'Русский')});
+  ['lang1','lang2'].forEach(id=>{$(id).textContent=lang==='de'?'EN':'DE';$(id).setAttribute('aria-label',lang==='de'?'English':'Deutsch')});
   [...$('cats').children].forEach(b=>b.textContent=t(b.dataset.c));
   [...$('thumbs').children].forEach((b,i)=>b.querySelector('.nm').textContent=N(PIZZAS[i].name));
   [...$('sizes').children].forEach((b,i)=>{b.querySelector('.l').textContent=SIZES[i].cm+' '+t('cm');b.setAttribute('aria-label',SIZES[i].k+', '+SIZES[i].cm+' '+t('cm'))});
@@ -535,7 +535,7 @@ function renderTexts(){
 }
 function renderMode(){const here=st.mode==='here';$('mode').innerHTML=(here?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6.5"/><path d="M2.5 3v5a2 2 0 0 0 2 2v11M4.5 3v4M21.5 3c-1.6 1-2 3-2 6h2v12"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>')+`<span>${t(st.mode)}</span>`;$('mode').setAttribute('aria-label',t(st.mode))}
 $('mode').onclick=()=>{st.mode=st.mode==='here'?'togo':'here';renderMode()};
-function toggleLang(){lang=lang==='ru'?'en':'ru';renderTexts()}
+function toggleLang(){lang=lang==='de'?'en':'de';renderTexts()}
 $('lang1').onclick=toggleLang;$('lang2').onclick=toggleLang;
 
 /* ================= categories ================= */
