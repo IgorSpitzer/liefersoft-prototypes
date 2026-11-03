@@ -1,0 +1,10 @@
+{
+ "id": "da-enzo-sot-skin-a",
+ "canonical": {
+  "tag": "da-enzo-sot-skin-a-rc1",
+  "commit": "4585470",
+  "file": "dist/da-enzo-sot-skin-a.html",
+  "sha256": "833815914a96f3b2abd80e95da1bb4e9b4f6c691960b41a3a531f7f6dbdd48c6",
+  "target": "experiences/da-enzo-sot-skin-a/index.html"
+ }
+}

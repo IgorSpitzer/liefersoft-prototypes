@@ -103,6 +103,7 @@ window.LS_SHOWROOM_REGISTRY = {
   brands: [
     { id: 'the-porters', title: 'The Porters', subtitle: 'Irish Pub · Hannover', vertical: 'pub' },
     { id: 'doli', title: 'DOLI', subtitle: 'Georgian Restaurant · Hannover', vertical: 'georgian' },
+    { id: 'da-enzo', title: 'Da Enzo', subtitle: 'Pizzeria · Bielefeld', vertical: 'pizza-italian' },
   ],
   /* Showroom NAVIGATION vocabulary (showroom mode only). It never replaces surface semantics: each experience shows its own
      term next to it (e.g. Order@Table "Cart" = Your Round). Mapped to the experience's own deterministic fixtures. */
@@ -254,6 +255,32 @@ window.LS_SHOWROOM_REGISTRY = {
           cart: 'Deine Bestellung', upsell: 'Passt dazu', payment: 'Rechnung bezahlen', confirmation: 'Bestellung gesendet' },
         reset: 'doli-01',
         allStates: ['doli-01', 'doli-02', 'doli-03', 'doli-04', 'doli-05', 'doli-06', 'doli-07', 'doli-08', 'doli-09', 'doli-10'],
+      },
+    },
+    {
+      id: 'da-enzo-sot-skin-a',
+      brand: 'da-enzo', vertical: 'pizza-italian', surface: 'sot',
+      recipe: 'Bestellkiosk', skin: 'Skin A',
+      title: 'Self-Order-Terminal — Skin A',
+      thumbnail: 'thumbs/da-enzo-sot-skin-a.webp',
+      status: { code: 'review', label: 'Review' },
+      build: { tag: 'da-enzo-sot-skin-a-rc1', commit: '4585470', file: 'dist/da-enzo-sot-skin-a.html', sha256: '833815914a96f3b2abd80e95da1bb4e9b4f6c691960b41a3a531f7f6dbdd48c6' },
+      provenance: { canonicalBuildSha256: '833815914a96f3b2abd80e95da1bb4e9b4f6c691960b41a3a531f7f6dbdd48c6', diagnosticsBuildSha256: null,
+        designSource: 'Da Enzo Pizzeria Bestellkiosk-UI board (9 screens + example data) + detail board',
+        note: 'Media cropped from the design mockups (no clean masters supplied). Showroom mode uses the build itself (window.__daenzo is not part of the guest UI).' },
+      externalDependencies: [],
+      launch: { target: 'experiences/da-enzo-sot-skin-a/index.html', mode: 'kiosk' },
+      canonicalViewport: { width: 1080, height: 1920, device: 'Kiosk portrait 1080×1920' },
+      tags: ['kiosk', 'pizza', 'de-DE', 'demo-payment', 'review'],
+      dev: {
+        driver: 'daenzo',
+        stateMap: { start: 'enzo-01', categories: 'enzo-02', 'product-list': 'enzo-03', 'product-detail': 'enzo-04', modifiers: 'enzo-05',
+          cart: 'enzo-06', upsell: 'enzo-07', payment: 'enzo-08', confirmation: 'enzo-09' },
+        stateNotes: {},
+        surfaceTerms: { start: 'Willkommen', categories: 'Unsere Pizza', 'product-list': 'Pizza', 'product-detail': 'Margherita', modifiers: 'Zutaten hinzufügen',
+          cart: 'Deine Bestellung', upsell: 'Noch etwas dazu?', payment: 'Zahlungsart wählen', confirmation: 'Bestellung erfolgreich' },
+        reset: 'enzo-01',
+        allStates: ['enzo-01', 'enzo-02', 'enzo-03', 'enzo-04', 'enzo-05', 'enzo-06', 'enzo-07', 'enzo-08', 'enzo-09'],
       },
     },
   ],
@@ -1321,7 +1348,7 @@ window.LS_SHOWROOM_REGISTRY = {
     const prior = cleanup; cleanup = () => { removeEventListener('resize', fit); if (blobURL) URL.revokeObjectURL(blobURL); if (prior) prior(); };
   }
   function hook(e, iframe) {
-    const w = iframe.contentWindow; const HOOK = { ot: '__ot', sot: '__sot', doli: '__doli' }; const api = e.dev && w[HOOK[e.dev.driver]];
+    const w = iframe.contentWindow; const HOOK = { ot: '__ot', sot: '__sot', doli: '__doli', daenzo: '__daenzo' }; const api = e.dev && w[HOOK[e.dev.driver]];
     if (!api) throw new Error('state hooks unavailable (experience still loading or not same-origin)');
     return api;
   }
