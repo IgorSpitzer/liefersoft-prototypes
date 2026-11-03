@@ -1,0 +1,10 @@
+{
+ "id": "doli-order-pay-classic-editorial",
+ "canonical": {
+  "tag": "doli-order-pay-classic-editorial-v1.0.0",
+  "commit": "f8effb0",
+  "file": "dist/doli-order-pay-classic-editorial.html",
+  "sha256": "c495443c1c04a58cfc7d0c8133d6b6b3d34f45ad8755cd4c50bbab5665da5c56",
+  "target": "experiences/doli-order-pay-classic-editorial/index.html"
+ }
+}

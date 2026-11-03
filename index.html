@@ -1,91 +1,1370 @@
-<!DOCTYPE html>
-<html lang="de">
+<!doctype html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Liefersoft · Prototype Studio</title>
-<meta name="robots" content="noindex">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23111'/><circle cx='50' cy='50' r='26' fill='%23f2a33a'/></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#0e0d0c;--bg-2:#161412;--card:#1c1917;--line:#2a2623;--ink:#f3ede6;--ink-2:#a8a097;--ink-3:#6f6862;--accent:#f2a33a;--ff-d:"Fraunces",Georgia,serif;--ff:"Inter",system-ui,sans-serif}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--ink);font-family:var(--ff);-webkit-font-smoothing:antialiased;min-height:100%;padding-bottom:80px}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
-header{padding:48px 0 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:14px}
-.mark{width:44px;height:44px;border-radius:13px;background:#fff;display:grid;place-items:center}
-.mark i{width:24px;height:24px;border-radius:50%;background:var(--accent);display:block;box-shadow:inset -6px -4px 0 #d9862a}
-h1{font-family:var(--ff-d);font-weight:500;font-size:34px;letter-spacing:-.02em;line-height:1}
-.brand p{color:var(--ink-2);font-size:13px;margin-top:6px}
-.filters{display:flex;gap:8px;flex-wrap:wrap}
-.chip{padding:9px 14px;border-radius:999px;border:1px solid var(--line);color:var(--ink-2);font-size:13px;cursor:pointer;background:none;font:inherit;transition:.2s}
-.chip:hover{border-color:var(--ink-3);color:var(--ink)}
-.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,border-color .25s}
-.card:hover{transform:translateY(-3px);border-color:#3a3430}
-.shot{position:relative;aspect-ratio:4/5;background:var(--bg-2);overflow:hidden}
-.shot img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transition:transform .6s}
-.card:hover .shot img{transform:scale(1.03)}
-.shot.kiosk img{object-fit:contain;padding:18px 18px 0}
-.shot.mobile img{object-fit:cover}
-.badge{position:absolute;top:14px;left:14px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:6px 10px;border-radius:999px;background:rgba(14,13,12,.75);backdrop-filter:blur(8px);color:var(--ink)}
-.status{position:absolute;top:14px;right:14px;font-size:11px;padding:6px 10px;border-radius:999px;background:rgba(14,13,12,.75);backdrop-filter:blur(8px);color:var(--ink-2)}
-.status::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px;vertical-align:1px}
-.body{padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
-.client{font-size:12px;color:var(--ink-2)}
-.title{font-family:var(--ff-d);font-size:22px;font-weight:500;letter-spacing:-.01em;line-height:1.1}
-.desc{font-size:13px;color:var(--ink-2);line-height:1.5}
-.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
-.tags span{font-size:11px;color:var(--ink-3);border:1px solid var(--line);padding:3px 8px;border-radius:999px}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:12px}
-.btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:12px;background:var(--ink);color:var(--bg);font-weight:600;font-size:13px;transition:.2s}
-.btn:hover{background:var(--accent)}
-.btn.ghost{background:none;border:1px solid var(--line);color:var(--ink-2);font-weight:500}
-.btn.ghost:hover{border-color:var(--ink-3);color:var(--ink)}
-.meta{font-size:11px;color:var(--ink-3);padding-top:6px}
-footer{margin-top:60px;color:var(--ink-3);font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.empty{color:var(--ink-3);padding:60px 0;text-align:center}
-@media (max-width:600px){header{padding-top:32px}h1{font-size:28px}.grid{grid-template-columns:1fr 1fr;gap:12px}.body{padding:14px}.title{font-size:18px}.desc{display:none}.tags{display:none}.btn{height:36px;padding:0 12px;font-size:12px}}
-@media (max-width:400px){.grid{grid-template-columns:1fr}.desc,.tags{display:flex}}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LS Experience Showroom</title>
+<link rel="icon" href="data:,">
+<style>/* LS Experience Showroom shell — neutral, responsive. Never styles the experiences (they run in iframes). */
+:root { --bg: #0d1013; --panel: #161b20; --line: #2a3038; --text: #eef1f4; --muted: #96a0ab; --accent: #4fd1a5; --warn: #f2c14e;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text); }
+a { color: inherit; }
+body.launching { overflow: hidden; background: #000; }
+.shell { max-width: 1240px; margin: 0 auto; padding: 24px clamp(16px, 4vw, 40px) 60px; }
+.top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.logo { text-decoration: none; font-size: 22px; font-weight: 600; } .logo b { background: var(--accent); color: #062018; padding: 2px 8px; border-radius: 6px; margin-right: 6px; }
+.count { color: var(--muted); font-size: 14px; }
+.modes { display: inline-flex; margin-top: 22px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.modes a { padding: 10px 18px; text-decoration: none; font-weight: 600; color: var(--muted); }
+.modes a[aria-current='true'] { background: var(--panel); color: var(--text); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.chips a { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); text-decoration: none; font-size: 14px; }
+.chips a i { font-style: normal; color: var(--muted); margin-left: 4px; }
+.chips a.zero { color: var(--muted); }
+.chips a[aria-current='true'] { border-color: var(--accent); color: var(--accent); }
+.group { margin-top: 34px; } .group header { display: flex; align-items: baseline; gap: 12px; }
+.group h2 { margin: 0; font-size: 24px; } .group h2 a { text-decoration: none; } .group header p { margin: 0; color: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-top: 16px; }
+.xcard { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--panel); }
+.xprev { position: relative; height: 300px; background: #050607; display: grid; place-items: center; overflow: hidden; }
+.xprev img { height: 92%; width: auto; max-width: 92%; object-fit: contain; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.6); }
+.dev-label { position: absolute; left: 10px; bottom: 10px; font-size: 12px; padding: 3px 8px; border-radius: 6px; background: rgba(0,0,0,.7); color: var(--muted); }
+.xbody { padding: 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.xsurf { margin: 0; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.xbody h3 { margin: 0; font-size: 18px; } .xmeta, .xbuild { margin: 0; color: var(--muted); font-size: 13px; }
+.xbuild { font-family: ui-monospace, monospace; font-size: 12px; }
+.xstatus { margin: 4px 0 0; font-size: 13px; font-weight: 600; } .xstatus.frozen { color: var(--warn); } .xstatus.live { color: var(--accent); }
+.xacts { display: flex; gap: 8px; margin-top: auto; padding-top: 10px; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line);
+  background: transparent; color: var(--text); font: 600 14px/1 inherit; text-decoration: none; cursor: pointer; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #062018; }
+.xempty { display: flex; flex-direction: column; justify-content: center; gap: 4px; min-height: 120px; padding: 16px; border: 1px dashed var(--line); border-radius: 16px; color: var(--muted); }
+.xempty b { color: var(--text); font-weight: 600; }
+.crumb { color: var(--muted); margin: 18px 0 0; } .bhead h1 { margin: 6px 0 0; font-size: 34px; } .bhead p { margin: 4px 0 0; color: var(--muted); }
+.foot { margin-top: 48px; color: var(--muted); font-size: 13px; } .none { color: var(--muted); margin-top: 30px; }
+/* viewer */
+.viewer { position: fixed; inset: 0; background: #000; }
+.viewer .frame { position: absolute; left: 50%; top: 50%; width: var(--w); height: var(--h); transform-origin: 50% 50%; margin-left: calc(var(--w) / -2); margin-top: calc(var(--h) / -2); }
+.viewer .frame.fill { left: 0; top: 0; width: 100%; height: 100%; margin: 0; transform: none; }
+.viewer iframe { display: block; width: 100%; height: 100%; border: 0; background: #000; }
+.viewer.present .frame.phone:not(.fill) { border-radius: 28px; overflow: hidden; }
+.escape { position: fixed; z-index: 5; left: 0; bottom: 0; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; opacity: 0; cursor: default; }
+.viewer.dev { display: grid; grid-template-columns: 300px 1fr; }
+.ctl { position: relative; z-index: 2; overflow-y: auto; padding: 18px; background: var(--panel); border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
+.ctl h2 { margin: 6px 0 0; font-size: 18px; } .ctl h3 { margin: 10px 0 0; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.states { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.st { min-height: 36px; border-radius: 8px; border: 1px solid var(--line); background: transparent; color: var(--text); font: 500 13px/1.2 inherit; cursor: pointer; }
+.st[aria-pressed='true'] { border-color: var(--accent); color: var(--accent); } .st:disabled { opacity: .35; cursor: default; }
+.all { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
+.all select { min-height: 36px; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 8px; }
+.row { display: flex; gap: 8px; } .row .btn { flex: 1; }
+.cvlabel, .note { margin: 0; color: var(--muted); font-size: 12px; }
+.stagearea { position: relative; overflow: hidden; background: repeating-conic-gradient(#0a0c0e 0 25%, #0e1114 0 50%) 0 0 / 24px 24px; }
+.stagearea .frame { position: absolute; }
+.frame.outlined { outline: 2px dashed var(--accent); outline-offset: 0; }
+@media (max-width: 760px) { .viewer.dev { grid-template-columns: 1fr; grid-template-rows: auto 1fr; } .ctl { max-height: 46vh; } }
+
+.st small { display: block; margin-top: 3px; font-size: 11px; color: var(--muted); }
+.ctl h3 small { text-transform: none; letter-spacing: 0; font-weight: 400; }
+.prov { margin: 0; font-size: 12px; line-height: 1.45; color: var(--muted); } .prov b { color: var(--text); } .prov code { font-size: 11px; }
+.preview { margin: 0 0 14px; padding: 10px 14px; border: 1px solid var(--warn); border-radius: 10px; color: var(--warn); font-size: 13px; }
+.unavail { margin: 0; padding: 40px; color: var(--muted); text-align: center; }
+.xdeps { margin: 0; color: var(--muted); font-size: 12px; }
+.xstatus.review { color: #7fb8ff; } .xstatus.in-progress { color: #c9a0ff; } .xstatus.concept { color: #ff9f80; }
+.xprev img { background: #050607; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="brand">
-      <div class="mark"><i></i></div>
-      <div><h1>Prototype Studio</h1><p>Liefersoft · klickbare Prototypen für Self-Order, Mobile & QR-Bestellung</p></div>
-    </div>
-    <div class="filters" id="filters"></div>
-  </header>
-  <div class="grid" id="grid"></div>
-  <footer><span id="count"></span><span>Intern · nicht zur Veröffentlichung · Stand <span id="stamp"></span></span></footer>
-</div>
-<script>
-const TYPES=["Alle","Kiosk","Mobile App","QR-Tischbestellung"];let cur="Alle",DATA=[];
-const F=document.getElementById("filters");
-TYPES.forEach(t=>{const b=document.createElement("button");b.className="chip"+(t==="Alle"?" on":"");b.textContent=t;b.onclick=()=>{cur=t;[...F.children].forEach(c=>c.classList.toggle("on",c===b));render()};F.appendChild(b)});
-function render(){
-  const list=DATA.filter(p=>cur==="Alle"||p.type===cur);
-  document.getElementById("count").textContent=`${list.length} Prototyp${list.length===1?"":"en"}`;
-  const g=document.getElementById("grid");
-  if(!list.length){g.innerHTML=`<div class="empty">Noch nichts in dieser Kategorie.</div>`;return}
-  g.innerHTML=list.map(p=>`<article class="card">
-    <a class="shot ${p.type==="Kiosk"?"kiosk":"mobile"}" href="${p.variants[0].path}"><img src="thumbs/${p.slug}.jpg" alt="" loading="lazy" onerror="this.style.display='none'"><span class="badge">${p.type}</span><span class="status">${p.status}</span></a>
-    <div class="body">
-      <div class="client">${p.client} · ${p.city}</div>
-      <div class="title">${p.title}</div>
-      <div class="desc">${p.desc}</div>
-      <div class="tags">${p.tags.map(t=>`<span>${t}</span>`).join("")}</div>
-      <div class="actions">${p.variants.map((v,i)=>`<a class="btn ${i?"ghost":""}" href="${v.path}">${i?"":"▶ "}${i?v.name:"Öffnen"+(p.variants.length>1?" · "+v.name:"")}</a>`).join("")}</div>
-      <div class="meta">Aktualisiert ${p.updated}</div>
-    </div></article>`).join("");
-}
-fetch("projects.json?"+Date.now()).then(r=>r.json()).then(d=>{DATA=d;document.getElementById("stamp").textContent=d.map(p=>p.updated).sort().pop();render()});
+<div id="app"></div>
+<script>/* LS Experience Showroom — Experience Registry.
+ * Register ONLY experiences for which a real build exists. Guest builds are taken byte-for-byte from git tags by
+ * tools/build-showroom.js (sha256 verified). Any showroom-only variant is a DERIVATIVE build with its own sha256 and
+ * a declared difference — it is never presented as the frozen build.
+ * Canonical deployment: the static GitHub Pages build (each experience served as its own file). The single-file
+ * claude.ai artifact is a convenience preview only. */
+window.LS_SHOWROOM_REGISTRY = {
+  schema: 'ls-showroom/1',
+  surfaces: [
+    { id: 'webshop', title: 'Webshop', device: 'responsive' },
+    { id: 'order-pay', title: 'Order & Pay', device: 'phone' },
+    { id: 'sot', title: 'Self Order Terminal', device: 'kiosk' },
+  ],
+  verticals: [
+    { id: 'pizza-italian', title: 'Pizza / Italian' }, { id: 'pub', title: 'Pub' }, { id: 'gelato', title: 'Gelato' },
+    { id: 'sushi', title: 'Sushi' }, { id: 'bakery', title: 'Bakery' }, { id: 'burger', title: 'Burger' }, { id: 'coffee', title: 'Coffee' },
+    { id: 'doener', title: 'Döner' }, { id: 'vietnamese', title: 'Vietnamese' },
+    { id: 'restaurant-bar', title: 'Restaurant / Bar' }, { id: 'asian', title: 'Asian' }, { id: 'georgian', title: 'Georgian' },
+    { id: 'unassigned', title: 'Unassigned' },
+  ],
+  /* status vocabulary: frozen (tagged reference build) · review · in-progress · concept (concept brands / ideas) */
+  statuses: [{ id: 'frozen', title: 'Frozen' }, { id: 'review', title: 'Review' }, { id: 'in-progress', title: 'In progress' }, { id: 'concept', title: 'Concept' }],
+  brands: [
+    { id: 'the-porters', title: 'The Porters', subtitle: 'Irish Pub · Hannover', vertical: 'pub' },
+    { id: 'doli', title: 'DOLI', subtitle: 'Georgian Restaurant · Hannover', vertical: 'georgian' },
+  ],
+  /* Showroom NAVIGATION vocabulary (showroom mode only). It never replaces surface semantics: each experience shows its own
+     term next to it (e.g. Order@Table "Cart" = Your Round). Mapped to the experience's own deterministic fixtures. */
+  states: ['start', 'categories', 'product-list', 'product-detail', 'modifiers', 'cart', 'upsell', 'payment', 'confirmation'],
+  stateTitles: { start: 'Start', categories: 'Categories', 'product-list': 'Product list', 'product-detail': 'Product detail', modifiers: 'Modifiers',
+    cart: 'Cart', upsell: 'Upsell', payment: 'Payment', confirmation: 'Confirmation' },
+  /* Hidden exit gestures are a SHOWROOM/DEMO mechanism only. A production SOT must use a technician/admin flow, never a guest gesture. */
+  escapePolicy: { showroom: '5 taps within 3 s, bottom-left 44 px corner (touch) · Shift+Esc (desktop)', production: 'not applicable — technician/admin flow required' },
+  experiences: [
+    {
+      id: 'the-porters-order-table-v1',
+      brand: 'the-porters', vertical: 'pub', surface: 'order-pay',
+      recipe: 'one-more-round', skin: 'After Dark',
+      title: 'Order@Table V1 — One More Round',
+      thumbnail: 'thumbs/the-porters-order-table-v1.webp',
+      status: { code: 'frozen', label: 'Frozen reference V1' },
+      build: { tag: 'ordertable-v1.0.0', commit: '21b25aa', file: 'dist/index.html', sha256: 'f5bb2547c782cfe1b70719bad8a171be515f0ad774537d2fe5d1fb238673b471' },
+      provenance: { canonicalBuildSha256: 'f5bb2547c782cfe1b70719bad8a171be515f0ad774537d2fe5d1fb238673b471', diagnosticsBuildSha256: null,
+        note: 'Showroom mode uses the frozen build itself (its dev API ships with the V1 reference build).' },
+      launch: { target: 'experiences/the-porters-order-table-v1/index.html', mode: 'phone' },
+      canonicalViewport: { width: 390, height: 844, device: 'Phone 390×844' },
+      tags: ['order-at-table', 'qr', 'rounds', 'split-payment', 'english', 'frozen'],
+      dev: {
+        driver: 'ot',   /* window.__ot.fixture(name) — dev API of the frozen build */
+        stateMap: { start: 's01-01', categories: 's01-02', 'product-list': 's03-12', 'product-detail': 's01-03', modifiers: 's03-13',
+          cart: 's01-04', upsell: 's02-08', payment: 's04-19', confirmation: 's01-05' },
+        stateNotes: { upsell: 'Next-round prompt', confirmation: 'Round sent (payment success: s04-20)' },
+        /* surface terms shown beside the showroom vocabulary — Order@Table semantics stay Your Round / Your Tab */
+        surfaceTerms: { start: 'Table recognised', categories: 'Round builder', 'product-list': 'Burgers', 'product-detail': 'Product (pint)', modifiers: 'Extras · Passt dazu',
+          cart: 'Your Round', upsell: 'Another Round?', payment: 'Tip & Payment', confirmation: 'Round sent' },
+        reset: 's01-01',
+        allStates: ['s01-01', 's01-02', 's01-03', 's01-04', 's01-05', 's02-06', 's02-07', 's02-08', 's02-09', 's02-10', 's03-11', 's03-12', 's03-13', 's03-14', 's03-15',
+          's04-16', 's04-17', 's04-18', 's04-19', 's04-20', 's05-21', 's05-22', 's05-23', 's05-24', 's05-25', 's05-keep'],
+      },
+    },
+    {
+      id: 'the-porters-sot-v0.5',
+      brand: 'the-porters', vertical: 'pub', surface: 'sot',
+      recipe: 'porters-sot', skin: 'After Dark',
+      title: 'Self Order Terminal V0.5',
+      thumbnail: 'thumbs/the-porters-sot-v0.5.webp',
+      status: { code: 'frozen', label: 'Frozen for physical terminal test' },
+      build: { tag: 'sot-v0.5-terminal-test', commit: '201c4cc', restoredFrom: { originalCommit: '4ebd4b9', note: 'repository restored 2026-10-18; binary byte-identical' }, file: 'dist/sot-terminal-test.html', sha256: '8bcfb8faebf6767ad277370a7e56d30acc17f9a640d18ed29311a780e4774956' },
+      provenance: {
+        canonicalBuildSha256: '8bcfb8faebf6767ad277370a7e56d30acc17f9a640d18ed29311a780e4774956',   /* frozen guest build — guest presentation */
+        diagnosticsBuildSha256: 'f6f0da467b293dcf6c4163362e8a5394c0a78d5c02588d5e0222c5ae839dc1fb', /* showroom derivative — showroom mode only */
+        derivedFromTag: 'sot-v0.5-terminal-test', derivedFromCommit: '201c4cc',
+        difference: 'diagnostics flag only',
+        diff: { from: '{"profile":"terminal-test","defaultLocale":"de-DE","diagnostics":false}', to: '{"profile":"showroom-diagnostics","defaultLocale":"de-DE","diagnostics":true}' },
+      },
+      launch: { target: 'experiences/the-porters-sot-v0.5/index.html', mode: 'kiosk', diagnosticsTarget: 'experiences/the-porters-sot-v0.5/diagnostics.html' },
+      canonicalViewport: { width: 1080, height: 1920, device: 'Kiosk portrait 1080×1920' },
+      tags: ['kiosk', 'de-DE', 'en-GB', 'demo-payment', 'frozen'],
+      dev: {
+        driver: 'sot',  /* window.__sot.fixture(name) — only available with diagnostics on */
+        /* showroom mode loads the diagnostics DERIVATIVE (provenance.diagnosticsBuildSha256), never the frozen guest build */
+        useDiagnosticsBuild: true,
+        stateMap: { start: 'sot-01', categories: 'sot-02', 'product-list': 'sot-05', 'product-detail': 'sot-04', modifiers: 'sot-06',
+          cart: 'sot-07', upsell: null, payment: 'sot-08', confirmation: 'sot-09' },
+        stateNotes: { upsell: 'No upsell screen in V0.5 (“Passt dazu” lives on the product detail)', categories: 'Menu home (hubs: sot-h1 / sot-h2)' },
+        surfaceTerms: { start: 'Start · language · order mode', categories: 'Menu home', 'product-list': 'Burgers', 'product-detail': 'Guinness', modifiers: 'Bacon Burger · Extras',
+          cart: 'Your Order', upsell: '—', payment: 'Payment', confirmation: 'Order confirmed' },
+        reset: 'sot-01',
+        allStates: ['sot-01', 'sot-02', 'sot-03', 'sot-04', 'sot-05', 'sot-06', 'sot-07', 'sot-08', 'sot-09', 'sot-h1', 'sot-h2', 'sot-l-cocktails', 'sot-l-whiskey',
+          'sot-l-pub-classics', 'sot-l-sides', 'sot-l-snacks', 'sot-l-shots', 'sot-l-soft', 'sot-l-dessert', 'sot-05-all', 'sot-03-hophouse', 'sot-07-dinein', 'sot-07-mixed'],
+      },
+    },
+    {
+      id: 'doli-order-pay-v1',
+      brand: 'doli', vertical: 'georgian', surface: 'order-pay',
+      recipe: 'Georgian Hospitality', skin: 'DOLI',
+      title: 'Order & Pay V1 — QR am Tisch',
+      thumbnail: 'thumbs/doli-order-pay-v1.webp',
+      status: { code: 'frozen', label: 'Frozen V1.0.0' },
+      build: { tag: 'doli-order-pay-v1.0.0', commit: '298f849', restoredFrom: { originalCommit: '79488a0', note: 'repository restored 2026-10-18; rebuild from restored sources byte-identical' }, file: 'dist/doli-order-pay-v1.html', sha256: '340629f3b6a324ac825ef276496887d34d1e43e80cbc14a71ea57039552e40a2' },
+      provenance: { canonicalBuildSha256: '340629f3b6a324ac825ef276496887d34d1e43e80cbc14a71ea57039552e40a2', diagnosticsBuildSha256: null, frozenDesign: true,
+        promotedFrom: { tag: 'doli-order-pay-v1-rc1', commit: '298f849', sha256: '340629f3b6a324ac825ef276496887d34d1e43e80cbc14a71ea57039552e40a2', rebuild: false },
+        acceptance: 'Implementation approved; declared media deviations visually accepted for V1.',
+        designSource: 'DOLI_ORDER_PAY_V1_IMPLEMENTATION_HANDOFF.zip (10 frozen 390×844 screens)',
+        note: 'Showroom mode uses the build itself (its window.__doli state API is not part of the guest UI).' },
+      externalDependencies: [],
+      launch: { target: 'experiences/doli-order-pay-v1/index.html', mode: 'phone' },
+      canonicalViewport: { width: 390, height: 844, device: 'Phone 390×844' },
+      tags: ['order-and-pay', 'qr', 'tisch', 'georgian', 'de-DE', 'frozen'],
+      dev: {
+        driver: 'doli',   /* window.__doli.fixture(name) */
+        stateMap: { start: 'doli-01', categories: 'doli-02', 'product-list': 'doli-03', 'product-detail': 'doli-04', modifiers: null,
+          cart: 'doli-07', upsell: 'doli-06', payment: 'doli-10', confirmation: 'doli-08' },
+        stateNotes: { modifiers: 'Portion choice lives on the product detail (doli-04)', upsell: '“Passt dazu” on Acharuli (doli-06)', cart: 'Unsent order (doli-07)' },
+        surfaceTerms: { start: 'Willkommen · Tisch 12', categories: 'Speisekarte', 'product-list': 'Khinkali', 'product-detail': 'Kalakuri', modifiers: '—',
+          cart: 'Deine Bestellung', upsell: 'Passt dazu', payment: 'Rechnung bezahlen', confirmation: 'Bestellung gesendet' },
+        reset: 'doli-01',
+        allStates: ['doli-01', 'doli-02', 'doli-03', 'doli-04', 'doli-05', 'doli-06', 'doli-07', 'doli-08', 'doli-09', 'doli-10'],
+      },
+    },
+    {
+      id: 'doli-order-pay-modern-light',
+      brand: 'doli', vertical: 'georgian', surface: 'order-pay',
+      recipe: 'Modern Light', skin: 'DOLI',
+      title: 'Order & Pay — Modern Light',
+      thumbnail: 'thumbs/doli-order-pay-modern-light.webp',
+      status: { code: 'frozen', label: 'Frozen V1.0.0' },
+      build: { tag: 'doli-order-pay-modern-light-v1.0.0', commit: 'f8effb0', restoredFrom: { originalCommit: '2e7f586', note: 'repository restored 2026-10-18; rebuild from restored sources byte-identical' }, file: 'dist/doli-order-pay-modern-light.html', sha256: '9b9048650c6178bbf4afec92f388f3a88130fca6a01592295ffd231927b8c7fc' },
+      provenance: { promotedFrom: { tag: 'doli-order-pay-modern-light-rc1', commit: 'f8effb0', sha256: '9b9048650c6178bbf4afec92f388f3a88130fca6a01592295ffd231927b8c7fc', rebuild: false },
+        acceptance: 'Visual review approved; documented deviations (incl. Zedazeni vs frozen V1 Zedezani) accepted for V1.',
+        canonicalBuildSha256: '9b9048650c6178bbf4afec92f388f3a88130fca6a01592295ffd231927b8c7fc', diagnosticsBuildSha256: null, frozenDesign: true,
+        designSource: 'DOLI_ORDER_PAY_MODERN_LIGHT_CLASSIC_EDITORIAL.zip + _HANDOFF_COMPLETION.zip (Modern Light, 10 approved 390×844 screens)',
+        sharedCore: 'src/experiences/doli/core.js — same commerce/session semantics as frozen DOLI V1',
+        note: 'Showroom mode uses the build itself (window.__doli state API is not part of the guest UI).' },
+      externalDependencies: [],
+      launch: { target: 'experiences/doli-order-pay-modern-light/index.html', mode: 'phone' },
+      canonicalViewport: { width: 390, height: 844, device: 'Phone 390×844' },
+      tags: ['order-and-pay', 'qr', 'tisch', 'georgian', 'de-DE', 'recipe', 'frozen'],
+      dev: {
+        driver: 'doli',
+        stateMap: { start: 'doli-01', categories: 'doli-02', 'product-list': 'doli-03', 'product-detail': 'doli-04', modifiers: null,
+          cart: 'doli-07', upsell: 'doli-06', payment: 'doli-10', confirmation: 'doli-08' },
+        stateNotes: { modifiers: 'Portion choice lives on the product detail (doli-04)', upsell: '“Passt dazu” on Acharuli (doli-06)', cart: 'Unsent order (doli-07)' },
+        surfaceTerms: { start: 'Willkommen · Tisch 12', categories: 'Speisekarte', 'product-list': 'Khinkali', 'product-detail': 'Kalakuri', modifiers: '—',
+          cart: 'Deine Bestellung', upsell: 'Passt dazu', payment: 'Rechnung bezahlen', confirmation: 'Bestellung gesendet' },
+        reset: 'doli-01',
+        allStates: ['doli-01', 'doli-02', 'doli-03', 'doli-04', 'doli-05', 'doli-06', 'doli-07', 'doli-08', 'doli-09', 'doli-10'],
+      },
+    },
+    {
+      id: 'doli-order-pay-classic-editorial',
+      brand: 'doli', vertical: 'georgian', surface: 'order-pay',
+      recipe: 'Classic Editorial', skin: 'DOLI',
+      title: 'Order & Pay — Classic Editorial',
+      thumbnail: 'thumbs/doli-order-pay-classic-editorial.webp',
+      status: { code: 'frozen', label: 'Frozen V1.0.0' },
+      build: { tag: 'doli-order-pay-classic-editorial-v1.0.0', commit: 'f8effb0', restoredFrom: { originalCommit: '2e7f586', note: 'repository restored 2026-10-18; rebuild from restored sources byte-identical' }, file: 'dist/doli-order-pay-classic-editorial.html', sha256: 'c495443c1c04a58cfc7d0c8133d6b6b3d34f45ad8755cd4c50bbab5665da5c56' },
+      provenance: { promotedFrom: { tag: 'doli-order-pay-classic-editorial-rc1', commit: 'f8effb0', sha256: 'c495443c1c04a58cfc7d0c8133d6b6b3d34f45ad8755cd4c50bbab5665da5c56', rebuild: false },
+        acceptance: 'Visual review approved; documented deviations (incl. Zedazeni vs frozen V1 Zedezani) accepted for V1.',
+        canonicalBuildSha256: 'c495443c1c04a58cfc7d0c8133d6b6b3d34f45ad8755cd4c50bbab5665da5c56', diagnosticsBuildSha256: null, frozenDesign: true,
+        designSource: 'DOLI_ORDER_PAY_MODERN_LIGHT_CLASSIC_EDITORIAL.zip + _HANDOFF_COMPLETION.zip (Classic Editorial, 10 approved 390×844 screens)',
+        sharedCore: 'src/experiences/doli/core.js — same commerce/session semantics as frozen DOLI V1',
+        note: 'Showroom mode uses the build itself (window.__doli state API is not part of the guest UI).' },
+      externalDependencies: [],
+      launch: { target: 'experiences/doli-order-pay-classic-editorial/index.html', mode: 'phone' },
+      canonicalViewport: { width: 390, height: 844, device: 'Phone 390×844' },
+      tags: ['order-and-pay', 'qr', 'tisch', 'georgian', 'de-DE', 'recipe', 'frozen'],
+      dev: {
+        driver: 'doli',
+        stateMap: { start: 'doli-01', categories: 'doli-02', 'product-list': 'doli-03', 'product-detail': 'doli-04', modifiers: null,
+          cart: 'doli-07', upsell: 'doli-06', payment: 'doli-10', confirmation: 'doli-08' },
+        stateNotes: { modifiers: 'Portion choice lives on the product detail (doli-04)', upsell: '“Passt dazu” on Acharuli (doli-06)', cart: 'Unsent order (doli-07)' },
+        surfaceTerms: { start: 'Willkommen · Tisch 12', categories: 'Speisekarte', 'product-list': 'Khinkali', 'product-detail': 'Kalakuri', modifiers: '—',
+          cart: 'Deine Bestellung', upsell: 'Passt dazu', payment: 'Rechnung bezahlen', confirmation: 'Bestellung gesendet' },
+        reset: 'doli-01',
+        allStates: ['doli-01', 'doli-02', 'doli-03', 'doli-04', 'doli-05', 'doli-06', 'doli-07', 'doli-08', 'doli-09', 'doli-10'],
+      },
+    },
+  ],
+};
+</script>
+<script>/* GENERATED by tools/import-prototype-studio.js from IgorSpitzer/liefersoft-prototypes@f1e6d8a — do not edit by hand.
+ * Extends the single LS Experience Registry (no second runtime). Prototype folders and thumbnails are deployed byte-for-byte. */
+(function (R) {
+  R.brands.push(...[
+ {
+  "id": "pizza-mann",
+  "title": "Pizza Mann",
+  "subtitle": "Bonn Poppelsdorf",
+  "vertical": "pizza-italian",
+  "concept": false,
+  "source": "prototype-studio"
+ },
+ {
+  "id": "havn-rooftop",
+  "title": "HAVN Rooftop",
+  "subtitle": "Hannover",
+  "vertical": "restaurant-bar",
+  "concept": false,
+  "source": "prototype-studio"
+ },
+ {
+  "id": "noosou",
+  "title": "Noosou",
+  "subtitle": "Hannover",
+  "vertical": "asian",
+  "concept": false,
+  "source": "prototype-studio"
+ },
+ {
+  "id": "giazzo",
+  "title": "GIAZZO",
+  "subtitle": "Gießen",
+  "vertical": "pizza-italian",
+  "concept": false,
+  "source": "prototype-studio"
+ },
+ {
+  "id": "backhaus-morgen",
+  "title": "Backhaus Morgen",
+  "subtitle": "",
+  "vertical": "bakery",
+  "concept": false,
+  "source": "prototype-studio"
+ },
+ {
+  "id": "brava",
+  "title": "Brava",
+  "subtitle": "Concept brand",
+  "vertical": "unassigned",
+  "concept": true,
+  "source": "prototype-studio"
+ },
+ {
+  "id": "sushi-order",
+  "title": "Sushi Order",
+  "subtitle": "Concept brand",
+  "vertical": "sushi",
+  "concept": true,
+  "source": "prototype-studio"
+ }
+]);
+  R.experiences.push(...[
+ {
+  "id": "pizza-mann-webshop-app",
+  "brand": "pizza-mann",
+  "vertical": "pizza-italian",
+  "surface": "webshop",
+  "recipe": "Bestell-App",
+  "skin": "App",
+  "title": "Bestell-App",
+  "thumbnail": "thumbs/pizza-mann-app.jpg",
+  "thumbnailSha256": "d0e19f46e86444175859f0639a919e8de75c19f831914a868644dc47b01a9304",
+  "status": {
+   "code": "in-progress",
+   "label": "In progress"
+  },
+  "tags": [
+   "iOS-Style",
+   "Swipe",
+   "Extras"
+  ],
+  "updated": "2026-09-27",
+  "description": "Pizza-Karussell, Extras direkt auf der Pizza, Übersicht mit Suche & Filtern, Warenkorb-Leiste unten.",
+  "build": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a",
+   "file": "pizza-mann-app/index.html",
+   "sha256": "5da84232a7afb28057daea189de7f30016db860bd699347340ecfc771f0e8bc8"
+  },
+  "provenance": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a7bac0e452fc9abbf581aa4540e8167b62",
+   "file": "pizza-mann-app/index.html",
+   "fileSha256": "5da84232a7afb28057daea189de7f30016db860bd699347340ecfc771f0e8bc8",
+   "folder": "pizza-mann-app",
+   "folderTreeSha256": "c75f2ec65078114839f4c27911b8585162ea728bb3387450729037c50cb2e979",
+   "folderFiles": 1,
+   "folderBytes": 51507,
+   "frozen": false,
+   "canonicalBuildSha256": "5da84232a7afb28057daea189de7f30016db860bd699347340ecfc771f0e8bc8",
+   "diagnosticsBuildSha256": null
+  },
+  "externalDependencies": [
+   {
+    "host": "fonts.googleapis.com",
+    "kind": "Google Fonts (CSS)"
+   },
+   {
+    "host": "res.cloudinary.com",
+    "kind": "Cloudinary (product images)"
+   }
+  ],
+  "launch": {
+   "target": "pizza-mann-app/index.html",
+   "mode": "phone"
+  },
+  "canonicalViewport": {
+   "width": 390,
+   "height": 844,
+   "device": "Phone 390×844"
+  },
+  "importedFrom": {
+   "projectsJson": {
+    "slug": "pizza-mann-app",
+    "client": "Pizza Mann",
+    "type": "Mobile App",
+    "status": "in Arbeit",
+    "variant": "App",
+    "path": "pizza-mann-app/"
+   }
+  }
+ },
+ {
+  "id": "pizza-mann-sot",
+  "brand": "pizza-mann",
+  "vertical": "pizza-italian",
+  "surface": "sot",
+  "recipe": "Self-Order Terminal",
+  "skin": "Terminal",
+  "title": "Self-Order Terminal",
+  "thumbnail": "thumbs/pizza-mann-sot.jpg",
+  "thumbnailSha256": "ae40b5f9d64d521b9eca1086963b10db9b55e1b8786a4b51a6d4cd6893fd57b8",
+  "status": {
+   "code": "review",
+   "label": "Review"
+  },
+  "tags": [
+   "1080×1920",
+   "Echte Daten"
+  ],
+  "updated": "2026-09-23",
+  "description": "Volle Speisekarte (17 Kategorien, 262 Artikel), HD-Fotos, Attract-Screen mit Pizza-Slideshow.",
+  "build": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a",
+   "file": "pizza-mann-sot/index.html",
+   "sha256": "4ea3c5941f8f11173b34c443ab736e565d0edf26e4077908073285ce1c301df9"
+  },
+  "provenance": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a7bac0e452fc9abbf581aa4540e8167b62",
+   "file": "pizza-mann-sot/index.html",
+   "fileSha256": "4ea3c5941f8f11173b34c443ab736e565d0edf26e4077908073285ce1c301df9",
+   "folder": "pizza-mann-sot",
+   "folderTreeSha256": "57632cfdda69b0967e0e0c7c24de7da713d53451141d7fa7ee7d0169fa98f7a8",
+   "folderFiles": 1,
+   "folderBytes": 11108471,
+   "frozen": false,
+   "canonicalBuildSha256": "4ea3c5941f8f11173b34c443ab736e565d0edf26e4077908073285ce1c301df9",
+   "diagnosticsBuildSha256": null
+  },
+  "externalDependencies": [
+   {
+    "host": "fonts.googleapis.com",
+    "kind": "Google Fonts (CSS)"
+   },
+   {
+    "host": "fonts.gstatic.com",
+    "kind": "Google Fonts (files)"
+   }
+  ],
+  "launch": {
+   "target": "pizza-mann-sot/index.html",
+   "mode": "kiosk"
+  },
+  "canonicalViewport": {
+   "width": 1080,
+   "height": 1920,
+   "device": "Kiosk portrait 1080×1920"
+  },
+  "importedFrom": {
+   "projectsJson": {
+    "slug": "pizza-mann-sot",
+    "client": "Pizza Mann",
+    "type": "Kiosk",
+    "status": "Review",
+    "variant": "Terminal",
+    "path": "pizza-mann-sot/"
+   }
+  }
+ },
+ {
+  "id": "havn-rooftop-order-pay",
+  "brand": "havn-rooftop",
+  "vertical": "restaurant-bar",
+  "surface": "order-pay",
+  "recipe": "Am Tisch bestellen",
+  "skin": "App",
+  "title": "Am Tisch bestellen",
+  "thumbnail": "thumbs/havn.jpg",
+  "thumbnailSha256": "68834fb9e392584ea8ad4aedd8bd17031b9e85cf7bf31572e60e495edf2622a0",
+  "status": {
+   "code": "review",
+   "label": "Review"
+  },
+  "tags": [
+   "QR",
+   "Split-Pay"
+  ],
+  "updated": "2026-09-26",
+  "description": "Nocturne-Harvest-Design, Gäste pro Tisch, Bestellrunden, Trinkgeld, geteilte Zahlung, Service-Ruf.",
+  "build": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a",
+   "file": "havn/index.html",
+   "sha256": "19d7af92c1a069395c1ba6f4eb04fb4a0d25eb5c36b8c2a68cf075d24d00f942"
+  },
+  "provenance": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a7bac0e452fc9abbf581aa4540e8167b62",
+   "file": "havn/index.html",
+   "fileSha256": "19d7af92c1a069395c1ba6f4eb04fb4a0d25eb5c36b8c2a68cf075d24d00f942",
+   "folder": "havn",
+   "folderTreeSha256": "d3bf5b8f0703d422f63d9825b3e8a5ceb698e16f5f1bf4222064c38cc0c16970",
+   "folderFiles": 1,
+   "folderBytes": 560076,
+   "frozen": false,
+   "canonicalBuildSha256": "19d7af92c1a069395c1ba6f4eb04fb4a0d25eb5c36b8c2a68cf075d24d00f942",
+   "diagnosticsBuildSha256": null
+  },
+  "externalDependencies": [
+   {
+    "host": "fonts.googleapis.com",
+    "kind": "Google Fonts (CSS)"
+   },
+   {
+    "host": "fonts.gstatic.com",
+    "kind": "Google Fonts (files)"
+   }
+  ],
+  "launch": {
+   "target": "havn/index.html",
+   "mode": "phone"
+  },
+  "canonicalViewport": {
+   "width": 390,
+   "height": 844,
+   "device": "Phone 390×844"
+  },
+  "importedFrom": {
+   "projectsJson": {
+    "slug": "havn",
+    "client": "HAVN Rooftop",
+    "type": "QR-Tischbestellung",
+    "status": "Review",
+    "variant": "App",
+    "path": "havn/"
+   }
+  }
+ },
+ {
+  "id": "noosou-sot",
+  "brand": "noosou",
+  "vertical": "asian",
+  "surface": "sot",
+  "recipe": "Self-Order Terminal",
+  "skin": "Terminal",
+  "title": "Self-Order Terminal",
+  "thumbnail": "thumbs/noosou.jpg",
+  "thumbnailSha256": "58337f847af2fcabbfd8738bf5ed51ad80daae4f5ddf1a25432e37ab95a6d1a5",
+  "status": {
+   "code": "review",
+   "label": "Review"
+  },
+  "tags": [
+   "1080×1920",
+   "Echte Daten"
+  ],
+  "updated": "2026-09-22",
+  "description": "Fresh Asian Kitchen · 15 Kategorien, 135 Artikel, Karten-/QR-Zahlung, Idle-Timeout.",
+  "build": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a",
+   "file": "noosou/index.html",
+   "sha256": "9443c7abdfc4a78f892c86d991027b913228ff7f7367e7dbd7959e59098f4a82"
+  },
+  "provenance": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a7bac0e452fc9abbf581aa4540e8167b62",
+   "file": "noosou/index.html",
+   "fileSha256": "9443c7abdfc4a78f892c86d991027b913228ff7f7367e7dbd7959e59098f4a82",
+   "folder": "noosou",
+   "folderTreeSha256": "cede970aca087e0c15f22cb2904e9dd098a89c19a4ce3da26bb11e3941016762",
+   "folderFiles": 1,
+   "folderBytes": 69464,
+   "frozen": false,
+   "canonicalBuildSha256": "9443c7abdfc4a78f892c86d991027b913228ff7f7367e7dbd7959e59098f4a82",
+   "diagnosticsBuildSha256": null
+  },
+  "externalDependencies": [
+   {
+    "host": "fonts.googleapis.com",
+    "kind": "Google Fonts (CSS)"
+   }
+  ],
+  "launch": {
+   "target": "noosou/index.html",
+   "mode": "kiosk"
+  },
+  "canonicalViewport": {
+   "width": 1080,
+   "height": 1920,
+   "device": "Kiosk portrait 1080×1920"
+  },
+  "importedFrom": {
+   "projectsJson": {
+    "slug": "noosou",
+    "client": "Noosou",
+    "type": "Kiosk",
+    "status": "Review",
+    "variant": "Terminal",
+    "path": "noosou/"
+   }
+  }
+ },
+ {
+  "id": "giazzo-sot-main",
+  "brand": "giazzo",
+  "vertical": "pizza-italian",
+  "surface": "sot",
+  "recipe": "Self-Order Terminal",
+  "skin": "Main",
+  "title": "Self-Order Terminal — Main",
+  "thumbnail": "thumbs/giazzo.jpg",
+  "thumbnailSha256": "58bbe72a54f2a3adb4bc523cf8e462bd54b2356d661751a9e5a590556565a949",
+  "status": {
+   "code": "review",
+   "label": "Review"
+  },
+  "tags": [
+   "Dark",
+   "Pizza-Builder"
+  ],
+  "updated": "2026-09-23",
+  "description": "Dunkles High-Energy-Design, Pizza-Builder. Drei Layout-Varianten zum Vergleich.",
+  "build": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a",
+   "file": "giazzo/index.html",
+   "sha256": "719818c23b0d56dca0ea485866f43cdcacb3a2e18eba695a712d3df119afd2e5"
+  },
+  "provenance": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a7bac0e452fc9abbf581aa4540e8167b62",
+   "file": "giazzo/index.html",
+   "fileSha256": "719818c23b0d56dca0ea485866f43cdcacb3a2e18eba695a712d3df119afd2e5",
+   "folder": "giazzo",
+   "folderTreeSha256": "35204e31ba8ef2992bc7c70012ab5ee4b86e9d0fbc92ce786feb2ee70ffcb5dc",
+   "folderFiles": 33,
+   "folderBytes": 1950036,
+   "frozen": false,
+   "canonicalBuildSha256": "719818c23b0d56dca0ea485866f43cdcacb3a2e18eba695a712d3df119afd2e5",
+   "diagnosticsBuildSha256": null
+  },
+  "externalDependencies": [
+   {
+    "host": "fonts.googleapis.com",
+    "kind": "Google Fonts (CSS)"
+   }
+  ],
+  "launch": {
+   "target": "giazzo/index.html",
+   "mode": "kiosk"
+  },
+  "canonicalViewport": {
+   "width": 600,
+   "height": 1066,
+   "device": "Kiosk frame 600×1066"
+  },
+  "importedFrom": {
+   "projectsJson": {
+    "slug": "giazzo",
+    "client": "GIAZZO",
+    "type": "Kiosk",
+    "status": "Varianten",
+    "variant": "Main",
+    "path": "giazzo/"
+   }
+  }
+ },
+ {
+  "id": "giazzo-webshop-app-flow",
+  "brand": "giazzo",
+  "vertical": "pizza-italian",
+  "surface": "webshop",
+  "recipe": "Self-Order Terminal",
+  "skin": "App-Flow",
+  "title": "Self-Order Terminal — App-Flow",
+  "thumbnail": "thumbs/giazzo.jpg",
+  "thumbnailSha256": "58bbe72a54f2a3adb4bc523cf8e462bd54b2356d661751a9e5a590556565a949",
+  "status": {
+   "code": "review",
+   "label": "Review"
+  },
+  "tags": [
+   "Dark",
+   "Pizza-Builder"
+  ],
+  "updated": "2026-09-23",
+  "description": "Dunkles High-Energy-Design, Pizza-Builder. Drei Layout-Varianten zum Vergleich.",
+  "build": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a",
+   "file": "giazzo/app.html",
+   "sha256": "1fcd6cca3a3dc862b7b4c75e0fe9f57bb62add94814dfa5e997536596bd2ece0"
+  },
+  "provenance": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a7bac0e452fc9abbf581aa4540e8167b62",
+   "file": "giazzo/app.html",
+   "fileSha256": "1fcd6cca3a3dc862b7b4c75e0fe9f57bb62add94814dfa5e997536596bd2ece0",
+   "folder": "giazzo",
+   "folderTreeSha256": "35204e31ba8ef2992bc7c70012ab5ee4b86e9d0fbc92ce786feb2ee70ffcb5dc",
+   "folderFiles": 33,
+   "folderBytes": 1950036,
+   "frozen": false,
+   "canonicalBuildSha256": "1fcd6cca3a3dc862b7b4c75e0fe9f57bb62add94814dfa5e997536596bd2ece0",
+   "diagnosticsBuildSha256": null
+  },
+  "externalDependencies": [
+   {
+    "host": "fonts.googleapis.com",
+    "kind": "Google Fonts (CSS)"
+   }
+  ],
+  "launch": {
+   "target": "giazzo/app.html",
+   "mode": "responsive"
+  },
+  "canonicalViewport": {
+   "width": null,
+   "height": null,
+   "device": "Intrinsic (no fixed frame)"
+  },
+  "importedFrom": {
+   "projectsJson": {
+    "slug": "giazzo",
+    "client": "GIAZZO",
+    "type": "Kiosk",
+    "status": "Varianten",
+    "variant": "App-Flow",
+    "path": "giazzo/app.html"
+   }
+  }
+ },
+ {
+  "id": "giazzo-sot-kompakt",
+  "brand": "giazzo",
+  "vertical": "pizza-italian",
+  "surface": "sot",
+  "recipe": "Self-Order Terminal",
+  "skin": "Kompakt",
+  "title": "Self-Order Terminal — Kompakt",
+  "thumbnail": "thumbs/giazzo.jpg",
+  "thumbnailSha256": "58bbe72a54f2a3adb4bc523cf8e462bd54b2356d661751a9e5a590556565a949",
+  "status": {
+   "code": "review",
+   "label": "Review"
+  },
+  "tags": [
+   "Dark",
+   "Pizza-Builder"
+  ],
+  "updated": "2026-09-23",
+  "description": "Dunkles High-Energy-Design, Pizza-Builder. Drei Layout-Varianten zum Vergleich.",
+  "build": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a",
+   "file": "giazzo/kompakt.html",
+   "sha256": "1f8c50d4335a7a52b3f0531df793e0348780c832b300e12f6a030baaacfb88e1"
+  },
+  "provenance": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a7bac0e452fc9abbf581aa4540e8167b62",
+   "file": "giazzo/kompakt.html",
+   "fileSha256": "1f8c50d4335a7a52b3f0531df793e0348780c832b300e12f6a030baaacfb88e1",
+   "folder": "giazzo",
+   "folderTreeSha256": "35204e31ba8ef2992bc7c70012ab5ee4b86e9d0fbc92ce786feb2ee70ffcb5dc",
+   "folderFiles": 33,
+   "folderBytes": 1950036,
+   "frozen": false,
+   "canonicalBuildSha256": "1f8c50d4335a7a52b3f0531df793e0348780c832b300e12f6a030baaacfb88e1",
+   "diagnosticsBuildSha256": null
+  },
+  "externalDependencies": [
+   {
+    "host": "fonts.googleapis.com",
+    "kind": "Google Fonts (CSS)"
+   }
+  ],
+  "launch": {
+   "target": "giazzo/kompakt.html",
+   "mode": "kiosk"
+  },
+  "canonicalViewport": {
+   "width": 600,
+   "height": 1066,
+   "device": "Kiosk frame 600×1066"
+  },
+  "importedFrom": {
+   "projectsJson": {
+    "slug": "giazzo",
+    "client": "GIAZZO",
+    "type": "Kiosk",
+    "status": "Varianten",
+    "variant": "Kompakt",
+    "path": "giazzo/kompakt.html"
+   }
+  }
+ },
+ {
+  "id": "giazzo-sot-liste",
+  "brand": "giazzo",
+  "vertical": "pizza-italian",
+  "surface": "sot",
+  "recipe": "Self-Order Terminal",
+  "skin": "Liste",
+  "title": "Self-Order Terminal — Liste",
+  "thumbnail": "thumbs/giazzo.jpg",
+  "thumbnailSha256": "58bbe72a54f2a3adb4bc523cf8e462bd54b2356d661751a9e5a590556565a949",
+  "status": {
+   "code": "review",
+   "label": "Review"
+  },
+  "tags": [
+   "Dark",
+   "Pizza-Builder"
+  ],
+  "updated": "2026-09-23",
+  "description": "Dunkles High-Energy-Design, Pizza-Builder. Drei Layout-Varianten zum Vergleich.",
+  "build": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a",
+   "file": "giazzo/liste.html",
+   "sha256": "cc8583574092edb36bc856837732c4e70ad53ba842630aea0361ad33297e42fc"
+  },
+  "provenance": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a7bac0e452fc9abbf581aa4540e8167b62",
+   "file": "giazzo/liste.html",
+   "fileSha256": "cc8583574092edb36bc856837732c4e70ad53ba842630aea0361ad33297e42fc",
+   "folder": "giazzo",
+   "folderTreeSha256": "35204e31ba8ef2992bc7c70012ab5ee4b86e9d0fbc92ce786feb2ee70ffcb5dc",
+   "folderFiles": 33,
+   "folderBytes": 1950036,
+   "frozen": false,
+   "canonicalBuildSha256": "cc8583574092edb36bc856837732c4e70ad53ba842630aea0361ad33297e42fc",
+   "diagnosticsBuildSha256": null
+  },
+  "externalDependencies": [
+   {
+    "host": "fonts.googleapis.com",
+    "kind": "Google Fonts (CSS)"
+   }
+  ],
+  "launch": {
+   "target": "giazzo/liste.html",
+   "mode": "kiosk"
+  },
+  "canonicalViewport": {
+   "width": 600,
+   "height": 1066,
+   "device": "Kiosk frame 600×1066"
+  },
+  "importedFrom": {
+   "projectsJson": {
+    "slug": "giazzo",
+    "client": "GIAZZO",
+    "type": "Kiosk",
+    "status": "Varianten",
+    "variant": "Liste",
+    "path": "giazzo/liste.html"
+   }
+  }
+ },
+ {
+  "id": "backhaus-morgen-sot-v1",
+  "brand": "backhaus-morgen",
+  "vertical": "bakery",
+  "surface": "sot",
+  "recipe": "Bäckerei-Terminal",
+  "skin": "V1",
+  "title": "Bäckerei-Terminal — V1",
+  "thumbnail": "thumbs/backhaus.jpg",
+  "thumbnailSha256": "17c960aa2579edffb7b2aef56b6be0a27470537084bb1767ff4df6e06c48d8fe",
+  "status": {
+   "code": "review",
+   "label": "Review"
+  },
+  "tags": [
+   "Bäckerei",
+   "3 Varianten"
+  ],
+  "updated": "2026-09-22",
+  "description": "V1 Storyboard, V2 funktional mit Warenkorb/Upsell/Barrierefrei-Modus, V3 weicher App-Look.",
+  "build": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a",
+   "file": "backhaus/index.html",
+   "sha256": "9afe3336c9510ae543d684c510c9fc86d7f54030c6505f60ea770e32c5503bdf"
+  },
+  "provenance": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a7bac0e452fc9abbf581aa4540e8167b62",
+   "file": "backhaus/index.html",
+   "fileSha256": "9afe3336c9510ae543d684c510c9fc86d7f54030c6505f60ea770e32c5503bdf",
+   "folder": "backhaus",
+   "folderTreeSha256": "0d1d1e3e59ebbd63d21cc956d4e15cd4ee3122aa835f3cf991617b69a49c7077",
+   "folderFiles": 28,
+   "folderBytes": 1009869,
+   "frozen": false,
+   "canonicalBuildSha256": "9afe3336c9510ae543d684c510c9fc86d7f54030c6505f60ea770e32c5503bdf",
+   "diagnosticsBuildSha256": null
+  },
+  "externalDependencies": [
+   {
+    "host": "fonts.googleapis.com",
+    "kind": "Google Fonts (CSS)"
+   }
+  ],
+  "launch": {
+   "target": "backhaus/index.html",
+   "mode": "kiosk"
+  },
+  "canonicalViewport": {
+   "width": 600,
+   "height": 1040,
+   "device": "Kiosk frame 600×1040"
+  },
+  "importedFrom": {
+   "projectsJson": {
+    "slug": "backhaus",
+    "client": "Backhaus Morgen",
+    "type": "Kiosk",
+    "status": "Varianten",
+    "variant": "V1",
+    "path": "backhaus/"
+   }
+  }
+ },
+ {
+  "id": "backhaus-morgen-sot-v2",
+  "brand": "backhaus-morgen",
+  "vertical": "bakery",
+  "surface": "sot",
+  "recipe": "Bäckerei-Terminal",
+  "skin": "V2",
+  "title": "Bäckerei-Terminal — V2",
+  "thumbnail": "thumbs/backhaus.jpg",
+  "thumbnailSha256": "17c960aa2579edffb7b2aef56b6be0a27470537084bb1767ff4df6e06c48d8fe",
+  "status": {
+   "code": "review",
+   "label": "Review"
+  },
+  "tags": [
+   "Bäckerei",
+   "3 Varianten"
+  ],
+  "updated": "2026-09-22",
+  "description": "V1 Storyboard, V2 funktional mit Warenkorb/Upsell/Barrierefrei-Modus, V3 weicher App-Look.",
+  "build": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a",
+   "file": "backhaus/v2.html",
+   "sha256": "cb2e627e1c94c6faf7fc40de1398c118de2a0d34db7c9006d6fc9d86447fecfd"
+  },
+  "provenance": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a7bac0e452fc9abbf581aa4540e8167b62",
+   "file": "backhaus/v2.html",
+   "fileSha256": "cb2e627e1c94c6faf7fc40de1398c118de2a0d34db7c9006d6fc9d86447fecfd",
+   "folder": "backhaus",
+   "folderTreeSha256": "0d1d1e3e59ebbd63d21cc956d4e15cd4ee3122aa835f3cf991617b69a49c7077",
+   "folderFiles": 28,
+   "folderBytes": 1009869,
+   "frozen": false,
+   "canonicalBuildSha256": "cb2e627e1c94c6faf7fc40de1398c118de2a0d34db7c9006d6fc9d86447fecfd",
+   "diagnosticsBuildSha256": null
+  },
+  "externalDependencies": [
+   {
+    "host": "fonts.googleapis.com",
+    "kind": "Google Fonts (CSS)"
+   }
+  ],
+  "launch": {
+   "target": "backhaus/v2.html",
+   "mode": "kiosk"
+  },
+  "canonicalViewport": {
+   "width": null,
+   "height": null,
+   "device": "Intrinsic / unknown (no fixed frame found)"
+  },
+  "importedFrom": {
+   "projectsJson": {
+    "slug": "backhaus",
+    "client": "Backhaus Morgen",
+    "type": "Kiosk",
+    "status": "Varianten",
+    "variant": "V2",
+    "path": "backhaus/v2.html"
+   }
+  }
+ },
+ {
+  "id": "backhaus-morgen-sot-v3",
+  "brand": "backhaus-morgen",
+  "vertical": "bakery",
+  "surface": "sot",
+  "recipe": "Bäckerei-Terminal",
+  "skin": "V3",
+  "title": "Bäckerei-Terminal — V3",
+  "thumbnail": "thumbs/backhaus.jpg",
+  "thumbnailSha256": "17c960aa2579edffb7b2aef56b6be0a27470537084bb1767ff4df6e06c48d8fe",
+  "status": {
+   "code": "review",
+   "label": "Review"
+  },
+  "tags": [
+   "Bäckerei",
+   "3 Varianten"
+  ],
+  "updated": "2026-09-22",
+  "description": "V1 Storyboard, V2 funktional mit Warenkorb/Upsell/Barrierefrei-Modus, V3 weicher App-Look.",
+  "build": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a",
+   "file": "backhaus/v3.html",
+   "sha256": "08c42f18719c4858844cc459085874f8fe22daf065b39b7e03a340f5a4c7bdfe"
+  },
+  "provenance": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a7bac0e452fc9abbf581aa4540e8167b62",
+   "file": "backhaus/v3.html",
+   "fileSha256": "08c42f18719c4858844cc459085874f8fe22daf065b39b7e03a340f5a4c7bdfe",
+   "folder": "backhaus",
+   "folderTreeSha256": "0d1d1e3e59ebbd63d21cc956d4e15cd4ee3122aa835f3cf991617b69a49c7077",
+   "folderFiles": 28,
+   "folderBytes": 1009869,
+   "frozen": false,
+   "canonicalBuildSha256": "08c42f18719c4858844cc459085874f8fe22daf065b39b7e03a340f5a4c7bdfe",
+   "diagnosticsBuildSha256": null
+  },
+  "externalDependencies": [
+   {
+    "host": "fonts.googleapis.com",
+    "kind": "Google Fonts (CSS)"
+   }
+  ],
+  "launch": {
+   "target": "backhaus/v3.html",
+   "mode": "kiosk"
+  },
+  "canonicalViewport": {
+   "width": null,
+   "height": null,
+   "device": "Intrinsic / unknown (no fixed frame found)"
+  },
+  "importedFrom": {
+   "projectsJson": {
+    "slug": "backhaus",
+    "client": "Backhaus Morgen",
+    "type": "Kiosk",
+    "status": "Varianten",
+    "variant": "V3",
+    "path": "backhaus/v3.html"
+   }
+  }
+ },
+ {
+  "id": "brava-sot-concept",
+  "brand": "brava",
+  "vertical": "unassigned",
+  "surface": "sot",
+  "recipe": "Self-Order-Terminal",
+  "skin": "Terminal",
+  "title": "Self-Order-Terminal",
+  "thumbnail": "thumbs/brava.jpg",
+  "thumbnailSha256": "8c6bc2472c2828ab97d264a8d0ab67d54d863e39e5aca397ec2a7ac695386697",
+  "status": {
+   "code": "concept",
+   "label": "Concept"
+  },
+  "tags": [
+   "Konzept"
+  ],
+  "updated": "2026-10-09",
+  "description": "Pizza aus dem Holzofen – Konzept-Terminal, Deutsch/Englisch, Preise in Euro.",
+  "build": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a",
+   "file": "brava/index.html",
+   "sha256": "4645db6c9fd2a23853b0dfdc0e2458f6d4b7e983a39d5f59b8a9ebfaf9da535f"
+  },
+  "provenance": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a7bac0e452fc9abbf581aa4540e8167b62",
+   "file": "brava/index.html",
+   "fileSha256": "4645db6c9fd2a23853b0dfdc0e2458f6d4b7e983a39d5f59b8a9ebfaf9da535f",
+   "folder": "brava",
+   "folderTreeSha256": "16987c4a2faabcfb2c472975577a74e3a41bd8c4cb25aa9b2b4d0a2ebbb735f6",
+   "folderFiles": 1,
+   "folderBytes": 82266,
+   "frozen": false,
+   "canonicalBuildSha256": "4645db6c9fd2a23853b0dfdc0e2458f6d4b7e983a39d5f59b8a9ebfaf9da535f",
+   "diagnosticsBuildSha256": null
+  },
+  "externalDependencies": [
+   {
+    "host": "fonts.googleapis.com",
+    "kind": "Google Fonts (CSS)"
+   },
+   {
+    "host": "fonts.gstatic.com",
+    "kind": "Google Fonts (files)"
+   }
+  ],
+  "launch": {
+   "target": "brava/index.html",
+   "mode": "kiosk"
+  },
+  "canonicalViewport": {
+   "width": 1080,
+   "height": 1920,
+   "device": "Kiosk portrait 1080×1920"
+  },
+  "importedFrom": {
+   "projectsJson": {
+    "slug": "brava",
+    "client": "Brava",
+    "type": "Kiosk",
+    "status": "Konzept",
+    "variant": "Terminal",
+    "path": "brava/"
+   }
+  }
+ },
+ {
+  "id": "sushi-order-webshop-concept",
+  "brand": "sushi-order",
+  "vertical": "sushi",
+  "surface": "webshop",
+  "recipe": "Interaktiver Prototyp",
+  "skin": "App",
+  "title": "Interaktiver Prototyp",
+  "thumbnail": "thumbs/sushi.jpg",
+  "thumbnailSha256": "36a2fc8c46008d856d61aa08fb544367ddcdf871228c2fb96a9c76f3eedae2c4",
+  "status": {
+   "code": "concept",
+   "label": "Concept"
+  },
+  "tags": [
+   "Konzept"
+  ],
+  "updated": "2026-09-22",
+  "description": "Frühe Studie: Sushi-Bestellfluss mit Karussell.",
+  "build": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a",
+   "file": "sushi/index.html",
+   "sha256": "802033f28d28cf3f58ae7074b6fca318cd81d3f798203a808e115a918907dbec"
+  },
+  "provenance": {
+   "source": "IgorSpitzer/liefersoft-prototypes",
+   "commit": "f1e6d8a7bac0e452fc9abbf581aa4540e8167b62",
+   "file": "sushi/index.html",
+   "fileSha256": "802033f28d28cf3f58ae7074b6fca318cd81d3f798203a808e115a918907dbec",
+   "folder": "sushi",
+   "folderTreeSha256": "5764351b79e68c4b77dd7f96a63aa97ba8caa56c84d9b0bb9aa53385258871f3",
+   "folderFiles": 1,
+   "folderBytes": 20004,
+   "frozen": false,
+   "canonicalBuildSha256": "802033f28d28cf3f58ae7074b6fca318cd81d3f798203a808e115a918907dbec",
+   "diagnosticsBuildSha256": null
+  },
+  "externalDependencies": [
+   {
+    "host": "fonts.googleapis.com",
+    "kind": "Google Fonts (CSS)"
+   }
+  ],
+  "launch": {
+   "target": "sushi/index.html",
+   "mode": "responsive"
+  },
+  "canonicalViewport": {
+   "width": null,
+   "height": null,
+   "device": "Intrinsic (no fixed frame)"
+  },
+  "importedFrom": {
+   "projectsJson": {
+    "slug": "sushi",
+    "client": "Sushi Order",
+    "type": "Mobile App",
+    "status": "Konzept",
+    "variant": "App",
+    "path": "sushi/"
+   }
+  }
+ }
+]);
+  R.legacySource = {"repo":"IgorSpitzer/liefersoft-prototypes","commit":"f1e6d8a7bac0e452fc9abbf581aa4540e8167b62","retired":["index.html (Prototype Studio hub)","projects.json (import input only)"]};
+})(window.LS_SHOWROOM_REGISTRY);
+</script>
+<script></script>
+<script>/* LS Experience Showroom — shell. Showroom navigation lives OUTSIDE every experience; experiences run in an iframe,
+ * unchanged. Routes (hash):
+ *   #/showroom                      browse by brand (default)      ?by=surface · ?vertical=<id>
+ *   #/showroom/<brand>              brand detail
+ *   #/launch/<experience>           guest presentation (no controls; hidden escape: 5 taps bottom-left corner or Shift+Esc)
+ *   #/launch/<experience>?dev=1     showroom/dev mode (states, reset, canonical viewport, fullscreen) */
+(function () {
+  'use strict';
+  const R = window.LS_SHOWROOM_REGISTRY;
+  const EMBED = window.LS_SHOWROOM_EMBED || null;            // single-file build: id → html (exact bytes of the tagged build)
+  const app = document.getElementById('app');
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const byId = (list, id) => list.find((x) => x.id === id);
+  const surf = (id) => byId(R.surfaces, id); const vert = (id) => byId(R.verticals, id); const brand = (id) => byId(R.brands, id);
+  const thumbURL = (e) => (window.LS_SHOWROOM_THUMBS && window.LS_SHOWROOM_THUMBS[e.id]) || e.thumbnail;
+  function parse() {
+    const raw = location.hash.replace(/^#/, '') || '/showroom';
+    const [p, q] = raw.split('?'); const params = new URLSearchParams(q || '');
+    return { parts: p.split('/').filter(Boolean), params };
+  }
+  const go = (h) => { location.hash = h; };
+  window.addEventListener('hashchange', render);
+
+  /* ---------- browse ---------- */
+  function card(e) {
+    const cv = e.canonicalViewport;
+    return `<article class="xcard ${e.surface}" data-x="${e.id}">
+      <div class="xprev ${e.surface}"><img src="${esc(thumbURL(e))}" alt="" loading="lazy"><span class="dev-label">${esc(cv.device)}</span></div>
+      <div class="xbody"><p class="xsurf">${esc(surf(e.surface).title)}</p><h3>${esc(e.title)}</h3>
+        <p class="xmeta">${esc(brand(e.brand).title)} · ${esc(vert(e.vertical).title)} · ${esc(e.recipe)}${e.skin ? ` / ${esc(e.skin)}` : ''}</p>
+        <p class="xstatus ${esc(e.status.code)}">${esc(e.status.label)}</p>
+        <p class="xbuild">${esc(e.build.tag || `${e.build.source}@${e.build.commit}`)} · ${e.build.tag ? `${esc(e.build.commit)} · ` : ''}${esc(e.build.sha256.slice(0, 12))}…</p>
+        ${(e.externalDependencies || []).length ? `<p class="xdeps">External: ${e.externalDependencies.map((d) => esc(d.kind)).join(' · ')}</p>` : ''}
+        ${e.provenance && e.provenance.diagnosticsBuildSha256 ? `<p class="xbuild">Showroom mode: diagnostics derivative (${esc(e.provenance.difference)}) · ${esc(e.provenance.diagnosticsBuildSha256.slice(0, 12))}…</p>` : ''}
+        <div class="xacts"><a class="btn primary" href="#/launch/${e.id}">Launch</a><a class="btn" href="#/launch/${e.id}?dev=1">Showroom mode</a></div></div></article>`;
+  }
+  function empty(title) { return `<div class="xempty"><b>${esc(title)}</b><span>No build registered yet</span></div>`; }
+  function showroom(params) {
+    const by = params.get('by') === 'surface' ? 'surface' : 'brand';
+    const v = params.get('vertical');
+    const list = R.experiences.filter((e) => !v || e.vertical === v);
+    const counts = Object.fromEntries(R.verticals.map((x) => [x.id, R.experiences.filter((e) => e.vertical === x.id).length]));
+    const q = (o) => { const p = new URLSearchParams(); if (o.by && o.by !== 'brand') p.set('by', o.by); if (o.vertical) p.set('vertical', o.vertical); const s = p.toString(); return `#/showroom${s ? `?${s}` : ''}`; };
+    let body;
+    if (by === 'brand') {
+      const brands = R.brands.filter((b) => list.some((e) => e.brand === b.id));
+      body = brands.length ? brands.map((b) => `<section class="group"><header><h2><a href="#/showroom/${b.id}">${esc(b.title)}</a></h2><p>${esc(b.subtitle || '')}</p></header>
+        <div class="grid">${R.surfaces.map((s) => { const xs = list.filter((e) => e.brand === b.id && e.surface === s.id); return xs.length ? xs.map(card).join('') : empty(`${s.title} — ${b.title}`); }).join('')}</div></section>`).join('')
+        : '<p class="none">No experiences for this filter.</p>';
+    } else {
+      body = R.surfaces.map((s) => { const xs = list.filter((e) => e.surface === s.id); return `<section class="group"><header><h2>${esc(s.title)}</h2><p>${esc(s.device)}</p></header>
+        <div class="grid">${xs.length ? xs.map(card).join('') : empty(s.title)}</div></section>`; }).join('');
+    }
+    app.innerHTML = `<div class="shell">${topbar()}
+      <nav class="modes" aria-label="Browse"><a href="${q({ by: 'brand', vertical: v })}" aria-current="${by === 'brand'}">By Brand</a><a href="${q({ by: 'surface', vertical: v })}" aria-current="${by === 'surface'}">By Surface</a></nav>
+      <nav class="chips" aria-label="Vertical"><a href="${q({ by })}" aria-current="${!v}">All verticals</a>${R.verticals.map((x) => `<a href="${q({ by, vertical: x.id })}" aria-current="${v === x.id}" class="${counts[x.id] ? '' : 'zero'}">${esc(x.title)} <i>${counts[x.id]}</i></a>`).join('')}</nav>
+      <main>${body}</main>${foot()}</div>`;
+  }
+  function brandPage(id) {
+    const b = brand(id); if (!b) { go('#/showroom'); return; }
+    const xs = R.experiences.filter((e) => e.brand === id);
+    app.innerHTML = `<div class="shell">${topbar()}<p class="crumb"><a href="#/showroom">Showroom</a> / ${esc(b.title)}</p>
+      <header class="bhead"><h1>${esc(b.title)}</h1><p>${esc(b.subtitle || '')} · ${esc(vert(b.vertical).title)}</p></header>
+      <main><div class="grid">${R.surfaces.map((s) => { const m = xs.filter((e) => e.surface === s.id); return m.length ? m.map(card).join('') : empty(`${s.title} — planned`); }).join('')}</div></main>${foot()}</div>`;
+  }
+  const topbar = () => `${EMBED ? '<p class="preview">Preview build (single file). Canonical showroom deployment: GitHub Pages — each experience served as its own unchanged file.</p>' : ''}<header class="top"><a class="logo" href="#/showroom"><b>LS</b> Experience Showroom</a><span class="count">${R.experiences.length} experiences · ${R.brands.length} brand${R.brands.length === 1 ? '' : 's'}</span></header>`;
+  const foot = () => '<footer class="foot">Builds are embedded byte-for-byte from their git tags. Showroom controls never appear inside a guest experience.</footer>';
+
+  /* ---------- launch ---------- */
+  let cleanup = null;
+  /* which build a launch uses: guest presentation = frozen canonical build; showroom mode = the declared diagnostics
+     derivative where one exists (separate file, own sha256), otherwise the canonical build */
+  const buildFor = (e, dev) => (dev && e.dev && e.dev.useDiagnosticsBuild
+    ? { kind: 'diagnostics', target: e.launch.diagnosticsTarget, sha256: e.provenance.diagnosticsBuildSha256, embedKey: `${e.id}#diagnostics` }
+    : { kind: 'canonical', target: e.launch.target, sha256: e.provenance.canonicalBuildSha256, embedKey: e.id });
+  /* canonical (GitHub Pages): every build is its own unchanged file → src=. Preview (single file): embedded copy → blob URL. */
+  function sourceOf(b) {
+    if (!EMBED) return { src: b.target };
+    if (EMBED[b.embedKey] === undefined) return { unavailable: true };
+    return { html: EMBED[b.embedKey] };
+  }
+  async function launch(id, dev) {
+    const e = byId(R.experiences, id); if (!e) { go('#/showroom'); return; }
+    const cv = e.canonicalViewport;
+    document.title = `${e.title} — ${brand(e.brand).title}`;
+    app.innerHTML = dev
+      ? `<div class="viewer dev"><aside class="ctl" aria-label="Showroom controls">${!e.dev ? '' : ''}
+          <a class="btn" href="#/showroom/${e.brand}">← Showroom</a>
+          <h2>${esc(e.title)}</h2><p class="xmeta">${esc(brand(e.brand).title)} · ${esc(surf(e.surface).title)}</p>
+          <p class="xstatus ${esc(e.status.code)}">${esc(e.status.label)}</p><p class="prov" data-prov></p>
+          ${e.dev ? '' : '<p class="note">No state hooks in this prototype — showroom mode offers canonical viewport, reset and fullscreen.</p>'}
+          <h3>States <small>(showroom vocabulary → surface term)</small></h3><div class="states">${R.states.map((s) => { const f = e.dev && e.dev.stateMap[s]; const term = ((e.dev && e.dev.surfaceTerms) || {})[s]; return `<button type="button" class="st" data-state="${s}" ${f ? '' : 'disabled'} title="${esc(((e.dev && e.dev.stateNotes) || {})[s] || f || 'not available')}">${esc(R.stateTitles[s])}${term ? `<small>${esc(term)}</small>` : ''}</button>`; }).join('')}</div>
+          <label class="all">All fixtures <select data-all><option value="">—</option>${(e.dev ? e.dev.allStates : []).map((s) => `<option>${esc(s)}</option>`).join('')}</select></label>
+          <div class="row"><button type="button" class="btn" data-reset>Reset demo</button><button type="button" class="btn" data-frame aria-pressed="true">Canonical viewport</button></div>
+          <button type="button" class="btn primary" data-fs>Open fullscreen</button>
+          <a class="btn" href="#/launch/${e.id}">Guest presentation</a>
+          <p class="cvlabel" data-cv></p><p class="note" data-note></p></aside>
+        <section class="stagearea"><div class="frame ${e.launch.mode}" style="--w:${cv.width}px;--h:${cv.height}px"><iframe title="${esc(e.title)}"></iframe></div></section></div>`
+      : `<div class="viewer present ${e.launch.mode}"><div class="frame ${e.launch.mode}" style="--w:${cv.width}px;--h:${cv.height}px"><iframe title="${esc(e.title)}"></iframe></div>
+          <button type="button" class="escape" aria-hidden="true" tabindex="-1"></button></div>`;
+    const frame = app.querySelector('.frame'); const iframe = app.querySelector('iframe');
+    const b = buildFor(e, dev); const srcInfo = sourceOf(b);
+    if (dev) {
+      const pv = app.querySelector('[data-prov]');
+      pv.innerHTML = b.kind === 'diagnostics'
+        ? `<b>Diagnostics derivative</b> — not the frozen build.<br>Derived from ${esc(e.provenance.derivedFromTag)} (${esc(e.provenance.derivedFromCommit)}), difference: ${esc(e.provenance.difference)}.<br><code>${esc(b.sha256.slice(0, 16))}…</code>`
+        : e.provenance && e.provenance.frozen === false
+          ? `<b>Prototype build</b> (not frozen) — ${esc(e.provenance.source)}@${esc(e.provenance.commit.slice(0, 7))}<br>${esc(e.provenance.file)}<br><code>${esc(b.sha256.slice(0, 16))}…</code>${(e.externalDependencies || []).length ? `<br>External: ${e.externalDependencies.map((d) => esc(d.host)).join(', ')}` : ''}`
+          : `<b>Frozen build</b> ${esc(e.build.tag)} (${esc(e.build.commit)})<br><code>${esc(b.sha256.slice(0, 16))}…</code>`;
+    }
+    if (srcInfo.unavailable) {
+      frame.innerHTML = '<p class="unavail">Showroom mode for this experience needs its diagnostics derivative, which is only part of the canonical GitHub Pages deployment.</p>';
+      frame.classList.add('fill'); return;
+    }
+    const html = srcInfo.html === undefined ? null : srcInfo.html;
+    /* real document URL (not srcdoc): frozen experiences use hash routing + history.replaceState, which needs a proper URL */
+    let blobURL = null;
+    if (html !== null) { blobURL = URL.createObjectURL(new Blob([html], { type: 'text/html' })); iframe.src = blobURL; } else iframe.src = srcInfo.src;
+    /* uniform scale of the canonical viewport (never a reflow); kiosk/presentation SOT fills the screen and letterboxes itself */
+    const fit = () => {
+      const area = dev ? app.querySelector('.stagearea').getBoundingClientRect() : { width: innerWidth, height: innerHeight };
+      const intrinsic = !cv.width;
+      const fill = intrinsic || (!dev && (e.launch.mode === 'kiosk' || e.launch.mode === 'responsive' || (e.launch.mode === 'phone' && innerWidth <= 520)));
+      frame.classList.toggle('fill', fill);
+      if (fill) { frame.style.transform = ''; const l = app.querySelector('[data-cv]'); if (l) l.textContent = intrinsic ? `${cv.device} — shown at the available size` : ''; return; }
+      const s = Math.min((area.width - (dev ? 40 : 0)) / cv.width, (area.height - (dev ? 40 : 0)) / cv.height, dev ? 1 : 10);
+      frame.style.transform = `scale(${s})`;
+      const cvl = app.querySelector('[data-cv]'); if (cvl) cvl.textContent = `${cv.device} · shown at ${(s * 100).toFixed(0)} %`;
+    };
+    fit(); addEventListener('resize', fit);
+    if (dev) wireDev(e, iframe, frame);
+    else wireEscape(e);
+    const prior = cleanup; cleanup = () => { removeEventListener('resize', fit); if (blobURL) URL.revokeObjectURL(blobURL); if (prior) prior(); };
+  }
+  function hook(e, iframe) {
+    const w = iframe.contentWindow; const HOOK = { ot: '__ot', sot: '__sot', doli: '__doli' }; const api = e.dev && w[HOOK[e.dev.driver]];
+    if (!api) throw new Error('state hooks unavailable (experience still loading or not same-origin)');
+    return api;
+  }
+  function wireDev(e, iframe, frame) {
+    const note = app.querySelector('[data-note]');
+    const jump = async (fx) => {
+      if (!e.dev) { iframe.src = iframe.src; note.textContent = 'Reloaded'; return; }   // no hooks: reset = reload the unchanged build
+      try { await hook(e, iframe).fixture(fx); note.textContent = `State: ${fx}`; app.querySelectorAll('.st').forEach((b) => b.setAttribute('aria-pressed', String(e.dev.stateMap[b.dataset.state] === fx))); }
+      catch (err) { note.textContent = err.message; }
+    };
+    app.querySelectorAll('.st[data-state]').forEach((b) => b.addEventListener('click', () => jump(e.dev.stateMap[b.dataset.state])));
+    app.querySelector('[data-all]').addEventListener('change', (ev) => { if (ev.target.value) jump(ev.target.value); });
+    app.querySelector('[data-reset]').addEventListener('click', () => jump(e.dev ? e.dev.reset : null));
+    app.querySelector('[data-frame]').addEventListener('click', (ev) => { const on = ev.currentTarget.getAttribute('aria-pressed') !== 'true'; ev.currentTarget.setAttribute('aria-pressed', String(on)); frame.classList.toggle('outlined', on); });
+    frame.classList.add('outlined');
+    app.querySelector('[data-fs]').addEventListener('click', () => { go(`#/launch/${e.id}`); requestFs(); });
+  }
+  function requestFs() { const el = document.documentElement; if (!document.fullscreenElement && el.requestFullscreen) el.requestFullscreen().catch(() => {}); }
+  /* hidden escape for showroom staff: 5 taps within 3 s on the bottom-left corner (an area left free by the frozen UIs), or Shift+Esc */
+  function wireEscape(e) {
+    const hot = app.querySelector('.escape'); let taps = [];
+    const leave = () => { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); go(`#/showroom/${e.brand}`); };
+    hot.addEventListener('pointerdown', () => { const t = Date.now(); taps = taps.filter((x) => t - x < 3000).concat(t); if (taps.length >= 5) { taps = []; leave(); } });
+    const key = (ev) => { if (ev.key === 'Escape' && ev.shiftKey) leave(); };
+    addEventListener('keydown', key);
+    /* keyboard focus usually sits inside the experience: listen there too (from outside — the experience code is untouched) */
+    const ifr = app.querySelector('iframe');
+    const attach = () => { try { ifr.contentWindow.addEventListener('keydown', key); } catch (err) { /* cross-origin: shell key only */ } };
+    ifr.addEventListener('load', attach); attach();
+    const prev = cleanup; cleanup = () => { removeEventListener('keydown', key); if (prev) prev(); };
+  }
+
+  function render() {
+    if (cleanup) { cleanup(); cleanup = null; }
+    const { parts, params } = parse();
+    document.body.className = parts[0] === 'launch' ? 'launching' : '';
+    if (parts[0] === 'launch' && parts[1]) launch(parts[1], params.get('dev') === '1');
+    else if (parts[0] === 'showroom' && parts[1]) { document.title = 'LS Experience Showroom'; brandPage(parts[1]); }
+    else { document.title = 'LS Experience Showroom'; showroom(params); }
+  }
+  window.__showroom = { registry: R, render };
+  render();
+})();
 </script>
 </body>
 </html>

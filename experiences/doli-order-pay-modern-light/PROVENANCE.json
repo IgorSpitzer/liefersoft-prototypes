@@ -1,0 +1,10 @@
+{
+ "id": "doli-order-pay-modern-light",
+ "canonical": {
+  "tag": "doli-order-pay-modern-light-v1.0.0",
+  "commit": "f8effb0",
+  "file": "dist/doli-order-pay-modern-light.html",
+  "sha256": "9b9048650c6178bbf4afec92f388f3a88130fca6a01592295ffd231927b8c7fc",
+  "target": "experiences/doli-order-pay-modern-light/index.html"
+ }
+}

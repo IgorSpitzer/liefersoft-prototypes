@@ -1,0 +1,10 @@
+{
+ "id": "doli-order-pay-v1",
+ "canonical": {
+  "tag": "doli-order-pay-v1.0.0",
+  "commit": "298f849",
+  "file": "dist/doli-order-pay-v1.html",
+  "sha256": "340629f3b6a324ac825ef276496887d34d1e43e80cbc14a71ea57039552e40a2",
+  "target": "experiences/doli-order-pay-v1/index.html"
+ }
+}

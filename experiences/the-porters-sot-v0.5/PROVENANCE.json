@@ -1,0 +1,22 @@
+{
+ "id": "the-porters-sot-v0.5",
+ "canonical": {
+  "tag": "sot-v0.5-terminal-test",
+  "commit": "201c4cc",
+  "file": "dist/sot-terminal-test.html",
+  "sha256": "8bcfb8faebf6767ad277370a7e56d30acc17f9a640d18ed29311a780e4774956",
+  "target": "experiences/the-porters-sot-v0.5/index.html"
+ },
+ "diagnostics": {
+  "derivedFromTag": "sot-v0.5-terminal-test",
+  "derivedFromCommit": "201c4cc",
+  "difference": "diagnostics flag only",
+  "diff": {
+   "from": "{\"profile\":\"terminal-test\",\"defaultLocale\":\"de-DE\",\"diagnostics\":false}",
+   "to": "{\"profile\":\"showroom-diagnostics\",\"defaultLocale\":\"de-DE\",\"diagnostics\":true}"
+  },
+  "sha256": "f6f0da467b293dcf6c4163362e8a5394c0a78d5c02588d5e0222c5ae839dc1fb",
+  "target": "experiences/the-porters-sot-v0.5/diagnostics.html",
+  "use": "showroom mode only — never guest presentation"
+ }
+}

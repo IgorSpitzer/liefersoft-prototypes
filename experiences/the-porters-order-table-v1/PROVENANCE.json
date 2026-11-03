@@ -1,0 +1,10 @@
+{
+ "id": "the-porters-order-table-v1",
+ "canonical": {
+  "tag": "ordertable-v1.0.0",
+  "commit": "21b25aa",
+  "file": "dist/index.html",
+  "sha256": "f5bb2547c782cfe1b70719bad8a171be515f0ad774537d2fe5d1fb238673b471",
+  "target": "experiences/the-porters-order-table-v1/index.html"
+ }
+}
