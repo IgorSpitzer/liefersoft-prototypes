@@ -1,0 +1,10 @@
+{
+ "id": "das-eislaedchen-webshop",
+ "canonical": {
+  "tag": "das-eislaedchen-webshop-rc1",
+  "commit": "c88fb28",
+  "file": "dist/das-eislaedchen-webshop.html",
+  "sha256": "5b4f40b744c8f86e0694a8e752bcfad5d6aaf3ab67feda48f3d52f87a84a42ac",
+  "target": "experiences/das-eislaedchen-webshop/index.html"
+ }
+}

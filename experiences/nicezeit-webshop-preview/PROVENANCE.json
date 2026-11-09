@@ -1,0 +1,10 @@
+{
+ "id": "nicezeit-webshop-preview",
+ "canonical": {
+  "tag": "nicezeit-webshop-preview-rc1",
+  "commit": "afe76e1",
+  "file": "dist/nicezeit-webshop-preview.html",
+  "sha256": "89a8e9a3f13d7d0137feeae5c8dc3d48cc8ec517df2a8a29db3569710ca17c62",
+  "target": "experiences/nicezeit-webshop-preview/index.html"
+ }
+}

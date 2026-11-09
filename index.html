@@ -104,6 +104,8 @@ window.LS_SHOWROOM_REGISTRY = {
     { id: 'the-porters', title: 'The Porters', subtitle: 'Irish Pub · Hannover', vertical: 'pub' },
     { id: 'doli', title: 'DOLI', subtitle: 'Georgian Restaurant · Hannover', vertical: 'georgian' },
     { id: 'da-enzo', title: 'Da Enzo', subtitle: 'Pizzeria · Bielefeld', vertical: 'pizza-italian' },
+    { id: 'das-eislaedchen', title: 'Das Eislädchen', subtitle: 'Gelateria · Hannover', vertical: 'gelato', planned: ['sot'] },
+    { id: 'nicezeit', title: 'Nicezeit', subtitle: 'Eis · interne Vorschau (Katalogentwurf)', vertical: 'gelato', planned: [] },
   ],
   /* Showroom NAVIGATION vocabulary (showroom mode only). It never replaces surface semantics: each experience shows its own
      term next to it (e.g. Order@Table "Cart" = Your Round). Mapped to the experience's own deterministic fixtures. */
@@ -281,6 +283,60 @@ window.LS_SHOWROOM_REGISTRY = {
           cart: 'Deine Bestellung', upsell: 'Noch etwas dazu?', payment: 'Zahlungsart wählen', confirmation: 'Bestellung erfolgreich' },
         reset: 'enzo-01',
         allStates: ['enzo-01', 'enzo-02', 'enzo-03', 'enzo-04', 'enzo-05', 'enzo-06', 'enzo-07', 'enzo-08', 'enzo-09'],
+      },
+    },
+    {
+      id: 'das-eislaedchen-webshop',
+      brand: 'das-eislaedchen', vertical: 'gelato', surface: 'webshop',
+      recipe: 'Gelato C4.1 — Konzept B „Build your Cup“', skin: 'Build your Cup',
+      title: 'Webshop — Build your Cup',
+      thumbnail: 'thumbs/das-eislaedchen-webshop.webp',
+      status: { code: 'review', label: 'Review' },
+      build: { tag: 'das-eislaedchen-webshop-rc1', commit: 'c88fb28', file: 'dist/das-eislaedchen-webshop.html', sha256: '5b4f40b744c8f86e0694a8e752bcfad5d6aaf3ab67feda48f3d52f87a84a42ac' },
+      frozen: false,
+      provenance: { canonicalBuildSha256: '5b4f40b744c8f86e0694a8e752bcfad5d6aaf3ab67feda48f3d52f87a84a42ac', diagnosticsBuildSha256: null,
+        designSource: 'Das Eislädchen — Gelato Experience Design Studio — Concept DNA (concept B screens)',
+        note: 'Scoop price 1,60 € = concept value (unconfirmed). Media cropped from the concept board. Cart drawn in the concept style; checkout not designed.' },
+      externalDependencies: [],
+      launch: { target: 'experiences/das-eislaedchen-webshop/index.html', mode: 'phone' },
+      canonicalViewport: { width: 390, height: 844, device: 'Phone 390×844 (responsive, mobile-first)' },
+      tags: ['webshop', 'gelato', 'mobile-first', 'scoop-builder', 'de-DE', 'review'],
+      dev: {
+        driver: 'eis',
+        stateMap: { start: 'eis-01-home', categories: 'eis-01-home', 'product-list': null, 'product-detail': 'eis-03-spaghetti', modifiers: 'eis-02-builder',
+          cart: 'eis-04-cart', upsell: 'eis-04-cart', payment: null, confirmation: null },
+        stateNotes: { 'product-list': 'No product list in concept B', payment: 'Checkout not designed', confirmation: 'Checkout not designed', upsell: '„Noch eine Kugel“ in the cart' },
+        surfaceTerms: { start: 'Dein Eis.', categories: 'Kategorien', 'product-list': '—', 'product-detail': 'Spaghetti Pistazien', modifiers: 'Mein Eis zusammenstellen',
+          cart: 'Dein Warenkorb', upsell: 'Noch eine Kugel', payment: '—', confirmation: '—' },
+        reset: 'eis-01-home',
+        allStates: ['eis-01-home', 'eis-02-builder', 'eis-03-spaghetti', 'eis-04-cart'],
+      },
+    },
+    {
+      id: 'nicezeit-webshop-preview',
+      brand: 'nicezeit', vertical: 'gelato', surface: 'webshop',
+      recipe: 'Webshop 2.0 · Gelato (Stage 1 Preview)', skin: 'Nicezeit (vorläufige Tokens)',
+      title: 'Webshop-Vorschau — Stage 1 (intern)',
+      thumbnail: 'thumbs/nicezeit-webshop-preview.webp',
+      status: { code: 'review', label: 'Review' },
+      frozen: false,
+      build: { tag: 'nicezeit-webshop-preview-rc1', commit: 'afe76e1', file: 'dist/nicezeit-webshop-preview.html', sha256: '89a8e9a3f13d7d0137feeae5c8dc3d48cc8ec517df2a8a29db3569710ca17c62' },
+      provenance: { canonicalBuildSha256: '89a8e9a3f13d7d0137feeae5c8dc3d48cc8ec517df2a8a29db3569710ca17c62', diagnosticsBuildSha256: null,
+        designSource: 'Nicezeit_Claude_Stage1_Handoff.zip (research seed 2026-11-04, sha256 bdeaaab0…)',
+        note: 'Research data only — no retail prices, availability unknown, allergen codes opaque, demo checkout boundary; acceptOrders=false, realPayment=false.' },
+      externalDependencies: [],
+      launch: { target: 'experiences/nicezeit-webshop-preview/index.html', mode: 'phone' },
+      canonicalViewport: { width: 390, height: 844, device: 'Phone 390×844 (responsive; desktop 1440×900 tested)' },
+      tags: ['webshop', 'gelato', 'preview', 'research-data', 'de-DE', 'review'],
+      dev: {
+        driver: 'nicezeit',
+        stateMap: { start: 'nz-landing', categories: 'nz-explorer', 'product-list': 'nz-explorer', 'product-detail': null, modifiers: 'nz-builder-demo',
+          cart: 'nz-cart-demo', upsell: null, payment: 'nz-boundary', confirmation: null },
+        stateNotes: { 'product-detail': 'Sortendetail als Sheet im Flavor Explorer', upsell: 'Nicht Teil von Stage 1', payment: 'Demo-Grenze statt Kasse', confirmation: 'Keine echte Bestellung' },
+        surfaceTerms: { start: 'Nicezeit', categories: 'Flavor Explorer', 'product-list': 'Sorten', 'product-detail': '—', modifiers: 'Mein Eis zusammenstellen',
+          cart: 'Warenkorb', upsell: '—', payment: 'Demo-Grenze', confirmation: '—' },
+        reset: 'nz-landing',
+        allStates: ['nz-landing', 'nz-explorer', 'nz-builder', 'nz-builder-demo', 'nz-cart-demo', 'nz-boundary', 'nz-review'],
       },
     },
   ],
@@ -1260,7 +1316,7 @@ window.LS_SHOWROOM_REGISTRY = {
     if (by === 'brand') {
       const brands = R.brands.filter((b) => list.some((e) => e.brand === b.id));
       body = brands.length ? brands.map((b) => `<section class="group"><header><h2><a href="#/showroom/${b.id}">${esc(b.title)}</a></h2><p>${esc(b.subtitle || '')}</p></header>
-        <div class="grid">${R.surfaces.map((s) => { const xs = list.filter((e) => e.brand === b.id && e.surface === s.id); return xs.length ? xs.map(card).join('') : empty(`${s.title} — ${b.title}`); }).join('')}</div></section>`).join('')
+        <div class="grid">${R.surfaces.map((s) => { const xs = list.filter((e) => e.brand === b.id && e.surface === s.id); return xs.length ? xs.map(card).join('') : (!b.planned || b.planned.includes(s.id) ? empty(`${s.title} — ${b.title}${b.planned ? ' (coming / planned)' : ''}`) : ''); }).join('')}</div></section>`).join('')
         : '<p class="none">No experiences for this filter.</p>';
     } else {
       body = R.surfaces.map((s) => { const xs = list.filter((e) => e.surface === s.id); return `<section class="group"><header><h2>${esc(s.title)}</h2><p>${esc(s.device)}</p></header>
@@ -1276,7 +1332,7 @@ window.LS_SHOWROOM_REGISTRY = {
     const xs = R.experiences.filter((e) => e.brand === id);
     app.innerHTML = `<div class="shell">${topbar()}<p class="crumb"><a href="#/showroom">Showroom</a> / ${esc(b.title)}</p>
       <header class="bhead"><h1>${esc(b.title)}</h1><p>${esc(b.subtitle || '')} · ${esc(vert(b.vertical).title)}</p></header>
-      <main><div class="grid">${R.surfaces.map((s) => { const m = xs.filter((e) => e.surface === s.id); return m.length ? m.map(card).join('') : empty(`${s.title} — planned`); }).join('')}</div></main>${foot()}</div>`;
+      <main><div class="grid">${R.surfaces.map((s) => { const m = xs.filter((e) => e.surface === s.id); return m.length ? m.map(card).join('') : (!b.planned || b.planned.includes(s.id) ? empty(`${s.title} — ${b.planned ? 'coming / planned' : 'planned'}`) : ''); }).join('')}</div></main>${foot()}</div>`;
   }
   const topbar = () => `${EMBED ? '<p class="preview">Preview build (single file). Canonical showroom deployment: GitHub Pages — each experience served as its own unchanged file.</p>' : ''}<header class="top"><a class="logo" href="#/showroom"><b>LS</b> Experience Showroom</a><span class="count">${R.experiences.length} experiences · ${R.brands.length} brand${R.brands.length === 1 ? '' : 's'}</span></header>`;
   const foot = () => '<footer class="foot">Builds are embedded byte-for-byte from their git tags. Showroom controls never appear inside a guest experience.</footer>';
@@ -1348,7 +1404,7 @@ window.LS_SHOWROOM_REGISTRY = {
     const prior = cleanup; cleanup = () => { removeEventListener('resize', fit); if (blobURL) URL.revokeObjectURL(blobURL); if (prior) prior(); };
   }
   function hook(e, iframe) {
-    const w = iframe.contentWindow; const HOOK = { ot: '__ot', sot: '__sot', doli: '__doli', daenzo: '__daenzo' }; const api = e.dev && w[HOOK[e.dev.driver]];
+    const w = iframe.contentWindow; const HOOK = { ot: '__ot', sot: '__sot', doli: '__doli', daenzo: '__daenzo', eis: '__eis', nicezeit: '__nicezeit' }; const api = e.dev && w[HOOK[e.dev.driver]];
     if (!api) throw new Error('state hooks unavailable (experience still loading or not same-origin)');
     return api;
   }
