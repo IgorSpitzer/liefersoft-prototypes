@@ -1,0 +1,12 @@
+{
+ "id": "burger-studio-sot",
+ "canonical": {
+  "tag": "burger-studio-import-1",
+  "commit": "326652c",
+  "dir": "dist/burger-studio",
+  "treeSha256": "f29c694d2efc50503e94f039e7eba1498ebfd02145b3cd1ef72bb0ad1d61aa21",
+  "entrySha256": "6a07880bc7d72c5fd8f1acfced2043660ae0e16114a1388e3471a803898ed06c",
+  "files": 23,
+  "target": "experiences/burger-studio-sot/index.html"
+ }
+}
